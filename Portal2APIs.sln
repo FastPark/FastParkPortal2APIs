@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portal2APIs", "Portal2APIs\Portal2APIs.csproj", "{FB9EACA6-6E73-412D-B91C-95EF07326ECE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FB9EACA6-6E73-412D-B91C-95EF07326ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB9EACA6-6E73-412D-B91C-95EF07326ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB9EACA6-6E73-412D-B91C-95EF07326ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB9EACA6-6E73-412D-B91C-95EF07326ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
