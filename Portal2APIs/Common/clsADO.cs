@@ -143,6 +143,42 @@ namespace Portal2APIs.Common
 
         }
 
+        public void returnList<T>(string strSQL, bool Max,ref List<T> list)
+        {
+            try
+            {
+                string conn = "";
+
+                if (Max == true)
+                {
+                    conn = getMaxConnectionString();
+                }
+                else
+                {
+                    conn = getLocalConnectionString();
+                }
+
+                using (SqlConnection con = new SqlConnection(conn))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandText = strSQL;
+                        cmd.Connection = con;
+                        con.Open();
+                        using (SqlDataReader sdr = cmd.ExecuteReader())
+                        list = new List<T>().FromDataReader(sdr).ToList();
+                        con.Close();
+                 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
+        }
+
     }
 
 
