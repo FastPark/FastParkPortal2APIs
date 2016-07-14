@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Web.Http;
 using Portal2APIs.Models;
 using Portal2APIs.Common;
+using System.Net;
+using System.Net.Http;
 
 namespace Portal2APIs.Controllers
 {
@@ -15,33 +17,26 @@ namespace Portal2APIs.Controllers
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
-            CardDistHistoryNote CDHN = null;
-            List<CardDistHistoryNote> allNotes = new List<CardDistHistoryNote>();
-            clsCommon nullCheck = new clsCommon();
 
-            strSQL = "Select * from dbo.CardDistributionHistoryNote where CardHistoryID = " + id;
-            using (SqlConnection connection = new SqlConnection(thisADO.getMaxConnectionString()))
+            try
             {
-                SqlCommand command = new SqlCommand(strSQL, connection);
-                connection.Open();
+                strSQL = "Select * from dbo.CardDistributionHistoryNote where CardHistoryID = " + id;
+                List<CardDistHistoryNote> list = new List<CardDistHistoryNote>();
+                thisADO.returnList(strSQL, true, ref list);
 
-                SqlDataReader reader = command.ExecuteReader();
-                
-                while (reader.Read())
-                {
-                    CDHN = new CardDistHistoryNote();
-                    CDHN.CardHistoryNoteID = Convert.ToInt32(nullCheck.checknull(reader.GetValue(0), false));
-                    CDHN.CardHistoryId = Convert.ToInt32(nullCheck.checknull(reader.GetValue(1), false));
-                    CDHN.Note = Convert.ToString(nullCheck.checknull(reader.GetValue(2), false));
-
-                    allNotes.Add(CDHN);
-                }
-                reader.Close();
+                return list;
             }
-
-            return allNotes;
-
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
         }
+
         [HttpPost]
         [Route("api/CardDistHistoryNotes/Post")]
         public CardDistHistoryNote Post(CardDistHistoryNote CDHN)

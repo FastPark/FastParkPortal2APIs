@@ -30,44 +30,37 @@ namespace Portal2APIs.Common
 
                 // Loop all the fields of each row of dataReader, and through the object
                 // reflector (first step method) fill the object instance with the datareader values
-                try
+              
+                foreach (DataRow drow in dr.GetSchemaTable().Rows)
                 {
-                    foreach (DataRow drow in dr.GetSchemaTable().Rows)
+
+                    if (dr[drow.ItemArray[0].ToString()].GetType().Name == "Int32" || dr[drow.ItemArray[0].ToString()].GetType().Name == "Int64")
                     {
-
-                        if (dr[drow.ItemArray[0].ToString()].GetType().Name == "Int32" || dr[drow.ItemArray[0].ToString()].GetType().Name == "Int64")
-                        {
-                            reflec.FillObjectWithProperty(ref instance,
-                            drow.ItemArray[0].ToString(), Convert.ToInt32(dr[drow.ItemArray[0].ToString()]));
-                        }
-                        else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "String")
-                        {
-                            reflec.FillObjectWithProperty(ref instance,
-                            drow.ItemArray[0].ToString(), dr[drow.ItemArray[0].ToString()]);
-                        }
-                        else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "DateTime")
-                        {
-                            reflec.FillObjectWithProperty(ref instance,
-                            drow.ItemArray[0].ToString(), Convert.ToDateTime(dr[drow.ItemArray[0].ToString()]));
-                        }
-                        else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "Decimal")
-                        {
-                            reflec.FillObjectWithProperty(ref instance,
-                            drow.ItemArray[0].ToString(), Convert.ToDecimal(dr[drow.ItemArray[0].ToString()]));
-                        }
-                        else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "DBNull")
-                        {
-                            //Don't do anything
-                        }
-
+                        reflec.FillObjectWithProperty(ref instance,
+                        drow.ItemArray[0].ToString(), Convert.ToInt32(dr[drow.ItemArray[0].ToString()]));
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
+                    else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "String")
+                    {
+                        reflec.FillObjectWithProperty(ref instance,
+                        drow.ItemArray[0].ToString(), dr[drow.ItemArray[0].ToString()]);
+                    }
+                    else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "DateTime")
+                    {
+                        reflec.FillObjectWithProperty(ref instance,
+                        drow.ItemArray[0].ToString(), Convert.ToDateTime(dr[drow.ItemArray[0].ToString()]));
+                    }
+                    else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "Decimal")
+                    {
+                        reflec.FillObjectWithProperty(ref instance,
+                        drow.ItemArray[0].ToString(), Convert.ToDecimal(dr[drow.ItemArray[0].ToString()]));
+                    }
+                    else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "DBNull")
+                    {
+                        //Don't do anything
+                    }
+
                 }
                 
-
                 //Add object instance to list
                 lstObj.Add(instance);
             }

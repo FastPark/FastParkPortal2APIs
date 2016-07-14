@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.SqlClient;
+using System.Net;
 
 namespace Portal2APIs.Common
 {
+
     public class clsADO
     {
         public string getMaxConnectionString()
@@ -145,41 +147,32 @@ namespace Portal2APIs.Common
 
         public void returnList<T>(string strSQL, bool Max,ref List<T> list)
         {
-            try
+           
+            string conn = "";
+
+            if (Max == true)
             {
-                string conn = "";
+                conn = getMaxConnectionString();
+            }
+            else
+            {
+                conn = getLocalConnectionString();
+            }
 
-                if (Max == true)
+            using (SqlConnection con = new SqlConnection(conn))
+            {
+                using (SqlCommand cmd = new SqlCommand())
                 {
-                    conn = getMaxConnectionString();
-                }
-                else
-                {
-                    conn = getLocalConnectionString();
-                }
-
-                using (SqlConnection con = new SqlConnection(conn))
-                {
-                    using (SqlCommand cmd = new SqlCommand())
-                    {
-                        cmd.CommandText = strSQL;
-                        cmd.Connection = con;
-                        con.Open();
-                        using (SqlDataReader sdr = cmd.ExecuteReader())
-                        list = new List<T>().FromDataReader(sdr).ToList();
-                        con.Close();
+                    cmd.CommandText = strSQL;
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    list = new List<T>().FromDataReader(sdr).ToList();
+                    con.Close();
                  
-                    }
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-
         }
 
     }
-
-
 }
