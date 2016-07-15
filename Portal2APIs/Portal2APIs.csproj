@@ -99,6 +99,7 @@
     <Compile Include="Models\CardDistActivityType.cs" />
     <Compile Include="Models\CardDistHistoryNote.cs" />
     <Compile Include="Models\CardDistHistory.cs" />
+    <Compile Include="Models\CardDistInventory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
