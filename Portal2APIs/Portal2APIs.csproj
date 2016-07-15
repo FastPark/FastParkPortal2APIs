@@ -90,6 +90,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Common\clsADO.cs" />
     <Compile Include="Common\clsCommon.cs" />
+    <Compile Include="Common\IENumerableExtensions.cs" />
+    <Compile Include="Common\Reflection.cs" />
     <Compile Include="Controllers\CardDistActivityTypesController.cs" />
     <Compile Include="Controllers\CardDistHistoryNotesController.cs" />
     <Compile Include="Controllers\CardDistHistorysController.cs" />

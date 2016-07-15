@@ -90,5 +90,11 @@ namespace Portal2APIs.Models
             set { m_RecordedBy = value; }
         }
         private string m_RecordedBy;
+        public int LocationId
+        {
+            get { return m_LocationId; }
+            set { m_LocationId = value; }
+        }
+        private int m_LocationId;
     }
 }

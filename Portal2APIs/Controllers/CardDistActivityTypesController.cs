@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Web.Http;
 using Portal2APIs.Models;
 using Portal2APIs.Common;
+using System.Net;
+using System.Net.Http;
 
 namespace Portal2APIs.Controllers
 {
@@ -11,34 +13,31 @@ namespace Portal2APIs.Controllers
     {
         [HttpGet()]
         [Route("api/CardDistActivityTypes/Get/{id}")]
-        public CardDistActivityType Get(int id)
+        public List<CardDistActivityType> Get(int id)
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
-            CardDistActivityType CDAT = null;
-            clsCommon nullCheck = new clsCommon();
 
-            strSQL = "Select * from dbo.CardDistributionActivityType where CardDistributionActivityTypeID=" + id + "";
-            using (SqlConnection connection = new SqlConnection(thisADO.getMaxConnectionString()))
+            try
             {
-                SqlCommand command = new SqlCommand(strSQL, connection);
-                connection.Open();
+                strSQL = "Select * from dbo.CardDistributionActivityType where CardDistributionActivityTypeID=" + id + "";
+                List<CardDistActivityType> list = new List<CardDistActivityType>();
+                thisADO.returnList(strSQL, true, ref list);
 
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
+                return list; ;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
                 {
-                    CDAT = new CardDistActivityType();
-                    CDAT.CardDistributionActivityTypeID = Convert.ToInt32(nullCheck.checknull(reader.GetValue(0), false));
-                    CDAT.CardDistributionActivityRole = Convert.ToString(nullCheck.checknull(reader.GetValue(1), false));
-                    CDAT.CardDistributionActivityDescription = Convert.ToString(nullCheck.checknull(reader.GetValue(2), false));
-                }
-                reader.Close();
-
-                return CDAT;
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
             }
         }
 
-        [HttpPost()]
+        [HttpPost]
         [Route("api/CardDistActivityTypes/Post")]
         public CardDistActivityType Post(CardDistActivityType CDAT)
         {

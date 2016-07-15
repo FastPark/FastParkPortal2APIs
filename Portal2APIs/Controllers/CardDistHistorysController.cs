@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Web.Http;
 using Portal2APIs.Models;
 using Portal2APIs.Common;
-
+using System.Net;
+using System.Net.Http;
 
 namespace Portal2APIs.Controllers
 {
@@ -12,40 +13,54 @@ namespace Portal2APIs.Controllers
     {
         [HttpGet]
         [Route("api/CardDistHistorys/Get/{id}")]
-        public CardDistHistory Get(int id)
+        public List<CardDistHistory> Get(int id)
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
-            CardDistHistory CDH = null;
-            clsCommon nullCheck = new clsCommon();
 
-            strSQL = "Select * from CardDistributionHistory where CardHistoryId=" + id + "";
-            using (SqlConnection connection = new SqlConnection(thisADO.getMaxConnectionString()))
+            try
             {
-                SqlCommand command = new SqlCommand(strSQL, connection);
-                connection.Open();
+                strSQL = "Select * from CardDistributionHistory where CardHistoryId=" + id + "";
+                List<CardDistHistory> list = new List<CardDistHistory>();
+                thisADO.returnList(strSQL, true, ref list);
 
-                SqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
                 {
-                    CDH = new CardDistHistory();
-                    CDH.CardHistoryId = Convert.ToInt32(nullCheck.checknull(reader.GetValue(0), false));
-                    CDH.ActivityDate = Convert.ToDateTime(nullCheck.checknull(reader.GetValue(1), false));
-                    CDH.ActivityId = Convert.ToInt32(nullCheck.checknull(reader.GetValue(2), false));
-                    CDH.StartingNumber = Convert.ToInt64(nullCheck.checknull(reader.GetValue(4), false));
-                    CDH.EndingNumber = Convert.ToInt64(nullCheck.checknull(reader.GetValue(6), false));
-                    CDH.NumberOfCards = Convert.ToInt64(nullCheck.checknull(reader.GetValue(7), false));
-                    CDH.OrderConfirmationDate = Convert.ToDateTime(nullCheck.checknull(reader.GetValue(8), false));
-                    CDH.DistributionPoint = Convert.ToString(nullCheck.checknull(reader.GetValue(9), false));
-                    CDH.BusOrRepID = Convert.ToInt32(nullCheck.checknull(reader.GetValue(10), false));
-                    CDH.Shift = Convert.ToString(nullCheck.checknull(reader.GetValue(11), false));
-                    CDH.RecordDate = Convert.ToDateTime(nullCheck.checknull(reader.GetValue(12), false));
-                    CDH.RecordedBy = Convert.ToString(nullCheck.checknull(reader.GetValue(13), false));
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }  
+        }
 
-                }
-                reader.Close();
+        [HttpGet]
+        [Route("api/CardDistHistorys/GetCardRange")]
+        public List<CardDistHistory> GetCardRange([FromUri]int startingNumber, [FromUri]int endingNumber)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
 
-                return CDH;
+                strSQL = "Select * from CardDistributionHistory where StartingNumber >= " + startingNumber + " and EndingNumber <= " + endingNumber;
+
+                List<CardDistHistory> list = new List<CardDistHistory>();
+                thisADO.returnList(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
             }
         }
 
