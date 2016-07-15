@@ -124,7 +124,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select max(EndingNumber) as maxShipped from CardDistributionHistory where ActivityId = 2 ";
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list;
             }

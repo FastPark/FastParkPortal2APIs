@@ -20,9 +20,9 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "select MAX(cardFPNumber) as orderedMax from CardDistributionInventory where CardActive = 'True'";
+                strSQL = "select MAX(CardFPNumber) as orderedMax from CardDistributionInventory where CardActive = 'True'";
                 List<CardDistInventory> list = new List<CardDistInventory>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list;
             }
