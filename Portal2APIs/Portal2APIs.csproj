@@ -95,6 +95,7 @@
     <Compile Include="Controllers\CardDistActivityTypesController.cs" />
     <Compile Include="Controllers\CardDistHistoryNotesController.cs" />
     <Compile Include="Controllers\CardDistHistorysController.cs" />
+    <Compile Include="Controllers\CardDistInventorysController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
