@@ -63,12 +63,12 @@ namespace Portal2APIs.Models
         }
         private string m_DistributionPoint;
 
-        public int BusOrRepID
+        public int BusOrRepId
         {
-            get { return m_BusOrRepID; }
-            set { m_BusOrRepID = value; }
+            get { return m_BusOrRepId; }
+            set { m_BusOrRepId = value; }
         }
-        private int m_BusOrRepID;
+        private int m_BusOrRepId;
 
         public string Shift
         {
@@ -96,5 +96,11 @@ namespace Portal2APIs.Models
             set { m_LocationId = value; }
         }
         private int m_LocationId;
+        public string NameOfLocation
+        {
+            get { return m_NameOfLocation; }
+            set { m_NameOfLocation = value; }
+        }
+        private String m_NameOfLocation;
     }
 }

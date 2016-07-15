@@ -95,6 +95,45 @@ namespace Portal2APIs.Common
             }
         }
 
+        public int updateOrInsertWithId(string strSQL, bool Max)
+        {
+            int ID;
+
+            strSQL = strSQL + ";Select Scope_Identity()";
+
+            try
+            {
+                string conn = "";
+
+                if (Max == true)
+                {
+                    conn = getMaxConnectionString();
+                }
+                else
+                {
+                    conn = getLocalConnectionString();
+                }
+
+                using (SqlConnection con = new SqlConnection(conn))
+                {
+                    using (SqlCommand cmd = new SqlCommand())
+                    {
+                        cmd.CommandText = strSQL;
+                        cmd.Connection = con;
+                        con.Open();
+                        ID = Convert.ToInt32(cmd.ExecuteScalar());
+                        con.Close();
+                    }
+                }
+                return ID;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(Convert.ToString(ex));
+                return 0;
+            }
+        }
+
         public object returnSingleValue(ref string strSQL, bool Max, bool isString)
         {
             try
