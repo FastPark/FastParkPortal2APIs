@@ -81,5 +81,35 @@ namespace Portal2APIs.Controllers
 
             return null;
         }
+
+        [HttpGet]
+        [Route("api/CardDistHistorys/GetLastShipped/")]
+        public List<CardDistHistory> Get()
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select max(EndingNumber) as maxShipped from CardDistributionHistory where ActivityId = 2 ";
+                List<CardDistHistory> list = new List<CardDistHistory>();
+                thisADO.returnList(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+
+
+
     }
 }
