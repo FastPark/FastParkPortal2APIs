@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select * from dbo.CardDistributionActivityType where CardDistributionActivityTypeID=" + id + "";
                 List<CardDistActivityType> list = new List<CardDistActivityType>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list; ;
             }
@@ -47,7 +47,7 @@ namespace Portal2APIs.Controllers
             strSQL = "insert into CardDistributionActivityType (CardDistributionActivityDescription, CardDistributionActivityRole) " +
                                                                 "values ('" + CDAT.CardDistributionActivityDescription + "', '" + CDAT.CardDistributionActivityRole + "')";
 
-            thisADO.updateOrInsert(strSQL, true);
+            thisADO.updateOrInsert(strSQL, false);
 
             return null;
         }

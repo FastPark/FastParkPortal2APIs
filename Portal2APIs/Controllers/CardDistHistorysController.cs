@@ -24,7 +24,7 @@ namespace Portal2APIs.Controllers
                           "inner Join Location l on cdh.LocationId = l.LocationID " +
                           "where cdh.CardHistoryId=" + id + "";
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list;
             }
@@ -53,7 +53,7 @@ namespace Portal2APIs.Controllers
                           "where StartingNumber >= " + startingNumber + " and EndingNumber <= " + endingNumber;
 
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list;
             }
@@ -88,7 +88,7 @@ namespace Portal2APIs.Controllers
                                                         CDH.EndingNumber + ", " + CDH.NumberOfCards + ", '" + CDH.OrderConfirmationDate + "', '" +
                                                         CDH.DistributionPoint + "', " + CDH.BusOrRepId + ", '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "', " + CDH.LocationId + ")";
 
-                BatchNumber = thisADO.updateOrInsertWithId(strSQL, true);
+                BatchNumber = thisADO.updateOrInsertWithId(strSQL, false);
 
                 if (CDH.ActivityId == 1)
                 {
@@ -97,7 +97,7 @@ namespace Portal2APIs.Controllers
                         rndNumber = myRnd.RandNumber(1000, 9999);
                         strSQL = "insert into CardDistributionInventory (CardFPNumber, CardHistoryID, CardValidationNumber, CardActive) " +
                                  "Values (" + i + ", " + BatchNumber + ", " + rndNumber + ", 1)";
-                        thisADO.updateOrInsert(strSQL, true);
+                        thisADO.updateOrInsert(strSQL, false);
                     }
                 }
                 return null;
