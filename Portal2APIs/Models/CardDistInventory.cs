@@ -13,27 +13,22 @@ namespace Portal2APIs.Models
             set { m_CardFPNumber = value; }
         }
         private int m_CardFPNumber;
-    }
-    public class CardHistoryId
-    {
+    
+    
         public int CardHistoryId
         {
             get { return m_CardHistoryId; }
             set { m_CardHistoryId = value; }
         }
         private int m_CardHistoryId;
-    }
-    public class CardValidationNumber
-    {
+    
         public int CardValidationNumber
         {
             get { return m_CardValidationNumber; }
             set { m_CardValidationNumber = value; }
         }
         private int m_CardValidationNumber;
-    }
-    public class CardActive
-    {
+    
         public int CardActive
         {
             get { return m_CardActive; }
