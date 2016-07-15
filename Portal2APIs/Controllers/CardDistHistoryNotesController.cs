@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select * from dbo.CardDistributionHistoryNote where CardHistoryID = " + id;
                 List<CardDistHistoryNote> list = new List<CardDistHistoryNote>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list;
             }
@@ -47,7 +47,7 @@ namespace Portal2APIs.Controllers
             strSQL = "insert into CardDistributionHistoryNote (CardHistoryID, Note) " +
                                                                 "values ('" + CDHN.CardHistoryId + "', '" + CDHN.Note + "')";
 
-            thisADO.updateOrInsert(strSQL, true);
+            thisADO.updateOrInsert(strSQL, false);
 
             return null;
         }

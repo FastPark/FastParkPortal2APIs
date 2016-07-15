@@ -20,9 +20,11 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Select * from CardDistributionHistory where CardHistoryId=" + id + "";
+                strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " + 
+                          "inner Join Location l on cdh.LocationId = l.LocationID " +
+                          "where cdh.CardHistoryId=" + id + "";
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list;
             }
@@ -46,10 +48,12 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "Select * from CardDistributionHistory where StartingNumber >= " + startingNumber + " and EndingNumber <= " + endingNumber;
+                strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " +
+                          "inner Join Location l on cdh.LocationId = l.LocationID " +
+                          "where StartingNumber >= " + startingNumber + " and EndingNumber <= " + endingNumber;
 
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnList(strSQL, false, ref list);
 
                 return list;
             }
@@ -70,16 +74,43 @@ namespace Portal2APIs.Controllers
         {
             clsADO thisADO = new clsADO();
             string strSQL = null;
+            Int64 startingNumber = CDH.StartingNumber;
+            Int64 endingNumber = CDH.EndingNumber;
+            Int64 rndNumber= 0;
+            int BatchNumber;
+            clsCommon myRnd = new clsCommon();
 
-            strSQL = "insert into CardDistributionHistory (ActivityDate, ActivityId, StartingNumber, EndingNumber, NumberOfCards, " +
-                                                        "OrderConfirmationDate, DistributionPoint, BusOrRepID, Shift, RecordDate, RecordedBy) " +
+            try
+            {
+                strSQL = "insert into CardDistributionHistory (ActivityDate, ActivityId, StartingNumber, EndingNumber, NumberOfCards, " +
+                                                        "OrderConfirmationDate, DistributionPoint, BusOrRepID, Shift, RecordDate, RecordedBy, LocationId) " +
                                                         "values ('" + CDH.ActivityDate + "', " + CDH.ActivityId + ", " + CDH.StartingNumber + ", " +
                                                         CDH.EndingNumber + ", " + CDH.NumberOfCards + ", '" + CDH.OrderConfirmationDate + "', '" +
-                                                        CDH.DistributionPoint + "', " + CDH.BusOrRepID + ", '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "')";
+                                                        CDH.DistributionPoint + "', " + CDH.BusOrRepId + ", '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "', " + CDH.LocationId + ")";
 
-            thisADO.updateOrInsert(strSQL, true);
+                BatchNumber = thisADO.updateOrInsertWithId(strSQL, false);
 
-            return null;
+                if (CDH.ActivityId == 1)
+                {
+                    for(Int64 i = startingNumber; i <= endingNumber; i++)
+                    {
+                        rndNumber = myRnd.RandNumber(1000, 9999);
+                        strSQL = "insert into CardDistributionInventory (CardFPNumber, CardHistoryID, CardValidationNumber, CardActive) " +
+                                 "Values (" + i + ", " + BatchNumber + ", " + rndNumber + ", 1)";
+                        thisADO.updateOrInsert(strSQL, false);
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
         }
 
         [HttpGet]
