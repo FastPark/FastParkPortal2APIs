@@ -34,7 +34,14 @@ namespace Portal2APIs.Models
             get { return m_CardActive; }
             set { m_CardActive = value; }
         }
-        private int m_CardActive;
+        private int m_CardActive; 
+
+        public int orderedMax
+        {
+            get { return m_orderedMax; }
+            set { m_orderedMax = value; }
+        }
+        private int m_orderedMax; 
     }
     
 }
