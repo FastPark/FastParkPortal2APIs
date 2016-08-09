@@ -48,8 +48,10 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " +
+                strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription " +
+                          "from CardDistributionHistory cdh " +
                           "left Outer Join Location l on cdh.LocationId = l.LocationID " +
+                          "inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
                           "where StartingNumber >= " + startingNumber + " and EndingNumber <= " + endingNumber;
 
                 List<CardDistHistory> list = new List<CardDistHistory>();
