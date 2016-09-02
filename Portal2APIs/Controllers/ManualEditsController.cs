@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -14,7 +13,7 @@ namespace Portal2APIs.Controllers
     public class ManualEditsController : ApiController
     {
         [HttpGet]
-        [Route("api/ManualEdits/ManualEditById/")]
+        [Route("api/ManualEdits/ManualEditById/{id}")]
         public List<ManualEdit> ManualEditById(int id)
         {
             try
@@ -42,7 +41,7 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet]
-        [Route("api/ManualEdits/ManualEditByMemberId/")]
+        [Route("api/ManualEdits/ManualEditByMemberId/{id}")]
         public List<ManualEdit> ManualEditByMemberId(int id)
         {
             try
@@ -78,7 +77,7 @@ namespace Portal2APIs.Controllers
             strSQL = "INSERT INTO dbo.ManualEdits (MemberID,LocationID,ManualEditDate,SubmittedDate,PerformedBy, " +
                      "SubmittedBy, ExplanationID,PointsChanged,CertificateNumber,ParkingTransactionNumber,CompanyID, " +
                      "Notes,PerformedByUserID,SubmittedByUserID) " +
-                     "Values (" + man.MemberId + ", " + man.LocationId + ", '" + man.ManualEditDate + "', '" + man.SubMittedDate + "', '" +
+                     "Values (" + man.MemberId + ", " + man.LocationId + ", '" + man.ManualEditDate + "', '" + man.SubmittedDate + "', '" +
                      man.PerformedBy + "', '" + man.SubmittedBy + "', " + man.LocationId + ", " + man.PointsChanged + ", '" +
                      man.CertificateNumber + "', '" + man.ParkingTransactionNumber + "', " + man.CompanyId + ", '" + man.Notes + "', '" +
                      man.PerformedByUserId + "', '" + man.SubmittedByUserId + "'";
@@ -93,7 +92,7 @@ namespace Portal2APIs.Controllers
             string strSQL = null;
 
             strSQL = "Update dbo.ManualEdits set MemberID = " + man.MemberId + ", locationID = " + man.LocationId +
-                    ", ManualEditDate = '" + man.ManualEditDate + "', SubmittedDate = '" + man.SubMittedDate + "', PerformedBy = " +
+                    ", ManualEditDate = '" + man.ManualEditDate + "', SubmittedDate = '" + man.SubmittedDate + "', PerformedBy = " +
                     man.PerformedBy + ", SubmittedBy = " + man.SubmittedBy + ", ExplanationID = " + man.ExplanationId +
                     ", CertificateNumber = '" + man.CertificateNumber + "', ParkingTransactionNumber = '" + man.ParkingTransactionNumber +
                     "', CompanyID = " + man.CompanyId + ", Notes = '" + man.Notes + "', PointsChanged = " + man.PointsChanged +

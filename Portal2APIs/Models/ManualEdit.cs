@@ -35,12 +35,12 @@ namespace Portal2APIs.Models
         }
         private DateTime m_ManualEditDate;
 
-        public DateTime SubMittedDate
+        public DateTime SubmittedDate
         {
-            get { return m_SubMittedDate; }
-            set { m_SubMittedDate = value; }
+            get { return m_SubmittedDate; }
+            set { m_SubmittedDate = value; }
         }
-        private DateTime m_SubMittedDate;
+        private DateTime m_SubmittedDate;
 
         public int PerformedBy
         {
