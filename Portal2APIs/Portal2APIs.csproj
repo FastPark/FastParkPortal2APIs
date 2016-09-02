@@ -97,6 +97,7 @@
     <Compile Include="Controllers\CardDistHistorysController.cs" />
     <Compile Include="Controllers\CardDistInventorysController.cs" />
     <Compile Include="Controllers\EmailsController.cs" />
+    <Compile Include="Controllers\ManualEditsController.cs" />
     <Compile Include="Controllers\MarketingRepsController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -107,6 +108,7 @@
     <Compile Include="Models\CardDistHistory.cs" />
     <Compile Include="Models\CardDistInventory.cs" />
     <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\ManualEdit.cs" />
     <Compile Include="Models\MarketingRep.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
