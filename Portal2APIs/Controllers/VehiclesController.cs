@@ -12,15 +12,15 @@ namespace Portal2APIs.Controllers
     public class VehiclesController : ApiController
     {
         [HttpGet()]
-        [Route("api/Vehicles/Get")]
-        public List<Vehicle> Get()
+        [Route("api/Vehicles/GetVehiclesByLocation/{id}")]
+        public List<Vehicle> GetVehiclesByLocation(int Id)
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
 
             try
             {
-                strSQL = "Select VehicleId, VehicleNumber, CurrentLocationId from Vehicles.dbo.Vehicles";
+                strSQL = "Select VehicleId, VehicleNumber from Vehicles.dbo.Vehicles where CurrentLocationId = " + Id;
                 List<Vehicle> list = new List<Vehicle>();
                 thisADO.returnList(strSQL, false, ref list);
 

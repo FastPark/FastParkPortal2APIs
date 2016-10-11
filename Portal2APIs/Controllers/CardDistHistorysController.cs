@@ -20,9 +20,20 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " + 
+                if (id == -1)
+                {
+                    strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
+                          "Left Outer Join Location l on cdh.LocationId = l.LocationID " +
+                          "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
+                          "order by endingNumber desc ";
+                }
+                else
+                {
+                    strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " +
                           "inner Join Location l on cdh.LocationId = l.LocationID " +
                           "where cdh.CardHistoryId=" + id + "";
+                }
+                
                 List<CardDistHistory> list = new List<CardDistHistory>();
                 thisADO.returnList(strSQL, false, ref list);
 
@@ -88,7 +99,7 @@ namespace Portal2APIs.Controllers
                                                         "OrderConfirmationDate, DistributionPoint, BusOrRepID, Shift, RecordDate, RecordedBy, LocationId) " +
                                                         "values ('" + CDH.ActivityDate + "', " + CDH.ActivityId + ", " + CDH.StartingNumber + ", " +
                                                         CDH.EndingNumber + ", " + CDH.NumberOfCards + ", '" + CDH.OrderConfirmationDate + "', '" +
-                                                        CDH.DistributionPoint + "', " + CDH.BusOrRepId + ", '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "', " + CDH.LocationId + ")";
+                                                        CDH.DistributionPoint + "', '" + CDH.BusOrRepId + "', '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "', " + CDH.LocationId + ")";
 
                 BatchNumber = thisADO.updateOrInsertWithId(strSQL, false);
 
@@ -142,7 +153,66 @@ namespace Portal2APIs.Controllers
         }
 
 
+        [HttpGet]
+        [Route("api/CardDistHistorys/ConfirmOrder/{id}")]
+        public HttpResponseMessage ConfirmOrder(int Id)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
 
+            try
+            {
+                strSQL = "update CardDistributionHistory set OrderConfirmationDate = getdate() where CardHistoryId = " + Id;
+
+                thisADO.updateOrInsert(strSQL, false);
+
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "Success");
+                return response;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/CardDistHistorys/FindCardHistory/{id}")]
+        public List<CardDistHistory> FindCardHistory(int id)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+
+                strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
+                        "Left Outer Join Location l on cdh.LocationId = l.LocationID " +
+                        "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
+                        "Where StartingNumber < " + id + " " +
+                        "And EndingNumber > " + id + " " +
+                        "order by endingNumber desc ";
+               
+
+                List<CardDistHistory> list = new List<CardDistHistory>();
+                thisADO.returnList(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
 
     }
 }

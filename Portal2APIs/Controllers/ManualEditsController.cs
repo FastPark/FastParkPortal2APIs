@@ -7,7 +7,6 @@ using Portal2APIs.Common;
 using System.Data.SqlClient;
 using Portal2APIs.Models;
 
-
 namespace Portal2APIs.Controllers
 {
     public class ManualEditsController : ApiController
@@ -102,7 +101,7 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpDelete]
-        [Route("api/ManualEdits/DeleteManualEditByID/")]
+        [Route("api/ManualEdits/DeleteManualEditByID/{id}")]
         public void DeleteManualEditByID(int id)
         {
             clsADO thisADO = new clsADO();
@@ -113,6 +112,9 @@ namespace Portal2APIs.Controllers
             thisADO.updateOrInsert(strSQL, true);
             
         }
+
+        
+
     }
 }
 

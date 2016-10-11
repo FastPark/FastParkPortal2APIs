@@ -64,35 +64,30 @@ namespace Portal2APIs.Common
 
         public void updateOrInsert(string strSQL, bool Max)
         {
-            try
+
+            string conn = "";
+
+            if (Max == true)
             {
-                string conn = "";
+                conn = getMaxConnectionString();
+            }
+            else
+            {
+                conn = getLocalConnectionString();
+            }
 
-                if (Max == true)
+            using (SqlConnection con = new SqlConnection(conn))
+            {
+                using (SqlCommand cmd = new SqlCommand())
                 {
-                    conn = getMaxConnectionString();
-                }
-                else
-                {
-                    conn = getLocalConnectionString();
-                }
-
-                using (SqlConnection con = new SqlConnection(conn))
-                {
-                    using (SqlCommand cmd = new SqlCommand())
-                    {
-                        cmd.CommandText = strSQL;
-                        cmd.Connection = con;
-                        con.Open();
-                        cmd.ExecuteNonQuery();
-                        con.Close();
-                    }
+                    cmd.CommandText = strSQL;
+                    cmd.Connection = con;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(Convert.ToString(ex));
-            }
+          
         }
 
         public int updateOrInsertWithId(string strSQL, bool Max)

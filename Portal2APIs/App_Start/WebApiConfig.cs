@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace Portal2APIs
 {
@@ -19,6 +20,9 @@ namespace Portal2APIs
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            var corsAttr = new EnableCorsAttribute("http://example.com", "*", "*");
+            config.EnableCors(corsAttr);
         }
     }
 }

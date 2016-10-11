@@ -31,5 +31,19 @@ namespace Portal2APIs.Models
             set { m_EmailAddress = value; }
         }
         private string m_EmailAddress;
+
+        public string RepName
+        {
+            get { return m_RepName; }
+            set { m_RepName = value; }
+        }
+        private string m_RepName;
+
+        public string RepID
+        {
+            get { return m_RepID; }
+            set { m_RepID = value; }
+        }
+        private string m_RepID;
     }
 }

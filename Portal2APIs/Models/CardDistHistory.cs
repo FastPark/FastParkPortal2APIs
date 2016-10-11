@@ -63,12 +63,12 @@ namespace Portal2APIs.Models
         }
         private string m_DistributionPoint;
 
-        public int BusOrRepId
+        public string BusOrRepId
         {
             get { return m_BusOrRepId; }
             set { m_BusOrRepId = value; }
         }
-        private int m_BusOrRepId;
+        private string m_BusOrRepId;
 
         public string Shift
         {
@@ -113,7 +113,8 @@ namespace Portal2APIs.Models
             get { return m_CardDistributionActivityDescription; }
             set { m_CardDistributionActivityDescription = value; }
         }
-        private String m_CardDistributionActivityDescription; 
+        private String m_CardDistributionActivityDescription;
+
 
     }
 }

@@ -13,7 +13,7 @@ namespace Portal2APIs.Controllers
     {
         [HttpGet]
         [Route("api/CardDistInventorys/GetLastCardOrdered/")]
-        public List<CardDistInventory> Get()
+        public List<CardDistInventory> GetLastCardOrdered()
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
