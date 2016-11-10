@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select (FirstName + ' ' + LastName) as RepName, RepID, EmailAddress from dbo.vMarketingReps";
                 List<MarketingRep> list = new List<MarketingRep>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list; ;
             }

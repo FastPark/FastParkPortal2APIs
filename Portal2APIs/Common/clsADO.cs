@@ -129,7 +129,7 @@ namespace Portal2APIs.Common
             }
         }
 
-        public object returnSingleValue(ref string strSQL, bool Max, bool isString)
+        public object returnSingleValue(string strSQL, bool Max, bool isString)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace Portal2APIs.Common
 
         }
 
-        public void returnList<T>(string strSQL, bool Max,ref List<T> list)
+        public void returnSingleValue<T>(string strSQL, bool Max,ref List<T> list)
         {
            
             string conn = "";

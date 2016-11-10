@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select * from dbo.CardDistributionActivityType where CardDistributionActivityTypeID=" + id + "";
                 List<CardDistActivityType> list = new List<CardDistActivityType>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list; ;
             }

@@ -13,11 +13,12 @@ namespace Portal2APIs.Controllers
     {
         [HttpPost]
         [Route("api/ProcessPendingManualEditsController/SubmitManualEdits")]
-        public HttpResponseMessage SubmitManualEdits(ProcessPendingManualEdit PPME)
+        public string SubmitManualEdits(ProcessPendingManualEdit PPME)
         {
             var strSQLInsertNew = "";
             var strSQLPendingDelete = "";
             var thisADO = new clsADO();
+            var arrayCount = 0;
 
             try
             {
@@ -25,23 +26,29 @@ namespace Portal2APIs.Controllers
 
                 var textArray = thisList.Split(',');  // now you have an array 
 
+                var submitUser = textArray[0];
+
                 foreach (string thisManualEditId in textArray)
                 {
-                    var tempUser = "BA1B0B96-30D3-45AB-815D-3527F72B6442";
 
+                    if (arrayCount > 0)
+                    {
 
-                    strSQLInsertNew = "	INSERT INTO ManualEdits (MemberId, LocationId, ManualEditDate, SubmittedDate, PerformedByUserId, SubmittedByUserId, ExplanationId, PointsChanged, Notes, CompanyId) " +
-                                        "SELECT MemberId, LocationId, DateOfRequest, GETDATE(), AddedByUserId, '" + tempUser + "', ExplanationId, Points, Notes, CompanyId " +
-                                        "FROM ManualEditHoldingArea " +
-                                        "WHERE ManualEditId = " + thisManualEditId;
-                    thisADO.updateOrInsert(strSQLInsertNew, true);
+                        strSQLInsertNew = "	INSERT INTO ManualEdits (MemberId, LocationId, ManualEditDate, SubmittedDate, PerformedByUserId, SubmittedByUserId, ExplanationId, PointsChanged, Notes, CompanyId) " +
+                                            "SELECT MemberId, LocationId, DateOfRequest, GETDATE(), AddedByUserId, '" + submitUser + "', ExplanationId, Points, Notes, CompanyId " +
+                                            "FROM ManualEditHoldingArea " +
+                                            "WHERE ManualEditId = " + thisManualEditId;
+                        thisADO.updateOrInsert(strSQLInsertNew, true);
 
-                    strSQLPendingDelete = "Delete from ManualEditHoldingArea where ManualEditId = " + thisManualEditId;
-                    thisADO.updateOrInsert(strSQLPendingDelete, true);
+                        strSQLPendingDelete = "Delete from ManualEditHoldingArea where ManualEditId = " + thisManualEditId;
+                        thisADO.updateOrInsert(strSQLPendingDelete, true);
+                    }
+
+                    arrayCount = arrayCount + 1;
                 }
 
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK, "Success");
-                return response;
+                
+                return "Success!";
 
             }
             catch (Exception ex)

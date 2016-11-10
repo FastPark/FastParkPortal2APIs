@@ -35,7 +35,7 @@ namespace Portal2APIs.Controllers
                 }
                 
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }
@@ -66,7 +66,7 @@ namespace Portal2APIs.Controllers
                           "where StartingNumber >= " + startingNumber + " and EndingNumber <= " + endingNumber;
 
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }
@@ -137,7 +137,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select max(EndingNumber) as maxShipped from CardDistributionHistory where ActivityId = 2 ";
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }
@@ -199,7 +199,7 @@ namespace Portal2APIs.Controllers
                
 
                 List<CardDistHistory> list = new List<CardDistHistory>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }

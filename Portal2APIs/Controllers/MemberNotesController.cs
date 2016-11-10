@@ -24,7 +24,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select * from dbo.Notes where MemberId=" + id + "";
                 List<MemberNote> list = new List<MemberNote>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;
             }
@@ -40,7 +40,7 @@ namespace Portal2APIs.Controllers
         }
         [HttpPost]
         [Route("api/MemberNotes/AddNote/")]
-        public HttpResponseMessage AddNote(MemberNote note)
+        public string AddNote(MemberNote note)
         {
             try
             {
@@ -52,12 +52,7 @@ namespace Portal2APIs.Controllers
 
                 thisADO.updateOrInsert(strSQL, true);
 
-                var response = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("Success", System.Text.Encoding.UTF8, "text/plain"),
-                    StatusCode = HttpStatusCode.OK
-                };
-                return response;
+                return "Success";
             }
             catch (Exception ex)
             {

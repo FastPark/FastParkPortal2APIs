@@ -100,32 +100,42 @@
     <Compile Include="Common\clsCommon.cs" />
     <Compile Include="Common\IENumerableExtensions.cs" />
     <Compile Include="Common\Reflection.cs" />
+    <Compile Include="Controllers\BoothCardCountsController.cs" />
     <Compile Include="Controllers\CardDistActivityTypesController.cs" />
     <Compile Include="Controllers\CardDistHistoryNotesController.cs" />
     <Compile Include="Controllers\CardDistHistorysController.cs" />
     <Compile Include="Controllers\CardDistInventorysController.cs" />
     <Compile Include="Controllers\CompanyChecksController.cs" />
+    <Compile Include="Controllers\CompanyDropDownsController.cs" />
     <Compile Include="Controllers\EmailsController.cs" />
+    <Compile Include="Controllers\LocatonsController.cs" />
     <Compile Include="Controllers\ManualEditsController.cs" />
     <Compile Include="Controllers\MarketingRepsController.cs" />
     <Compile Include="Controllers\MemberNotesController.cs" />
     <Compile Include="Controllers\PendingManualEditsController.cs" />
     <Compile Include="Controllers\ProcessPendingManualEditsController.cs" />
+    <Compile Include="Controllers\RatesController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BoothCardCount.cs" />
     <Compile Include="Models\CardDistActivityType.cs" />
     <Compile Include="Models\CardDistHistoryNote.cs" />
     <Compile Include="Models\CardDistHistory.cs" />
     <Compile Include="Models\CardDistInventory.cs" />
     <Compile Include="Models\CompanyCheck.cs" />
+    <Compile Include="Models\CompanyDropDown.cs" />
     <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\Location.cs" />
     <Compile Include="Models\ManualEdit.cs" />
+    <Compile Include="Models\ManualEditPending.cs" />
+    <Compile Include="Models\ManualEditType.cs" />
     <Compile Include="Models\MarketingRep.cs" />
     <Compile Include="Models\MemberNote.cs" />
     <Compile Include="Models\PendingManualEdit.cs" />
     <Compile Include="Models\ProcessPendingManualEdit.cs" />
+    <Compile Include="Models\Rate.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -9,11 +9,11 @@ using Portal2APIs.Models;
 
 namespace Portal2APIs.Controllers
 {
-    public class CompanyChecksController : ApiController
+    public class RatesController : ApiController
     {
-        [HttpGet]
-        [Route("api/CompanyChecks/CompanyCheckByLocationId/{id}")]
-        public List<CompanyCheck> CompanyCheckByLocationId(int id)
+        [HttpPost]
+        [Route("api/Rates/GetRateByLocationAndCompanyId/")]
+        public String LocationByLocationId(Rate thisRate)
         {
             try
             {
@@ -21,13 +21,11 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select ac.ArticleCheckId, ac.ArticleNumber, ac.LocationId, ac.CompanyName, ac.EmailDomain, ac.CompanyId, ac.EnteredByUserId, ac.DateEntered, l.NameOfLocation from dbo.ArticleCheck ac " +
-                    "Inner Join Location l on ac.LocationId = l.LocationId " +
-                    "where ac.LocationId=" + id + "";
-                List<CompanyCheck> list = new List<CompanyCheck>();
-                thisADO.returnSingleValue(strSQL, false, ref list);
+                strSQL = "Select dbo.GetlocationRateFunction (" + thisRate.CompanyId + ", " + thisRate.LocationId + ")";
+                
+                string thisReturn = Convert.ToString(thisADO.returnSingleValue(strSQL,false, true));
 
-                return list;
+                return thisReturn;
             }
             catch (Exception ex)
             {
@@ -38,7 +36,6 @@ namespace Portal2APIs.Controllers
                 };
                 throw new HttpResponseException(response);
             }
-
         }
     }
 }

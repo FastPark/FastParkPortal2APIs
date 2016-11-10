@@ -5,15 +5,16 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Portal2APIs.Common;
+using System.Data.SqlClient;
 using Portal2APIs.Models;
 
 namespace Portal2APIs.Controllers
 {
-    public class CompanyChecksController : ApiController
+    public class CompanyDropDownsController : ApiController
     {
         [HttpGet]
-        [Route("api/CompanyChecks/CompanyCheckByLocationId/{id}")]
-        public List<CompanyCheck> CompanyCheckByLocationId(int id)
+        [Route("api/CompanyDropDowns/GetCompanies/")]
+        public List<CompanyDropDown> GetCompanies()
         {
             try
             {
@@ -21,11 +22,9 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select ac.ArticleCheckId, ac.ArticleNumber, ac.LocationId, ac.CompanyName, ac.EmailDomain, ac.CompanyId, ac.EnteredByUserId, ac.DateEntered, l.NameOfLocation from dbo.ArticleCheck ac " +
-                    "Inner Join Location l on ac.LocationId = l.LocationId " +
-                    "where ac.LocationId=" + id + "";
-                List<CompanyCheck> list = new List<CompanyCheck>();
-                thisADO.returnSingleValue(strSQL, false, ref list);
+                strSQL = "Select id, name from dbo.companies";
+                List<CompanyDropDown> list = new List<CompanyDropDown>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;
             }

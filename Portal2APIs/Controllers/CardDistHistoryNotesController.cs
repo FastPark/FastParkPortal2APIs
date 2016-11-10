@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select * from dbo.CardDistributionHistoryNote where CardHistoryID = " + id;
                 List<CardDistHistoryNote> list = new List<CardDistHistoryNote>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }

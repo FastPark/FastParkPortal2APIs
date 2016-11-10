@@ -42,19 +42,19 @@ namespace Portal2APIs.Models
         }
         private DateTime m_SubmittedDate;
 
-        public int PerformedBy
+        public string PerformedBy
         {
             get { return m_PerformedBy; }
             set { m_PerformedBy = value; }
         }
-        private int m_PerformedBy;
+        private string m_PerformedBy;
 
-        public int SubmittedBy
+        public string SubmittedBy
         {
             get { return m_SubmittedBy; }
             set { m_SubmittedBy = value; }
         }
-        private int m_SubmittedBy;
+        private string m_SubmittedBy;
 
         public int ExplanationId
         {
@@ -111,6 +111,7 @@ namespace Portal2APIs.Models
             set { m_SubmittedByUserId = value; }
         }
         private Guid m_SubmittedByUserId;
+
 
     }
 }

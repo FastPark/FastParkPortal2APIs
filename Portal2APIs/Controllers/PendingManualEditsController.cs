@@ -28,7 +28,7 @@ namespace Portal2APIs.Controllers
                          "and mi.LocationId <> 3 " +
                          "and pme.LocationId=" + id + "";
                 List<PendingManualEdit> list = new List<PendingManualEdit>();
-                thisADO.returnList(strSQL, true, ref list);
+                thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;
             }

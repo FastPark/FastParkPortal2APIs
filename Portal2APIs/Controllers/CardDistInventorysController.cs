@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "select MAX(CardFPNumber) as orderedMax from CardDistributionInventory where CardActive = 'True'";
                 List<CardDistInventory> list = new List<CardDistInventory>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }

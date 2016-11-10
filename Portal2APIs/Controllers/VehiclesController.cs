@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
             {
                 strSQL = "Select VehicleId, VehicleNumber from Vehicles.dbo.Vehicles where CurrentLocationId = " + Id;
                 List<Vehicle> list = new List<Vehicle>();
-                thisADO.returnList(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list; ;
             }
