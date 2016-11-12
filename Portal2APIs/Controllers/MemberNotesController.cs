@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select * from dbo.Notes where MemberId=" + id + "";
+                strSQL = "Select * from dbo.MemberNotes where MemberId=" + id + "";
                 List<MemberNote> list = new List<MemberNote>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
@@ -47,7 +47,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
                 string strSQL = null;
 
-                strSQL = "INSERT INTO dbo.Notes (MemberID,Note,Date,SubmittedBy) " +
+                strSQL = "INSERT INTO dbo.MemberNotes (MemberID,Note,Date,SubmittedBy) " +
                          "Values (" + note.MemberId + ", '" + note.Note + "', '" + note.Date + "', '" + note.SubmittedBy + "')";
 
                 thisADO.updateOrInsert(strSQL, true);
@@ -72,7 +72,7 @@ namespace Portal2APIs.Controllers
             clsADO thisADO = new clsADO();
             string strSQL = null;
 
-            strSQL = "Update dbo.Notes set MemberID = " + note.MemberId + ", Note = '" + note.Note + "', Date = '" + note.Date + "', SubmittedBy = '" + note.SubmittedBy + "' " +
+            strSQL = "Update dbo.MemberNotes set MemberID = " + note.MemberId + ", Note = '" + note.Note + "', Date = '" + note.Date + "', SubmittedBy = '" + note.SubmittedBy + "' " +
                     " Where NotesId = " + note.NotesId;
 
             thisADO.updateOrInsert(strSQL, true);
@@ -85,7 +85,7 @@ namespace Portal2APIs.Controllers
             clsADO thisADO = new clsADO();
             string strSQL = null;
 
-            strSQL = "delete from dbo.Notes where NotesId=" + id;
+            strSQL = "delete from dbo.MemberNotes where NotesId=" + id;
 
             thisADO.updateOrInsert(strSQL, true);
 

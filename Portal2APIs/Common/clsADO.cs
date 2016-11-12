@@ -10,7 +10,7 @@ namespace Portal2APIs.Common
 
     public class clsADO
     {
-        public string getMaxConnectionString()
+        public string getLocatConnectionString()
         {
             try
             {
@@ -69,7 +69,7 @@ namespace Portal2APIs.Common
 
             if (Max == true)
             {
-                conn = getMaxConnectionString();
+                conn = getLocatConnectionString();
             }
             else
             {
@@ -102,7 +102,7 @@ namespace Portal2APIs.Common
 
                 if (Max == true)
                 {
-                    conn = getMaxConnectionString();
+                    conn = getLocatConnectionString();
                 }
                 else
                 {
@@ -138,7 +138,7 @@ namespace Portal2APIs.Common
 
                 if (Max == true)
                 {
-                    conn = getMaxConnectionString();
+                    conn = getLocatConnectionString();
                 }
                 else
                 {
@@ -186,7 +186,7 @@ namespace Portal2APIs.Common
 
             if (Max == true)
             {
-                conn = getMaxConnectionString();
+                conn = getLocatConnectionString();
             }
             else
             {
