@@ -23,14 +23,14 @@ namespace Portal2APIs.Controllers
                 if (id == -1)
                 {
                     strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
-                          "Left Outer Join Location l on cdh.LocationId = l.LocationID " +
+                          "Left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
                           "order by endingNumber desc ";
                 }
                 else
                 {
                     strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " +
-                          "inner Join Location l on cdh.LocationId = l.LocationID " +
+                          "inner Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "where cdh.CardHistoryId=" + id + "";
                 }
                 
@@ -61,7 +61,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription " +
                           "from CardDistributionHistory cdh " +
-                          "left Outer Join Location l on cdh.LocationId = l.LocationID " +
+                          "left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
                           "where StartingNumber >= " + startingNumber + " and EndingNumber <= " + endingNumber;
 
@@ -152,6 +152,32 @@ namespace Portal2APIs.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/CardDistHistorys/GetHighestCardNumberOrderReceived/")]
+        public List<CardDistHistory> GetHighestCardNumberOrderReceived()
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select max(EndingNumber) as maxShipped from CardDistributionHistory where ActivityId = 7 ";
+                List<CardDistHistory> list = new List<CardDistHistory>();
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
 
         [HttpGet]
         [Route("api/CardDistHistorys/ConfirmOrder/{id}")]
@@ -191,7 +217,7 @@ namespace Portal2APIs.Controllers
             {
 
                 strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
-                        "Left Outer Join Location l on cdh.LocationId = l.LocationID " +
+                        "Left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                         "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
                         "Where StartingNumber < " + id + " " +
                         "And EndingNumber > " + id + " " +
