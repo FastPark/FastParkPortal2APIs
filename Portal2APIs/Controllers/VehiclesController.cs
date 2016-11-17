@@ -20,9 +20,10 @@ namespace Portal2APIs.Controllers
 
             try
             {
+
                 strSQL = "Select VehicleId, VehicleNumber from Vehicles.dbo.Vehicles where CurrentLocationId = " + Id;
                 List<Vehicle> list = new List<Vehicle>();
-                thisADO.returnSingleValue(strSQL, false, ref list);
+                thisADO.returnSingleValueForPark09(strSQL, ref list);
 
                 return list; ;
             }

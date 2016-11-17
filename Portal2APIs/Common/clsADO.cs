@@ -10,7 +10,7 @@ namespace Portal2APIs.Common
 
     public class clsADO
     {
-        public string getLocatConnectionString()
+        public string getRemoteConnectionString()
         {
             try
             {
@@ -62,6 +62,32 @@ namespace Portal2APIs.Common
 
         }
 
+        public string getPark09ConnectionString()
+        {
+            try
+            {
+                System.Configuration.Configuration rootWebConfig =
+                System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/Portal2API");
+                System.Configuration.ConnectionStringSettings connString;
+                if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
+                {
+                    connString =
+                        rootWebConfig.ConnectionStrings.ConnectionStrings["Park09ConnectionString"];
+                    return Convert.ToString(connString);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(Convert.ToString(ex));
+                return "";
+            }
+
+        }
+
         public void updateOrInsert(string strSQL, bool Max)
         {
 
@@ -69,7 +95,7 @@ namespace Portal2APIs.Common
 
             if (Max == true)
             {
-                conn = getLocatConnectionString();
+                conn = getRemoteConnectionString();
             }
             else
             {
@@ -96,37 +122,31 @@ namespace Portal2APIs.Common
 
             strSQL = strSQL + ";Select Scope_Identity()";
 
-            try
-            {
-                string conn = "";
 
-                if (Max == true)
-                {
-                    conn = getLocatConnectionString();
-                }
-                else
-                {
-                    conn = getLocalConnectionString();
-                }
+            string conn = "";
 
-                using (SqlConnection con = new SqlConnection(conn))
-                {
-                    using (SqlCommand cmd = new SqlCommand())
-                    {
-                        cmd.CommandText = strSQL;
-                        cmd.Connection = con;
-                        con.Open();
-                        ID = Convert.ToInt32(cmd.ExecuteScalar());
-                        con.Close();
-                    }
-                }
-                return ID;
-            }
-            catch (Exception ex)
+            if (Max == true)
             {
-                Console.WriteLine(Convert.ToString(ex));
-                return 0;
+                conn = getRemoteConnectionString();
             }
+            else
+            {
+                conn = getLocalConnectionString();
+            }
+
+            using (SqlConnection con = new SqlConnection(conn))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandText = strSQL;
+                    cmd.Connection = con;
+                    con.Open();
+                    ID = Convert.ToInt32(cmd.ExecuteScalar());
+                    con.Close();
+                }
+            }
+            return ID;
+            
         }
 
         public object returnSingleValue(string strSQL, bool Max, bool isString)
@@ -138,7 +158,7 @@ namespace Portal2APIs.Common
 
                 if (Max == true)
                 {
-                    conn = getLocatConnectionString();
+                    conn = getRemoteConnectionString();
                 }
                 else
                 {
@@ -186,7 +206,7 @@ namespace Portal2APIs.Common
 
             if (Max == true)
             {
-                conn = getLocatConnectionString();
+                conn = getRemoteConnectionString();
             }
             else
             {
@@ -208,6 +228,27 @@ namespace Portal2APIs.Common
             }
         }
 
+        public void returnSingleValueForPark09<T>(string strSQL, ref List<T> list)
+        {
+
+            string conn = "";
+
+            conn = getPark09ConnectionString();
+
+
+            using (SqlConnection con = new SqlConnection(conn))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandText = strSQL;
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                        list = new List<T>().FromDataReader(sdr).ToList();
+                    con.Close();
+                }
+            }
+        }
 
 
     }

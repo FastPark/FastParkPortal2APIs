@@ -21,12 +21,10 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select mi.FPNumber, mi.FullName, met.Explanation, pme.* from dbo.ManualEditHoldingArea pme " +
-                         "Inner Join MemberInformation mi on pme.MemberID = mi.MemberID " +
+                strSQL = "Select mi.FirstName + ' ' + mi.LastName as FullName, met.Explanation, pme.* from dbo.ManualEditHoldingArea pme " +
+                         "Inner Join MemberInformationMain mi on pme.MemberID = mi.MemberID " +
                          "Inner Join ManualEditTypes met on pme.ExplanationId = met.ExplanationId " +
-                         "Where mi.LocationId <> 5 " +
-                         "and mi.LocationId <> 3 " +
-                         "and pme.LocationId=" + id + "";
+                         "Where pme.LocationId=" + id + "";
                 List<PendingManualEdit> list = new List<PendingManualEdit>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 

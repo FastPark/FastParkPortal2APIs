@@ -96,10 +96,10 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "insert into CardDistributionHistory (ActivityDate, ActivityId, StartingNumber, EndingNumber, NumberOfCards, " +
-                                                        "OrderConfirmationDate, DistributionPoint, BusOrRepID, Shift, RecordDate, RecordedBy, LocationId) " +
+                                                        "OrderConfirmationDate, DistributionPoint, BusOrRepID, Shift, RecordDate, RecordedBy, LocationId, CreateUserId) " +
                                                         "values ('" + CDH.ActivityDate + "', " + CDH.ActivityId + ", " + CDH.StartingNumber + ", " +
                                                         CDH.EndingNumber + ", " + CDH.NumberOfCards + ", '" + CDH.OrderConfirmationDate + "', '" +
-                                                        CDH.DistributionPoint + "', '" + CDH.BusOrRepId + "', '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "', " + CDH.LocationId + ")";
+                                                        CDH.DistributionPoint + "', '" + CDH.BusOrRepId + "', '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "', " + CDH.LocationId + ", -1)";
 
                 BatchNumber = thisADO.updateOrInsertWithId(strSQL, false);
 

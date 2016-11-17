@@ -47,9 +47,9 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "insert into BoothCardCount (Shift1, Shift2, Shift3, Total, BoothCardCountDate, LocationId) " +
+                strSQL = "insert into BoothCardCount (Shift1, Shift2, Shift3, Total, BoothCardCountDate, LocationId, CreateUserId) " +
                                                         "values (" + BCC.Shift1 + ", " + BCC.Shift2 + ", " + BCC.Shift3 + ", " +
-                                                        BCC.Total + ", '" + BCC.BoothCardCountDate + "', " + BCC.LocationId + ")";
+                                                        BCC.Total + ", '" + BCC.BoothCardCountDate + "', " + BCC.LocationId + ", -1)";
 
                 thisADO.updateOrInsertWithId(strSQL, false);
                 

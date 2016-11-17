@@ -23,7 +23,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select LocationId, NameOfLocation from dbo.LocationDetails where LocationId=" + id + "";
                 List<Location> list = new List<Location>();
-                thisADO.returnSingleValue(strSQL, true, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }
@@ -50,7 +50,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select LocationId, NameOfLocation from dbo.LocationDetails where LocationId in (" + ids + ")";
                 List<Location> list = new List<Location>();
-                thisADO.returnSingleValue(strSQL, true, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }
@@ -77,7 +77,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select LocationId, NameOfLocation from dbo.LocationDetails";
                 List<Location> list = new List<Location>();
-                thisADO.returnSingleValue(strSQL, true, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }

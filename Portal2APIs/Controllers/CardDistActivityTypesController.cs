@@ -44,8 +44,8 @@ namespace Portal2APIs.Controllers
             clsADO thisADO = new clsADO();
             string strSQL = null;
 
-            strSQL = "insert into CardDistributionActivityType (CardDistributionActivityDescription, CardDistributionActivityRole) " +
-                                                                "values ('" + CDAT.CardDistributionActivityDescription + "', '" + CDAT.CardDistributionActivityRole + "')";
+            strSQL = "insert into CardDistributionActivityType (CardDistributionActivityDescription, CardDistributionActivityRole, CreateUserId) " +
+                                                                "values ('" + CDAT.CardDistributionActivityDescription + "', '" + CDAT.CardDistributionActivityRole + "', -1)";
 
             thisADO.updateOrInsert(strSQL, false);
 

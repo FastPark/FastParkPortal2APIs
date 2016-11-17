@@ -23,7 +23,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select * from dbo.ManualEdits where ManualEditID=" + id + "";
                 List<ManualEdit> list = new List<ManualEdit>();
-                thisADO.returnSingleValue(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;
             }
@@ -51,7 +51,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select * from dbo.ManualEdits where MemberId=" + id + "";
                 List<ManualEdit> list = new List<ManualEdit>();
-                thisADO.returnSingleValue(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;
             }
@@ -86,10 +86,10 @@ namespace Portal2APIs.Controllers
                 string strSQL;
                 clsADO thisADO = new clsADO();
 
-                strSQL = "INSERT INTO FrequentParker08Max.dbo.ManualEditHoldingArea " +
-                         "(Points, LocationId, MemberID, DateOfRequest, CertificateNumber, ExplanationID, Delivery, Notes, AddedByUserId, CompanyId) " +
+                strSQL = "INSERT INTO ManualEditHoldingArea " +
+                         "(Points, LocationId, MemberID, DateOfRequest, CertificateNumber, ExplanationID, Delivery, Notes, AddedByUserId, CompanyId, CreateUserId) " +
                          "VALUES (" + man.PointsChanged + ", " + man.LocationId + ", " + man.MemberId + ", '" + man.ManualEditDate + "', '" + man.CertificateNumber + 
-                         "', " + man.ExplanationId + ", 0, '" + man.Notes + "', '" + man.SubmittedByUserId + "', " + man.CompanyId + ")";
+                         "', " + man.ExplanationId + ", 0, '" + man.Notes + "', '" + man.SubmittedByUserId + "', " + man.CompanyId + ", -1)";
 
 
                 //strSQL = "INSERT INTO dbo.ManualEdits (MemberID,LocationID,ManualEditDate,SubmittedDate,PerformedBy, " +
@@ -181,7 +181,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select Explanation, ExplanationID from dbo.ManualEditTypes where (TypeStatus='All' or TypeStatus='ActivityOnly')";
                 List<ManualEditType> list = new List<ManualEditType>();
-                thisADO.returnSingleValue(strSQL, false, ref list);
+                thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;
             }

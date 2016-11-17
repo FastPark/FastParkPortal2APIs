@@ -47,8 +47,8 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
                 string strSQL = null;
 
-                strSQL = "INSERT INTO dbo.MemberNotes (MemberID,Note,Date,SubmittedBy) " +
-                         "Values (" + note.MemberId + ", '" + note.Note + "', '" + note.Date + "', '" + note.SubmittedBy + "')";
+                strSQL = "INSERT INTO dbo.MemberNotes (MemberID,Note,Date,SubmittedBy, CreateUserId) " +
+                         "Values (" + note.MemberId + ", '" + note.Note + "', '" + note.Date + "', '" + note.SubmittedBy + "', -1)";
 
                 thisADO.updateOrInsert(strSQL, true);
 

@@ -44,8 +44,8 @@ namespace Portal2APIs.Controllers
             clsADO thisADO = new clsADO();
             string strSQL = null;
 
-            strSQL = "insert into CardDistributionHistoryNote (CardHistoryID, Note) " +
-                                                                "values ('" + CDHN.CardHistoryId + "', '" + CDHN.Note + "')";
+            strSQL = "insert into CardDistributionHistoryNote (CardHistoryID, Note, CreateUserId) " +
+                                                                "values ('" + CDHN.CardHistoryId + "', '" + CDHN.Note + "', -1)";
 
             thisADO.updateOrInsert(strSQL, false);
 
