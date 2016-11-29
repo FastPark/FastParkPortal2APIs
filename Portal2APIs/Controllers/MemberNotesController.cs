@@ -38,6 +38,7 @@ namespace Portal2APIs.Controllers
                 throw new HttpResponseException(response);
             }
         }
+
         [HttpPost]
         [Route("api/MemberNotes/AddNote/")]
         public string AddNote(MemberNote note)

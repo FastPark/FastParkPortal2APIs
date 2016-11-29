@@ -87,9 +87,9 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
                 strSQL = "INSERT INTO ManualEditHoldingArea " +
-                         "(Points, LocationId, MemberID, DateOfRequest, CertificateNumber, ExplanationID, Delivery, Notes, AddedByUserId, CompanyId, CreateUserId) " +
+                         "(Points, LocationId, MemberID, DateOfRequest, CertificateNumber, ExplanationID, Delivery, Notes, AddedByUserId, CompanyId, CreateUserId, CreateDatetime) " +
                          "VALUES (" + man.PointsChanged + ", " + man.LocationId + ", " + man.MemberId + ", '" + man.ManualEditDate + "', '" + man.CertificateNumber + 
-                         "', " + man.ExplanationId + ", 0, '" + man.Notes + "', '" + man.SubmittedByUserId + "', " + man.CompanyId + ", -1)";
+                         "', " + man.ExplanationId + ", 0, '" + man.Notes + "', '" + man.SubmittedByUserId + "', " + man.CompanyId + ", -1, '" + DateTime.Now + "')";
 
 
                 //strSQL = "INSERT INTO dbo.ManualEdits (MemberID,LocationID,ManualEditDate,SubmittedDate,PerformedBy, " +

@@ -62,7 +62,7 @@ namespace Portal2APIs.Common
 
         }
 
-        public string getPark09ConnectionString()
+        public string Park08ConnectionString()
         {
             try
             {
@@ -72,7 +72,7 @@ namespace Portal2APIs.Common
                 if (rootWebConfig.ConnectionStrings.ConnectionStrings.Count > 0)
                 {
                     connString =
-                        rootWebConfig.ConnectionStrings.ConnectionStrings["Park09ConnectionString"];
+                        rootWebConfig.ConnectionStrings.ConnectionStrings["Park08ConnectionString"];
                     return Convert.ToString(connString);
                 }
                 else
@@ -87,6 +87,7 @@ namespace Portal2APIs.Common
             }
 
         }
+
 
         public void updateOrInsert(string strSQL, bool Max)
         {
@@ -233,7 +234,7 @@ namespace Portal2APIs.Common
 
             string conn = "";
 
-            conn = getPark09ConnectionString();
+            conn = Park08ConnectionString();
 
 
             using (SqlConnection con = new SqlConnection(conn))
@@ -249,7 +250,6 @@ namespace Portal2APIs.Common
                 }
             }
         }
-
 
     }
 }

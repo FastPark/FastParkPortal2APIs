@@ -92,7 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Controllers\ManualEditsController.cs" />
     <Compile Include="Controllers\MarketingRepsController.cs" />
     <Compile Include="Controllers\MemberNotesController.cs" />
+    <Compile Include="Controllers\OldPortalGuidsController.cs" />
     <Compile Include="Controllers\PendingManualEditsController.cs" />
     <Compile Include="Controllers\ProcessPendingManualEditsController.cs" />
     <Compile Include="Controllers\RatesController.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="Models\ManualEditType.cs" />
     <Compile Include="Models\MarketingRep.cs" />
     <Compile Include="Models\MemberNote.cs" />
+    <Compile Include="Models\OldPortalGuid.cs" />
     <Compile Include="Models\PendingManualEdit.cs" />
     <Compile Include="Models\ProcessPendingManualEdit.cs" />
     <Compile Include="Models\Rate.cs" />
