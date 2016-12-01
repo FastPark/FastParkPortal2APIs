@@ -150,7 +150,9 @@ namespace Portal2APIs.Common
             
         }
 
-        public object returnSingleValue(string strSQL, bool Max, bool isString)
+
+        // used for running
+        public object selectConvertToString(string strSQL, bool Max, bool isString)
         {
             try
             {

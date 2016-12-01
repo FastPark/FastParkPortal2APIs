@@ -118,6 +118,7 @@
     <Compile Include="Controllers\PendingManualEditsController.cs" />
     <Compile Include="Controllers\ProcessPendingManualEditsController.cs" />
     <Compile Include="Controllers\RatesController.cs" />
+    <Compile Include="Controllers\RedemptionsController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -140,6 +141,7 @@
     <Compile Include="Models\PendingManualEdit.cs" />
     <Compile Include="Models\ProcessPendingManualEdit.cs" />
     <Compile Include="Models\Rate.cs" />
+    <Compile Include="Models\Redemption.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

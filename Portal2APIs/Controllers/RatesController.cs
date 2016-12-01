@@ -24,17 +24,17 @@ namespace Portal2APIs.Controllers
 
                 string strSQL = "Select dbo.GetlocationRateFunction (" + thisRate.CompanyId + ", " + thisRate.LocationId + ")";
                 
-                string rateNumber = Convert.ToString(thisADO.returnSingleValue(strSQL,false, true));
+                string rateNumber = Convert.ToString(thisADO.selectConvertToString(strSQL,true, true));
 
                 string rateSQL = "select RateAmount from RateAmounts where UpdateDatetime is null and LocationId = " + thisRate.LocationId + " and RateCode = " + rateNumber;
 
-                string rate = Convert.ToString(thisADO.returnSingleValue(rateSQL, false, true));
+                string rate = Convert.ToString(thisADO.selectConvertToString(rateSQL, true, true));
 
                 string homeLocationSQL = "select location_Id from MarketingFlyer.dbo.market_has_locations mhl " +
                                          "inner join MarketingFlyer.dbo.company_market_histories cmh on mhl.market_Id = cmh.market_Id " +
                                          "where cmh.company_id = " + thisRate.CompanyId;
 
-                string conn = thisADO.getLocalConnectionString();
+                string conn = thisADO.getRemoteConnectionString();
                 string locationList = "";
                 Boolean first = true;
 
