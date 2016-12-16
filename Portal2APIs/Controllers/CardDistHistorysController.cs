@@ -31,7 +31,7 @@ namespace Portal2APIs.Controllers
                 {
                     strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " +
                           "inner Join LocationDetails l on cdh.LocationId = l.LocationID " +
-                          "where cdh.CardHistoryId=" + id + "";
+                          "where cdh.LocationId=" + id + "";
                 }
                 
                 List<CardDistHistory> list = new List<CardDistHistory>();

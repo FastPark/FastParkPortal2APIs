@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select LocationId, NameOfLocation from dbo.LocationDetails where LocationId=" + id + "";
+                strSQL = "Select LocationId, ShortLocationName as NameOfLocation from dbo.LocationDetails where LocationId=" + id + "";
                 List<Location> list = new List<Location>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
@@ -48,7 +48,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select LocationId, NameOfLocation from dbo.LocationDetails where LocationId in (" + ids + ")";
+                strSQL = "Select LocationId, ShortLocationName as NameOfLocation from dbo.LocationDetails where LocationId in (" + ids + ")";
                 List<Location> list = new List<Location>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
@@ -75,7 +75,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select LocationId, NameOfLocation from dbo.LocationDetails";
+                strSQL = "Select LocationId, ShortLocationName as NameOfLocation from dbo.LocationDetails";
                 List<Location> list = new List<Location>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 

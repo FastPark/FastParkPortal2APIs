@@ -114,6 +114,7 @@
     <Compile Include="Controllers\ManualEditsController.cs" />
     <Compile Include="Controllers\MarketingRepsController.cs" />
     <Compile Include="Controllers\MemberNotesController.cs" />
+    <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\OldPortalGuidsController.cs" />
     <Compile Include="Controllers\PendingManualEditsController.cs" />
     <Compile Include="Controllers\ProcessPendingManualEditsController.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Models\ManualEditPending.cs" />
     <Compile Include="Models\ManualEditType.cs" />
     <Compile Include="Models\MarketingRep.cs" />
+    <Compile Include="Models\Member.cs" />
     <Compile Include="Models\MemberNote.cs" />
     <Compile Include="Models\OldPortalGuid.cs" />
     <Compile Include="Models\PendingManualEdit.cs" />

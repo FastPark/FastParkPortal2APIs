@@ -12,8 +12,8 @@ namespace Portal2APIs.Controllers
     public class BoothCardCountsController : ApiController
     {
         [HttpGet()]
-        [Route("api/BoothCardCounts/GetBoothCardCount")]
-        public List<BoothCardCount> GetBoothCardCount()
+        [Route("api/BoothCardCounts/GetBoothCardCount/{id}")]
+        public List<BoothCardCount> GetBoothCardCount(int id)
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "Select bcc.*, l.NameOfLocation from BoothCardCount bcc " +
-                         "Inner Join Location l on bcc.LocationId = l.LocationId";
+                         "Inner Join Location l on bcc.LocationId = l.LocationId where bcc.LocationId = " + id;
                 List<BoothCardCount> list = new List<BoothCardCount>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
