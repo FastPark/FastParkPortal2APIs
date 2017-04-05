@@ -87,9 +87,9 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
                 strSQL = "INSERT INTO ManualEditHoldingArea " +
-                         "(Points, LocationId, MemberID, DateOfRequest, CertificateNumber, ExplanationID, Delivery, Notes, AddedByUserId, CompanyId, CreateUserId, CreateDatetime) " +
+                         "(Points, LocationId, MemberID, DateOfRequest, CertificateNumber, ExplanationID, Delivery, Notes, UpdateExternalUserData, CompanyId, CreateUserId, CreateDatetime) " +
                          "VALUES (" + man.PointsChanged + ", " + man.LocationId + ", " + man.MemberId + ", '" + man.ManualEditDate + "', '" + man.CertificateNumber + 
-                         "', " + man.ExplanationId + ", 0, '" + man.Notes + "', '" + man.SubmittedByUserId + "', " + man.CompanyId + ", -1, '" + DateTime.Now + "')";
+                         "', " + man.ExplanationId + ", 0, '" + man.Notes + "', '" + man.PerformedBy + "', " + man.CompanyId + ", -1, '" + DateTime.Now + "')";
 
 
                 //strSQL = "INSERT INTO dbo.ManualEdits (MemberID,LocationID,ManualEditDate,SubmittedDate,PerformedBy, " +
@@ -179,7 +179,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select Explanation, ExplanationID from dbo.ManualEditTypes where (TypeStatus='All' or TypeStatus='ActivityOnly')";
+                strSQL = "Select Explanation, ExplanationID from dbo.ManualEditTypes where (TypeStatus='All' or TypeStatus='ActivityOnly') order by Explanation";
                 List<ManualEditType> list = new List<ManualEditType>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 

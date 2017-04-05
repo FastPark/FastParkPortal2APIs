@@ -44,30 +44,30 @@ namespace Portal2APIs.Models
         }
         private DateTime m_CreateDatetime;
 
-        public int CreateUserId
+        public Int64 CreateUserId
         {
             get { return m_CreateUserId; }
             set { m_CreateUserId = value; }
         }
-        private int m_CreateUserId;
+        private Int64 m_CreateUserId;
         public DateTime UpdateDatetime
         {
             get { return m_UpdateDatetime; }
             set { m_UpdateDatetime = value; }
         }
         private DateTime m_UpdateDatetime;
-        public int UpdateUserId
+        public Int64 UpdateUserId
         {
             get { return m_UpdateUserId; }
             set { m_UpdateUserId = value; }
         }
-        private int m_UpdateUserId;
-        public Boolean IsDeleted
+        private Int64 m_UpdateUserId;
+        public int IsDeleted
         {
             get { return m_IsDeleted; }
             set { m_IsDeleted = value; }
         }
-        private Boolean m_IsDeleted;
+        private int m_IsDeleted;
         public String CreateExternalUserData
         {
             get { return m_CreateExternalUserData; }

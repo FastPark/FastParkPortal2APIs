@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "Select bcc.*, l.NameOfLocation from BoothCardCount bcc " +
-                         "Inner Join Location l on bcc.LocationId = l.LocationId where bcc.LocationId = " + id;
+                         "Inner Join LocationDetails l on bcc.LocationId = l.LocationId where bcc.LocationId = " + id + " order by BoothCardCountDate desc";
                 List<BoothCardCount> list = new List<BoothCardCount>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 

@@ -24,7 +24,35 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select id, name from dbo.companies";
                 List<CompanyDropDown> list = new List<CompanyDropDown>();
-                thisADO.returnSingleValue(strSQL, true, ref list);
+                thisADO.returnSingleValueMarketing(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("api/CompanyDropDowns/GetCompanyName/{Id}")]
+        public List<CompanyDropDown> GetCompanyName(int Id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+
+                strSQL = "Select name from dbo.companies where ID = " + Id;
+                List<CompanyDropDown> list = new List<CompanyDropDown>();
+                thisADO.returnSingleValueMarketing(strSQL, true, ref list);
 
                 return list;
             }

@@ -34,7 +34,7 @@ namespace Portal2APIs.Controllers
                     if (arrayCount > 0)
                     {
 
-                        strSQLInsertNew = "	INSERT INTO ManualEdits (MemberId, LocationId, ManualEditDate, SubmittedDate, PerformedByUserId, SubmittedByUserId, ExplanationId, PointsChanged, Notes, CompanyId, CreateUserId) " +
+                        strSQLInsertNew = "	INSERT INTO ManualEdits (MemberId, LocationId, ManualEditDate, SubmittedDate, PerformedByUserId, UpdateExternalUserData, ExplanationId, PointsChanged, Notes, CompanyId, CreateUserId) " +
                                             "SELECT MemberId, LocationId, DateOfRequest, GETDATE(), AddedByUserId, '" + submitUser + "', ExplanationId, Points, Notes, CompanyId, -1 " +
                                             "FROM ManualEditHoldingArea " +
                                             "WHERE ManualEditId = " + thisManualEditId;

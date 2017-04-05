@@ -96,6 +96,12 @@ namespace Portal2APIs.Models
             set { m_LocationId = value; }
         }
         private int m_LocationId;
+        public string Notes
+        {
+            get { return m_Notes; }
+            set { m_Notes = value; }
+        }
+        private string m_Notes;
         public string NameOfLocation
         {
             get { return m_NameOfLocation; }
@@ -122,12 +128,12 @@ namespace Portal2APIs.Models
         }
         private DateTime m_CreateDatetime;
 
-        public int CreateUserId
+        public Int64 CreateUserId
         {
             get { return m_CreateUserId; }
             set { m_CreateUserId = value; }
         }
-        private int m_CreateUserId;
+        private Int64 m_CreateUserId;
         public DateTime UpdateDatetime
         {
             get { return m_UpdateDatetime; }
@@ -140,12 +146,12 @@ namespace Portal2APIs.Models
             set { m_UpdateUserId = value; }
         }
         private int m_UpdateUserId;
-        public Boolean IsDeleted
+        public byte IsDeleted
         {
             get { return m_IsDeleted; }
             set { m_IsDeleted = value; }
         }
-        private Boolean m_IsDeleted;
+        private byte m_IsDeleted;
         public String CreateExternalUserData
         {
             get { return m_CreateExternalUserData; }
@@ -159,5 +165,25 @@ namespace Portal2APIs.Models
         }
         private String m_UpdateExternalUserData;
 
+        public int JoinCardHistoryId
+        {
+            get { return m_JoinCardHistoryId; }
+            set { m_JoinCardHistoryId = value; }
+        }
+        private int m_JoinCardHistoryId;
+
+        public DateTime ReceivedDate
+        {
+            get { return m_ReceivedDate; }
+            set { m_ReceivedDate = value; }
+        }
+        private DateTime m_ReceivedDate;
+
+        public String ReceviedBy
+        {
+            get { return m_ReceviedBy; }
+            set { m_ReceviedBy = value; }
+        }
+        private String m_ReceviedBy;
     }
 }

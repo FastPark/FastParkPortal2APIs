@@ -24,6 +24,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select * from dbo.MemberNotes where MemberId=" + id + "";
                 List<MemberNote> list = new List<MemberNote>();
+
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;

@@ -13,21 +13,72 @@ namespace Portal2APIs.Controllers
     {
         [HttpGet]
         [Route("api/CardDistHistorys/Get/{id}")]
-        public List<CardDistHistory> Get(int id)
+        public List<CardDistHistory> Get(string id)
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
+            var thisLocationId = "";
+
+            if (Convert.ToString(id).IndexOf('_') > -1)
+            {
+                string[] thisVarialbe = Convert.ToString(id).Split('_');
+                id = thisVarialbe[0];
+                thisLocationId = thisVarialbe[1];
+            }
 
             try
             {
-                if (id == -1)
+                if (id == "-1")  //Get Order only
                 {
                     strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
                           "Left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
-                          "order by endingNumber desc ";
+                          "where ActivityId = 1 order by cdh.EndingNumber desc ";
                 }
-                else
+                else if (id == "-2")  // get orders for receiving
+                {
+                    strSQL = "Select * from ( " +
+                                "select cdh.*, cdh2.ActivityDate as ReceivedDate, cdh2.RecordedBy as ReceviedBy " +
+                                "from CardDistributionHistory cdh " +
+                                "Left Outer Join CardDistributionHistory cdh2 on cdh.CardHistoryId = cdh2.JoinCardHistoryId " +
+                            ") orderActivity " +
+                            "where ActivityId = 1 order by EndingNumber desc ";
+                }
+                else if (id == "-3")  //shipping only
+                {
+                    strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
+                          "Left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
+                          "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
+                          "where ActivityId = 2 order by cdh.EndingNumber desc "; 
+                }
+                else if (id == "-4")  // get orders for receiving
+                {
+                    strSQL = "Select * from ( " +
+                                "select cdh.*, cdh2.ActivityDate as ReceivedDate, cdh2.RecordedBy as ReceviedBy " +
+                                "from CardDistributionHistory cdh " +
+                                "Left Outer Join CardDistributionHistory cdh2 on cdh.CardHistoryId = cdh2.JoinCardHistoryId " +
+                            ") orderActivity " +
+                            "where ActivityId = 2 and LocationId = " + thisLocationId + " " +
+                            "order by EndingNumber desc ";
+                }
+                else if (id == "-5")  // get orders for receiving
+                {
+                    strSQL = "Select CardHistoryId, ActivityDate, ActivityId, StartingNumber, EndingNumber, NumberOfCards, JoinCardHistoryId, OrderConfirmationDate, DistributionPoint, BusOrRepId, " +
+                                "Shift, RecordDate, RecordedBy, LocationId, CreateDatetime, CreateUserId, UpdateDatetime, UpdateUserId, IsDeleted, CreateExternalUserData, " +
+                                "UpdateExternalUserData " +
+                            "from( " +
+                                "select *, CardHistoryId as OrderId " +
+                                "from CardDistributionHistory " +
+                                "where ActivityId = 7 " +
+                                "Union " +
+                                "select *, JoinCardHistoryId as OrderId " +
+                                "from CardDistributionHistory " +
+                                "where ActivityId = 4 " +
+                            ") dist " +
+                            "Where LocationId = " + thisLocationId + " " + 
+                            "Order by OrderId";
+                }
+                else // this is for locations
                 {
                     strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " +
                           "inner Join LocationDetails l on cdh.LocationId = l.LocationID " +
@@ -96,10 +147,10 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "insert into CardDistributionHistory (ActivityDate, ActivityId, StartingNumber, EndingNumber, NumberOfCards, " +
-                                                        "OrderConfirmationDate, DistributionPoint, BusOrRepID, Shift, RecordDate, RecordedBy, LocationId, CreateUserId) " +
+                                                        "OrderConfirmationDate, DistributionPoint, BusOrRepID, Shift, RecordDate, RecordedBy, LocationId, CreateUserId, CreateDatetime, JoinCardHistoryId) " +
                                                         "values ('" + CDH.ActivityDate + "', " + CDH.ActivityId + ", " + CDH.StartingNumber + ", " +
                                                         CDH.EndingNumber + ", " + CDH.NumberOfCards + ", '" + CDH.OrderConfirmationDate + "', '" +
-                                                        CDH.DistributionPoint + "', '" + CDH.BusOrRepId + "', '" + CDH.Shift + "', '" + CDH.RecordDate + "', '" + CDH.RecordedBy + "', " + CDH.LocationId + ", -1)";
+                                                        CDH.DistributionPoint + "', '" + CDH.BusOrRepId + "', '" + CDH.Shift + "', getDate(), '" + CDH.RecordedBy + "', " + CDH.LocationId + ", -1, getDate(), " + CDH.CardHistoryId + ")";
 
                 BatchNumber = thisADO.updateOrInsertWithId(strSQL, false);
 
@@ -161,7 +212,7 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Select max(EndingNumber) as maxShipped from CardDistributionHistory where ActivityId = 7 ";
+                strSQL = "Select max(EndingNumber) as maxShipped from CardDistributionHistory where ActivityId = 3 ";
                 List<CardDistHistory> list = new List<CardDistHistory>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
@@ -226,6 +277,46 @@ namespace Portal2APIs.Controllers
 
                 List<CardDistHistory> list = new List<CardDistHistory>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/CardDistHistorys/ConfirmNumbers/{id}")]
+        public List<CardDistHistory> ConfirmNumbers(string Id)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+            var thisHitoryType = "";
+            var thisCardNumber = "";
+
+            if (Id.IndexOf('_') > -1)
+            {
+                string[] thisVarialbe = Convert.ToString(Id).Split('_');
+                thisHitoryType = thisVarialbe[0];
+                thisCardNumber = thisVarialbe[1];
+            }
+
+            try
+            {
+                strSQL = "select * " +
+                        "from CardDistributionHistory " +
+                        "where " + thisCardNumber + " between StartingNumber and EndingNumber " +
+                        "and ActivityId = " + thisHitoryType;
+
+                List<CardDistHistory> list = new List<CardDistHistory>();
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
 
                 return list;
             }

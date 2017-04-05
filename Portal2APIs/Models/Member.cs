@@ -7,12 +7,12 @@ namespace Portal2APIs.Models
 {
     public class Member
     {
-        public int MemberId
+        public Int64 MemberId
         {
             get { return m_MemberId; }
             set { m_MemberId = value; }
         }
-        private int m_MemberId;
+        private Int64 m_MemberId;
 
         public string FPNumber
         {
@@ -52,7 +52,19 @@ namespace Portal2APIs.Models
             set { m_Company = value; }
         }
         private string m_Company;
+        public int CompanyId
+        {
+            get { return m_CompanyId; }
+            set { m_CompanyId = value; }
+        }
+        private int m_CompanyId;
 
+        public int LocationId
+        {
+            get { return m_LocationId; }
+            set { m_LocationId = value; }
+        }
+        private int m_LocationId;
 
         public string UserName
         {

@@ -75,7 +75,61 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
+                strSQL = "Select LocationId, ShortLocationName as NameOfLocation from dbo.LocationDetails where LocationID not in (5, 8)";
+                List<Location> list = new List<Location>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Locations/LocationsAll/")]
+        public List<Location> LocationsAll()
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+
                 strSQL = "Select LocationId, ShortLocationName as NameOfLocation from dbo.LocationDetails";
+                List<Location> list = new List<Location>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Locations/GetLocationsAirportID/{id}")]
+        public List<Location> LocationByAirportId(string id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+
+                strSQL = "Select AirportId from dbo.LocationDetails where LocationId = " + id;
                 List<Location> list = new List<Location>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 

@@ -14,12 +14,12 @@ namespace Portal2APIs.Models
         }
         private int m_ManualEditID;
 
-        public int MemberID
+        public Int64 MemberID
         {
             get { return m_MemberID; }
             set { m_MemberID = value; }
         }
-        private int m_MemberID;
+        private Int64 m_MemberID;
 
         public int LocationId
         {
@@ -49,12 +49,12 @@ namespace Portal2APIs.Models
         }
         private int m_ExplanationID;
 
-        public int Points
+        public Int64 Points
         {
             get { return m_Points; }
             set { m_Points = value; }
         }
-        private int m_Points;
+        private Int64 m_Points;
 
         public string CertificateNumber
         {

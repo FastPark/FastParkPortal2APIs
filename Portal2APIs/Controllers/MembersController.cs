@@ -18,7 +18,7 @@ namespace Portal2APIs.Controllers
             string strSQL = "";
             clsADO thisADO = new clsADO();
 
-            var thisWhere = " where(mc.IsPrimary = 1 or mc.IsPrimary = 0)";
+            var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)";
 
             if (thisMember.FPNumber != null)
             {
@@ -27,13 +27,13 @@ namespace Portal2APIs.Controllers
 
             if (thisMember.FirstName != null) {
 
-                thisWhere = thisWhere + " and mi.FirstName like '" + thisMember.FirstName + "%'";
+                thisWhere = thisWhere + " and mi.FirstName like '%" + thisMember.FirstName + "%'";
             }
 
             if (thisMember.LastName != null)
             {
                 
-                thisWhere = thisWhere + " and mi.LastName like '" + thisMember.LastName + "%'";
+                thisWhere = thisWhere + " and mi.LastName like '%" + thisMember.LastName + "%'";
             }
 
             if (thisMember.EmailAddress != null)
@@ -48,17 +48,17 @@ namespace Portal2APIs.Controllers
 
             if (thisMember.Company != null)
             {
-                thisWhere = thisWhere + " and mi.Company = '" + thisMember.Company + "'";
+                thisWhere = thisWhere + " and mi.Company like '%" + thisMember.Company + "%'";
             }
 
             if (thisMember.MailerCompany != null)
             {
-                thisWhere = thisWhere + " and c.name = '" + thisMember.MailerCompany + "'";
+                thisWhere = thisWhere + " and mi.CompanyId = '" + thisMember.MailerCompany + "'";
             }
 
             if (thisMember.MarketingCode != null)
             {
-                thisWhere = thisWhere + " and mi.MarketingCode = '" + thisMember.MarketingCode + "'";
+                thisWhere = thisWhere + " and mi.MarketingMailerCode = '" + thisMember.MarketingCode + "'";
             }
 
             if (thisMember.UserName != null)
@@ -68,15 +68,16 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                if (thisWhere != " where mc.IsPrimary = 1")
+                if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)")
                 {
-                    strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home " +
+                    strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home, mi.UserName, mi.CompanyId " +
                              "from dbo.MemberInformationMain mi " +
                              "Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
                              "Inner Join MemberHasLocation mhl on mi.MemberId = mhl.MemberId " +
                              "Inner Join LocationDetails l on mhl.LocationId = l.LocationId " +
                              "left outer join marketingflyer.dbo.companies c on mi.companyId = c.id " +
-                             thisWhere;
+                             thisWhere +
+                             " order by mi.LastName, mi.FirstName, mc.IsPrimary desc, mi.memberid ";
                     List<Member> list = new List<Member>();
                     thisADO.returnSingleValue(strSQL, true, ref list);
 
@@ -111,6 +112,58 @@ namespace Portal2APIs.Controllers
                 thisADO.updateOrInsert(strSQL, true);
 
                 return "Success";
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/Members/SearchByCompanyLocation")]
+        public List<Member> SearchByCompanyLocation(Member thisMember)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)";
+
+            if (thisMember.Company != null)
+            {
+                thisWhere = thisWhere + " and mi.Company like '%" + thisMember.Company + "%'";
+            }
+
+            if (thisMember.LocationId != 0)
+            {
+                thisWhere = thisWhere + " and mhl.LocationId = " + thisMember.LocationId;
+            }
+
+            try
+            {
+                if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)")
+                {
+                    strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home " +
+                             "from dbo.MemberInformationMain mi " +
+                             "Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
+                             "Inner Join MemberHasLocation mhl on mi.MemberId = mhl.MemberId " +
+                             "Inner Join LocationDetails l on mhl.LocationId = l.LocationId " +
+                             "left outer join marketingflyer.dbo.companies c on mi.companyId = c.id " +
+                             thisWhere +
+                             " order by mc.IsPrimary desc";
+                    List<Member> list = new List<Member>();
+                    thisADO.returnSingleValue(strSQL, true, ref list);
+
+                    return list;
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception ex)
             {

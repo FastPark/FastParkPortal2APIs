@@ -14,12 +14,12 @@ namespace Portal2APIs.Models
         }
         private int m_ManualEditId;
 
-        public int MemberId
+        public Int64 MemberId
         {
             get { return m_MemberId; }
             set { m_MemberId = value; }
         }
-        private int m_MemberId;
+        private Int64 m_MemberId;
 
         public int LocationId
         {

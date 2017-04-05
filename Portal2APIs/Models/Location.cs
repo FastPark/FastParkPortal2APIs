@@ -20,5 +20,19 @@ namespace Portal2APIs.Models
             set { m_NameOfLocation = value; }
         }
         private string m_NameOfLocation;
+
+        public string ShortLocationName
+        {
+            get { return m_ShortLocationName; }
+            set { m_ShortLocationName = value; }
+        }
+        private string m_ShortLocationName;
+
+        public int AirportId
+        {
+            get { return m_AirportId; }
+            set { m_AirportId = value; }
+        }
+        private int m_AirportId;
     }
 }

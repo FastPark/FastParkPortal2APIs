@@ -19,7 +19,7 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Select (FirstName + ' ' + LastName) as RepName, RepID, EmailAddress from dbo.MarketingReps";
+                strSQL = "Select (FirstName + ' ' + LastName) as RepName, RepID, EmailAddress from dbo.MarketingReps where TerminationDate1 is null and Rep = 1";
                 List<MarketingRep> list = new List<MarketingRep>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
