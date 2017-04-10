@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select * from dbo.ManualEdits where ManualEditID=" + id + "";
+                strSQL = "Select me.*, met.Explanation  from dbo.ManualEdits me inner join ManualEditTypes met on me.ExplanationId = met.ExplanationId where ManualEditID=" + id + "";
                 List<ManualEdit> list = new List<ManualEdit>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 

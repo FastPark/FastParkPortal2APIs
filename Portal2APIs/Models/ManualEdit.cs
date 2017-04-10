@@ -7,12 +7,12 @@ namespace Portal2APIs.Models
 {
     public class ManualEdit
     {
-        public int ManualEditId
+        public Int64 ManualEditId
         {
             get { return m_ManualEditId; }
             set { m_ManualEditId = value; }
         }
-        private int m_ManualEditId;
+        private Int64 m_ManualEditId;
 
         public Int64 MemberId
         {
@@ -62,6 +62,12 @@ namespace Portal2APIs.Models
             set { m_ExplanationId = value; }
         }
         private int m_ExplanationId;
+        public string Explanation
+        {
+            get { return m_Explanation; }
+            set { m_Explanation = value; }
+        }
+        private string m_Explanation;
 
         public int PointsChanged
         {
@@ -120,30 +126,30 @@ namespace Portal2APIs.Models
         }
         private DateTime m_CreateDatetime;
 
-        public int CreateUserId
+        public Int64 CreateUserId
         {
             get { return m_CreateUserId; }
             set { m_CreateUserId = value; }
         }
-        private int m_CreateUserId;
+        private Int64 m_CreateUserId;
         public DateTime UpdateDatetime
         {
             get { return m_UpdateDatetime; }
             set { m_UpdateDatetime = value; }
         }
         private DateTime m_UpdateDatetime;
-        public int UpdateUserId
+        public Int64 UpdateUserId
         {
             get { return m_UpdateUserId; }
             set { m_UpdateUserId = value; }
         }
-        private int m_UpdateUserId;
-        public Boolean IsDeleted
+        private Int64 m_UpdateUserId;
+        public byte IsDeleted
         {
             get { return m_IsDeleted; }
             set { m_IsDeleted = value; }
         }
-        private Boolean m_IsDeleted;
+        private byte m_IsDeleted;
         public String CreateExternalUserData
         {
             get { return m_CreateExternalUserData; }
