@@ -102,12 +102,12 @@ namespace Portal2APIs.Models
             set { m_Notes = value; }
         }
         private string m_Notes;
-        public string NameOfLocation
+        public string ShortLocationName
         {
-            get { return m_NameOfLocation; }
-            set { m_NameOfLocation = value; }
+            get { return m_ShortLocationName; }
+            set { m_ShortLocationName = value; }
         }
-        private String m_NameOfLocation;
+        private String m_ShortLocationName;
         public long maxShipped
         {
             get { return m_maxShipped; }

@@ -109,6 +109,7 @@
     <Compile Include="Controllers\CardDistHistoryNotesController.cs" />
     <Compile Include="Controllers\CardDistHistorysController.cs" />
     <Compile Include="Controllers\CardDistInventorysController.cs" />
+    <Compile Include="Controllers\CombineCompanysController.cs" />
     <Compile Include="Controllers\CombineMemberCardsController.cs" />
     <Compile Include="Controllers\CompanyChecksController.cs" />
     <Compile Include="Controllers\CompanyDropDownsController.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Models\CardDistHistoryNote.cs" />
     <Compile Include="Models\CardDistHistory.cs" />
     <Compile Include="Models\CardDistInventory.cs" />
+    <Compile Include="Models\CombineCompany.cs" />
     <Compile Include="Models\CombineMemberCard.cs" />
     <Compile Include="Models\CompanyCheck.cs" />
     <Compile Include="Models\CompanyDropDown.cs" />

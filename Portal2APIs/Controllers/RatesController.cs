@@ -30,8 +30,12 @@ namespace Portal2APIs.Controllers
 
                 string rate = Convert.ToString(thisADO.selectConvertToString(rateSQL, true, true));
 
+                //string homeLocationSQL = "select location_Id from MarketingFlyer.dbo.market_has_locations mhl " +
+                //                         "inner join MarketingFlyer.dbo.company_market_histories cmh on mhl.market_Id = cmh.market_Id " +
+                //                         "where cmh.company_id = " + thisRate.CompanyId;
+
                 string homeLocationSQL = "select location_Id from MarketingFlyer.dbo.market_has_locations mhl " +
-                                         "inner join MarketingFlyer.dbo.company_market_histories cmh on mhl.market_Id = cmh.market_Id " +
+                                         "inner join company_market_histories_For_Import_Current cmh on mhl.market_Id = cmh.market_Id " +
                                          "where cmh.company_id = " + thisRate.CompanyId;
 
                 string conn = thisADO.getRemoteConnectionString();

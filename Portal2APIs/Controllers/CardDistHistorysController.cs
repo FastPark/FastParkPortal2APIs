@@ -30,7 +30,7 @@ namespace Portal2APIs.Controllers
             {
                 if (id == "-1")  //Get Order only
                 {
-                    strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
+                    strSQL = "Select cdh.*, l.ShortLocationName, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
                           "Left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
                           "where ActivityId = 1 order by cdh.EndingNumber desc ";
@@ -46,7 +46,7 @@ namespace Portal2APIs.Controllers
                 }
                 else if (id == "-3")  //shipping only
                 {
-                    strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
+                    strSQL = "Select cdh.*, l.ShortLocationName, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
                           "Left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
                           "where ActivityId = 2 order by cdh.EndingNumber desc "; 
@@ -80,7 +80,7 @@ namespace Portal2APIs.Controllers
                 }
                 else // this is for locations
                 {
-                    strSQL = "Select cdh.*, l.NameOfLocation from CardDistributionHistory cdh " +
+                    strSQL = "Select cdh.*, l.ShortLocationName from CardDistributionHistory cdh " +
                           "inner Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "where cdh.LocationId=" + id + "";
                 }
@@ -110,7 +110,7 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription " +
+                strSQL = "Select cdh.*, l.ShortLocationName, cdat.CardDistributionActivityDescription " +
                           "from CardDistributionHistory cdh " +
                           "left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                           "inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
@@ -267,7 +267,7 @@ namespace Portal2APIs.Controllers
             try
             {
 
-                strSQL = "Select cdh.*, l.NameOfLocation, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
+                strSQL = "Select cdh.*, l.ShortLocationName, cdat.CardDistributionActivityDescription from CardDistributionHistory cdh " +
                         "Left Outer Join LocationDetails l on cdh.LocationId = l.LocationID " +
                         "Inner Join CardDistributionActivityType cdat on cdh.ActivityId = cdat.CardDistributionActivityTypeID " +
                         "Where StartingNumber < " + id + " " +

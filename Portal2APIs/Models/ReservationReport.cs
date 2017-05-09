@@ -33,6 +33,12 @@ namespace Portal2APIs.Models
             set { m_endsCount = value; }
         }
         private int m_endsCount;
+        public int onLot
+        {
+            get { return m_onLot; }
+            set { m_onLot = value; }
+        }
+        private int m_onLot;
 
         public string DayName
         {

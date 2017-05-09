@@ -12,36 +12,48 @@ namespace Portal2APIs.Controllers
     public class ReservationReportsController : ApiController
     {
         [HttpGet]
-        [Route("api/ReservationReports/GetReservationReport/{id}")]
-        public List<ReservationReport> GetReservationReport(int id)
+        [Route("api/ReservationReports/GetReservationReport/{LocAndDate}")]
+        public ReservationReport GetReservationReport(string LocAndDate)
         {
             try
             {
+                string[] locAndDate = LocAndDate.Split('_');
+
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
+                ReservationReport thisReport = new ReservationReport();
 
+                strSQL = "select Count(*) " +
+                        "from reservations r " +
+                        "where ReservationStatusId <> 2 " +
+                        "and ReservationStatusId <> 3 " +
+                        "and '" + locAndDate[1].ToString() + "'  between Cast(CONVERT(VARCHAR(10), StartDatetime, 101) + ' 00:00:00' as datetime) and Cast(CONVERT(VARCHAR(10), EndDatetime, 101) + ' 23:59:59' as datetime) " +
+                        "and LocationId = " + locAndDate[0].ToString();
 
-                strSQL = "select cast(DATENAME(dw, StartDate) as nvarchar(15)) as DayName, StartDate, startsCount, endsCount from ( " +
-                            "SELECT DATEADD(dd,(DATEDIFF(dd, 0, StartDatetime)), 0) as StartDate, " +
-                            "COUNT(*) startsCount " +
-                            "FROM Reservations " +
-                            //"where locationId =  " + id + " " +
-                            "GROUP BY DATEADD(dd, (DATEDIFF(dd, 0, StartDatetime)), 0) " +
-                        ") starts " +
-                        "Inner Join( " +
-                            "SELECT DATEADD(dd, (DATEDIFF(dd, 0, EndDatetime)), 0) as EndDate, " +
-                            "COUNT(*) endsCount " +
-                            "FROM Reservations " +
-                            //"where locationId =  " + id + " " +
-                            "GROUP BY DATEADD(dd, (DATEDIFF(dd, 0, EndDatetime)), 0) " +
-                        ") ends on starts.StartDate = ends.EndDate " +
-                        "where StartDate between '12/25/2016 00:00:00' and '12/25/2016 23:59:59' " +
-                        "Order by startDate";
+                thisReport.onLot = Convert.ToInt16(thisADO.returnSingleValueForInternalAPIUse(strSQL, true));
+                //thisReport.onLot = 127;
 
-                List<ReservationReport> list = new List<ReservationReport>();
-                thisADO.returnSingleValue(strSQL, true, ref list);
+               strSQL = "select Count(*) " +
+                        "from reservations r " +
+                        "where ReservationStatusId <> 2 " +
+                        "and ReservationStatusId <> 3 " +
+                        "and Cast(CONVERT(VARCHAR(10), '" + locAndDate[1].ToString() + "', 101) as date) = Cast(CONVERT(VARCHAR(10), StartDatetime, 101) as date) " +
+                        "and LocationId = " + locAndDate[0].ToString();
 
-                return list;
+                thisReport.startsCount = Convert.ToInt16(thisADO.returnSingleValueForInternalAPIUse(strSQL, true));
+                //thisReport.startsCount = 44;
+
+                strSQL = "select Count(*) " +
+                        "from reservations r " +
+                        "where ReservationStatusId <> 2 " +
+                        "and ReservationStatusId <> 3 " +
+                        "and Cast(CONVERT(VARCHAR(10), '" + locAndDate[1].ToString() + "', 101) as date) = Cast(CONVERT(VARCHAR(10), EndDatetime, 101) as date) " +
+                        "and LocationId = " + locAndDate[0].ToString();
+
+                thisReport.endsCount = Convert.ToInt16(thisADO.returnSingleValueForInternalAPIUse(strSQL, true));
+                //thisReport.endsCount = 25;
+
+                return thisReport;
             }
             catch (Exception ex)
             {
