@@ -45,5 +45,11 @@ namespace Portal2APIs.Models
             set { m_RepID = value; }
         }
         private string m_RepID;
+        public Int32 ID
+        {
+            get { return m_ID; }
+            set { m_ID = value; }
+        }
+        private Int32 m_ID;
     }
 }

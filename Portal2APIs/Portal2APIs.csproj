@@ -109,6 +109,11 @@
     <Compile Include="Controllers\CardDistHistoryNotesController.cs" />
     <Compile Include="Controllers\CardDistHistorysController.cs" />
     <Compile Include="Controllers\CardDistInventorysController.cs" />
+    <Compile Include="Controllers\CardDistsController.cs" />
+    <Compile Include="Controllers\CardLocationsController.cs" />
+    <Compile Include="Controllers\CardOrdersController.cs" />
+    <Compile Include="Controllers\CardsController.cs" />
+    <Compile Include="Controllers\CardShipsController.cs" />
     <Compile Include="Controllers\CombineCompanysController.cs" />
     <Compile Include="Controllers\CombineMemberCardsController.cs" />
     <Compile Include="Controllers\CompanyChecksController.cs" />
@@ -138,10 +143,15 @@
     <Compile Include="Models\ArchiveActivity.cs" />
     <Compile Include="Models\Audit.cs" />
     <Compile Include="Models\BoothCardCount.cs" />
+    <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\CardDist.cs" />
     <Compile Include="Models\CardDistActivityType.cs" />
     <Compile Include="Models\CardDistHistoryNote.cs" />
     <Compile Include="Models\CardDistHistory.cs" />
     <Compile Include="Models\CardDistInventory.cs" />
+    <Compile Include="Models\CardLocation.cs" />
+    <Compile Include="Models\CardOrder.cs" />
+    <Compile Include="Models\CardShip.cs" />
     <Compile Include="Models\CombineCompany.cs" />
     <Compile Include="Models\CombineMemberCard.cs" />
     <Compile Include="Models\CompanyCheck.cs" />
