@@ -57,6 +57,16 @@ namespace Portal2APIs.Controllers
 
                 thisADO.updateOrInsert(strSQL, false);
 
+                if (CD.CardDistBooth != 1)
+                {
+                    for (long i = CD.CardDistStartNumber; i <= CD.CardDistEndNumber; i++)
+                    {
+                        strSQL = "Update CardDistribution.dbo.CardInventory set RepLineId = " + CD.CardDistRepLineID + " where CardFPNumber = " + i;
+
+                        thisADO.updateOrInsert(strSQL, false);
+                    }
+                }
+                
                 return "Success";
             }
             catch (Exception ex)

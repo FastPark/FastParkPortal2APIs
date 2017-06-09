@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select me.*, met.Explanation  from dbo.ManualEdits me inner join ManualEditTypes met on me.ExplanationId = met.ExplanationId where ManualEditID=" + id + "";
+                strSQL = "Select me.*, met.Explanation  from dbo.ManualEdits me inner join ManualEditTypes met on me.ExplanationId = met.ExplanationId where ManualEditID=" + id;
                 List<ManualEdit> list = new List<ManualEdit>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
@@ -177,7 +177,6 @@ namespace Portal2APIs.Controllers
             {
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
-
 
                 strSQL = "Select Explanation, ExplanationID from dbo.ManualEditTypes where (TypeStatus='All' or TypeStatus='ActivityOnly') order by Explanation";
                 List<ManualEditType> list = new List<ManualEditType>();

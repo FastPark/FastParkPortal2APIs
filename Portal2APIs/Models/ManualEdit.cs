@@ -104,19 +104,19 @@ namespace Portal2APIs.Models
         }
         private string m_Notes;
 
-        public Guid PerformedByUserId
+        public string PerformedByUserId
         {
             get { return m_PerformedByUserId; }
             set { m_PerformedByUserId = value; }
         }
-        private Guid m_PerformedByUserId;
+        private string m_PerformedByUserId;
 
-        public Guid SubmittedByUserId
+        public string SubmittedByUserId
         {
             get { return m_SubmittedByUserId; }
             set { m_SubmittedByUserId = value; }
         }
-        private Guid m_SubmittedByUserId;
+        private string m_SubmittedByUserId;
 
 
         public DateTime CreateDatetime

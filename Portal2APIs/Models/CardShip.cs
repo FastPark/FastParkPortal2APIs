@@ -28,6 +28,8 @@ namespace Portal2APIs.Models
         private string _CardShipFromName;
         private string _CardShipStatus;
         private Int64 _maxShipped;
+        private string _CardDesignDesc;
+        private int _CardDesignId;
         #endregion
         #region Public Properties
         public int CardShipID
@@ -99,6 +101,16 @@ namespace Portal2APIs.Models
         {
             get { return _maxShipped; }
             set { _maxShipped = value; }
+        }
+        public string CardDesignDesc
+        {
+            get { return _CardDesignDesc; }
+            set { _CardDesignDesc = value; }
+        }
+        public int CardDesignId
+        {
+            get { return _CardDesignId; }
+            set { _CardDesignId = value; }
         }
         #endregion
     }

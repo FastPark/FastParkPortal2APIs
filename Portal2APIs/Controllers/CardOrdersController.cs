@@ -21,7 +21,11 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select co.*, cos.CardOrderStatus from CardDistribution.dbo.CardOrder co Inner Join CardDistribution.dbo.CardOrderStatus cos on co.CardOrderStatusID = cos.CardOrderStatusID Order by CardOrderDate desc";
+                strSQL = "Select co.*, cos.CardOrderStatus, cd.CardDesignDesc " +
+                         "from CardDistribution.dbo.CardOrder co " +
+                         "Inner Join CardDistribution.dbo.CardOrderStatus cos on co.CardOrderStatusID = cos.CardOrderStatusID " +
+                         "Inner Join CardDistribution.dbo.CardDesign cd on co.CardDesignId = cd.CardDesignId " +
+                         "Order by CardOrderEndNumber desc";
                 List<CardOrder> list = new List<CardOrder>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
@@ -53,8 +57,8 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "insert into CardDistribution.dbo.CardOrder (CardOrderDate, CardOrderStartNumber, CardOrderEndNumber, CardOrderBy, CardOrderStatusID) " +
-                                                        "values ('" + now + "', " + startingNumber + ", " + endingNumber + ", '" + CDH.CardOrderBy + "', " + CDH.CardOrderStatus + ")";
+                strSQL = "insert into CardDistribution.dbo.CardOrder (CardOrderDate, CardOrderStartNumber, CardOrderEndNumber, CardOrderBy, CardOrderStatusID, CardDesignId) " +
+                                                        "values ('" + now + "', " + startingNumber + ", " + endingNumber + ", '" + CDH.CardOrderBy + "', " + CDH.CardOrderStatus + ", " + CDH.CardDesignId + ")";
 
                 thisADO.updateOrInsert(strSQL, false);
 
@@ -154,6 +158,33 @@ namespace Portal2APIs.Controllers
                 thisADO.updateOrInsert(strSQL, false);
                 
                 return "Success";
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/CardOrders/GetOrderByRange/")]
+        public List<CardOrder> GetOrderByRange(CardOrder CDH)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "select Right('00000' + SUBSTRING(Cast(CardFPNumber as nvarchar(100)),0,3), 3) as PreFix, SUBSTRING(Cast(CardFPNumber as nvarchar(100)),2,6) as Suffix, Cast(CardValidationNumber as nvarchar(100)) as RegistrationCode  " +
+                         "from CardDistribution.dbo.CardInventory where CardFPNumber between " + CDH.CardOrderStartNumber + " and " + CDH.CardOrderEndNumber + " order by CardFPNumber";
+                List<CardOrder> list = new List<CardOrder>();
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
             }
             catch (Exception ex)
             {

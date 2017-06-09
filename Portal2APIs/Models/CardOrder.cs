@@ -23,6 +23,11 @@ namespace Portal2APIs.Models
         private DateTime _CardOrderReceivedDate;
         private string _CardOrderReceivedBy;
         private int _orderedMax;
+        private string _CardDesignDesc;
+        private int _CardDesignId;
+        private string _PreFix;
+        private string _Suffix;
+        private string _RegistrationCode;
         #endregion
         #region Public Properties
         public int CardOrderId
@@ -75,7 +80,31 @@ namespace Portal2APIs.Models
             get { return _orderedMax; }
             set { _orderedMax = value; }
         }
-        
+        public string CardDesignDesc
+        {
+            get { return _CardDesignDesc; }
+            set { _CardDesignDesc = value; }
+        }
+        public int CardDesignId
+        {
+            get { return _CardDesignId; }
+            set { _CardDesignId = value; }
+        }
+        public string PreFix
+        {
+            get { return _PreFix; }
+            set { _PreFix = value; }
+        }
+        public string Suffix
+        {
+            get { return _Suffix; }
+            set { _Suffix = value; }
+        }
+        public string RegistrationCode
+        {
+            get { return _RegistrationCode; }
+            set { _RegistrationCode = value; }
+        }
         #endregion
     }
 }

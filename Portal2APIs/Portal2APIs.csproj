@@ -105,6 +105,7 @@
     <Compile Include="Controllers\ArchiveActivitysController.cs" />
     <Compile Include="Controllers\AuditsController.cs" />
     <Compile Include="Controllers\BoothCardCountsController.cs" />
+    <Compile Include="Controllers\CardDesignsController.cs" />
     <Compile Include="Controllers\CardDistActivityTypesController.cs" />
     <Compile Include="Controllers\CardDistHistoryNotesController.cs" />
     <Compile Include="Controllers\CardDistHistorysController.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Models\Audit.cs" />
     <Compile Include="Models\BoothCardCount.cs" />
     <Compile Include="Models\Card.cs" />
+    <Compile Include="Models\CardDesign.cs" />
     <Compile Include="Models\CardDist.cs" />
     <Compile Include="Models\CardDistActivityType.cs" />
     <Compile Include="Models\CardDistHistoryNote.cs" />
