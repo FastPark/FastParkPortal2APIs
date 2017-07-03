@@ -20,8 +20,8 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Select bcc.*, l.NameOfLocation from BoothCardCount bcc " +
-                         "Inner Join LocationDetails l on bcc.LocationId = l.LocationId where bcc.LocationId = " + id + " order by BoothCardCountDate desc";
+                strSQL = "Select bcc.*, l.NameOfLocation from CardDistribution.dbo.BoothCardCount bcc " +
+                         "Inner Join CardDistribution.dbo.LocationDetails l on bcc.LocationId = l.LocationId where bcc.LocationId = " + id + " order by BoothCardCountDate desc";
                 List<BoothCardCount> list = new List<BoothCardCount>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
@@ -47,9 +47,9 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "insert into BoothCardCount (Shift1, Shift2, Shift3, Total, BoothCardCountDate, LocationId, CreateUserId) " +
+                strSQL = "insert into CardDistribution.dbo.BoothCardCount (Shift1, Shift2, Shift3, Total, BoothCardCountDate, LocationId) " +
                                                         "values (" + BCC.Shift1 + ", " + BCC.Shift2 + ", " + BCC.Shift3 + ", " +
-                                                        BCC.Total + ", '" + BCC.BoothCardCountDate + "', " + BCC.LocationId + ", -1)";
+                                                        BCC.Total + ", '" + BCC.BoothCardCountDate + "', " + BCC.LocationId + ")";
 
                 thisADO.updateOrInsertWithId(strSQL, false);
                 

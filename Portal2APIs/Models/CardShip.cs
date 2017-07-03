@@ -30,6 +30,7 @@ namespace Portal2APIs.Models
         private Int64 _maxShipped;
         private string _CardDesignDesc;
         private int _CardDesignId;
+        private int _IsActive;
         #endregion
         #region Public Properties
         public int CardShipID
@@ -111,6 +112,11 @@ namespace Portal2APIs.Models
         {
             get { return _CardDesignId; }
             set { _CardDesignId = value; }
+        }
+        public int IsActive
+        {
+            get { return _IsActive; }
+            set { _IsActive = value; }
         }
         #endregion
     }

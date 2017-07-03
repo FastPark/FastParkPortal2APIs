@@ -28,7 +28,7 @@ namespace Portal2APIs.Controllers
                         "Inner Join CardDistribution.dbo.LocationDetails l2 on cs.CardShipTo = l2.LocationId " +
                         "Inner Join CardDistribution.dbo.CardDesign cd on cs.CardDesignId = cd.CardDesignId " +
                         "Where cs.CardShipTo in (" + id + ") " +
-                        "Order by CardShipEndNumber desc";
+                        "Order by CardShipEndNumber desc, CardShipID";
                 List<CardShip> list = new List<CardShip>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
@@ -105,6 +105,39 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpPost]
+        [Route("api/CardShips/reShip")]
+        public string reShip(CardShip CS)
+        {
+            clsADO thisADO = new clsADO();
+            string strSQL = null;
+
+            DateTime now = DateTime.Now;
+
+            try
+            {
+                strSQL = "Update CardDistribution.dbo.CardShip set IsActive = 0 where CardShipID = " + CS.CardShipID;
+
+                thisADO.updateOrInsert(strSQL, false);
+
+                strSQL = "insert into CardDistribution.dbo.CardShip (CardShipFrom, CardShipTo, CardShipDate, CardShipShippedBy, CardShipStartNumber, CardShipEndNumber, CardShipStatusId, CardDesignId) " +
+                                                        "values (" + CS.CardShipFrom + ", " + CS.CardShipTo + ", '" + now + "', '" + CS.CardShipShippedBy + "', " + CS.CardShipStartNumber + ", " + CS.CardShipEndNumber + ", 1, " + CS.CardDesignId + ")";
+
+                thisADO.updateOrInsert(strSQL, false);
+
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPost]
         [Route("api/CardShips/edit")]
         public string edit(CardShip CS)
         {
@@ -144,7 +177,7 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "select * from CardDistribution.dbo.CardShip " +
-                        "where " + Id + " between CardShipStartNumber and CardShipEndNumber ";
+                        "where " + Id + " between CardShipStartNumber and CardShipEndNumber where IsActive = 1 ";
 
                 List<CardShip> list = new List<CardShip>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
@@ -173,7 +206,7 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "select CardShipTo from CardDistribution.dbo.CardShip " +
-                        "where " + Id + " between CardShipStartNumber and CardShipEndNumber ";
+                        "where " + Id + " between CardShipStartNumber and CardShipEndNumber where IsActive = 1 ";
 
                 List<CardShip> list = new List<CardShip>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
@@ -201,7 +234,7 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Select max(CardShipEndNumber) as maxShipped from CardDistribution.dbo.CardShip";
+                strSQL = "Select max(CardShipEndNumber) as maxShipped from CardDistribution.dbo.CardShip where IsActive = 1";
                 List<CardShip> list = new List<CardShip>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
