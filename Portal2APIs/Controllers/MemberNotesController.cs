@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select * from dbo.MemberNotes where MemberId=" + id + "";
+                strSQL = "Select * from dbo.MemberNotes where MemberId=" + id + " order by Date desc";
                 List<MemberNote> list = new List<MemberNote>();
 
                 thisADO.returnSingleValue(strSQL, true, ref list);

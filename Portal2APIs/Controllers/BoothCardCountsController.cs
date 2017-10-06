@@ -47,13 +47,48 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "insert into CardDistribution.dbo.BoothCardCount (Shift1, Shift2, Shift3, Total, BoothCardCountDate, LocationId) " +
+                strSQL = "insert into CardDistribution.dbo.BoothCardCount (Shift1, Shift2, Shift3, Total, BoothCardCountDate, LocationId, Adjustment) " +
                                                         "values (" + BCC.Shift1 + ", " + BCC.Shift2 + ", " + BCC.Shift3 + ", " +
-                                                        BCC.Total + ", '" + BCC.BoothCardCountDate + "', " + BCC.LocationId + ")";
+                                                        BCC.Total + ", '" + BCC.BoothCardCountDate + "', " + BCC.LocationId + ", " + BCC.Adjustment + ")";
 
                 thisADO.updateOrInsertWithId(strSQL, false);
                 
                 return null;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet()]
+        [Route("api/BoothCardCounts/GetBoothLevel/{id}")]
+        public List<BoothCardCount> GetBoothLevel(int id)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select Sum(BoothDist) - Sum(BoothHand) as Level from ( " +
+                            "select Sum(CardDistEndNumber - CardDistStartNumber + 1) as BoothDist, 0 as BoothHand " +
+                            "from CardDistribution.dbo.CardDist cd " +
+                            "where CardDistBooth = 1 " +
+                            "and CardDistLocationID = " + id + " " +
+                            "Union All " +
+                            "Select 0 as BoothDist, Sum(Total) as BoothHand " +
+                            "from CardDistribution.dbo.BoothCardCount " +
+                            "Where LocationId = " + id + " " +
+                         ") BoothTotal";
+                List<BoothCardCount> list = new List<BoothCardCount>();
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list; ;
             }
             catch (Exception ex)
             {

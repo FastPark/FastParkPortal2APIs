@@ -20,7 +20,7 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "select cd.*, mr.FirstName + ' ' + mr.LastName as CardDistRepName " +
+                strSQL = "select cd.*, Cast((CardDistEndNumber - CardDistStartNumber + 1) as int) as NumberOfCards, mr.FirstName + ' ' + mr.LastName as CardDistRepName " +
                         "from CardDistribution.dbo.CardDist cd " +
                         "left outer join MarketingReps mr on cd.CardDistRepLineId = mr.ID " +
                         "Where cd.CardDistLocationID = " + id + " " +

@@ -101,5 +101,17 @@ namespace Portal2APIs.Models
             set { m_UpdateExternalUserData = value; }
         }
         private String m_UpdateExternalUserData;
+        public Int64 Level
+        {
+            get { return m_Level; }
+            set { m_Level = value; }
+        }
+        private Int64 m_Level;
+        public int Adjustment
+        {
+            get { return m_Adjustment; }
+            set { m_Adjustment = value; }
+        }
+        private int m_Adjustment;
     }
 }

@@ -63,7 +63,7 @@ namespace Portal2APIs.Controllers
 
             if (thisMember.UserName != null)
             {
-                thisWhere = thisWhere + " and mi.UserName = '" + thisMember.UserName + "'";
+                thisWhere = thisWhere + " and mi.UserName like '%" + thisMember.UserName + "%'";
             }
 
             try
@@ -164,6 +164,35 @@ namespace Portal2APIs.Controllers
                 {
                     return null;
                 }
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Members/GetMemberNameByCard/{id}")]
+        public List<Member> GetMemberNameByCard(string id)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select mi.FirstName, mi.LastName from MemberInformationMain mi " +
+                         "Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
+                         "Where mc.FPNumber = '" + id + "'";
+
+                List<Member> list = new List<Member>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
             }
             catch (Exception ex)
             {

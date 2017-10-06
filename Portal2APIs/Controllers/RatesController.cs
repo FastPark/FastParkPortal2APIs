@@ -14,7 +14,7 @@ namespace Portal2APIs.Controllers
     {
         [HttpPost]
         [Route("api/Rates/GetRateByLocationAndCompanyId/")]
-        public String LocationByLocationId(Rate thisRate)
+        public String GetRateByLocationAndCompanyId(Rate thisRate)
         {
             try
             {

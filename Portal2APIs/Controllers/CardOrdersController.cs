@@ -62,14 +62,15 @@ namespace Portal2APIs.Controllers
 
                 thisADO.updateOrInsert(strSQL, false);
 
-                strSQL = "select max(CardHistoryID) from CardDistribution.dbo.CardInventory";
+                strSQL = "select max(CardHistoryID) from FrequentParker08.dbo.CardDistributionInventory";
 
                 BatchNumber = Convert.ToInt16(thisADO.returnSingleValueForInternalAPIUse(strSQL, false)) + 1;
-
+                
+                //These will be created on local (SQL1) and then synced via FPApp the next day from home to web entry in SyncInsructions
                 for (Int64 i = startingNumber; i <= endingNumber; i++)
                 {
                     rndNumber = myRnd.RandNumber(1000, 9999);
-                    strSQL = "insert into CardDistribution.dbo.CardInventory (CardFPNumber, CardHistoryID, CardValidationNumber, CardActive) " +
+                    strSQL = "insert into FrequentParker08.dbo.CardDistributionInventory (CardFPNumber, CardHistoryID, CardValidationNumber, CardActive) " +
                                 "Values (" + i + ", " + BatchNumber + ", " + rndNumber + ", 1)";
                     thisADO.updateOrInsert(strSQL, false);
                 }
@@ -96,7 +97,7 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "select MAX(CardFPNumber) as orderedMax from CardDistribution.dbo.CardInventory where CardActive = 'True'";
+                strSQL = "select MAX(CardFPNumber) as orderedMax from FrequentParker08.dbo.CardDistributionInventory where CardActive = 'True'";
                 List<CardOrder> list = new List<CardOrder>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
@@ -179,8 +180,8 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "select Right('00000' + SUBSTRING(Cast(CardFPNumber as nvarchar(100)),0,3), 3) as PreFix, SUBSTRING(Cast(CardFPNumber as nvarchar(100)),2,6) as Suffix, Cast(CardValidationNumber as nvarchar(100)) as RegistrationCode  " +
-                         "from CardDistribution.dbo.CardInventory where CardFPNumber between " + CDH.CardOrderStartNumber + " and " + CDH.CardOrderEndNumber + " order by CardFPNumber";
+                strSQL = "select Right('00000' + SUBSTRING(Cast(CardFPNumber as nvarchar(100)),0,3), 3) as PreFix, SUBSTRING(Cast(CardFPNumber as nvarchar(100)),3,5) as Suffix, Cast(CardValidationNumber as nvarchar(100)) as RegistrationCode  " +
+                         "from CardDistributionInventory where CardFPNumber between " + CDH.CardOrderStartNumber + " and " + CDH.CardOrderEndNumber + " order by CardFPNumber";
                 List<CardOrder> list = new List<CardOrder>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 

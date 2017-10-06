@@ -23,7 +23,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "select UserId from aspnetdb.dbo.aspnet_Users where UserName = '" + Id + "'";
                 List<OldPortalGuid> list = new List<OldPortalGuid>();
-                thisADO.returnSingleValueForPark09(strSQL, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list; ;
             }

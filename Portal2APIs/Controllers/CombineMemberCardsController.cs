@@ -92,12 +92,12 @@ namespace Portal2APIs.Controllers
 
                 //Add note to target member account
                 thisADO.updateOrInsert("Insert into MemberNotes (MemberId, Note, Date, SubmittedBy, CreateDateTime, CreateUserId) " +
-                                       "values (" + targetMemberId + ",'MemberId " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "'," +
+                                       "values (" + targetMemberId + ",'Member Card " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "'," +
                                        " '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', '" + cardsToCombine.CombinedBy + "', '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', -1)", true);
 
                 //Add note to origin member account
                 thisADO.updateOrInsert("Insert into MemberNotes (MemberId, Note, Date, SubmittedBy, CreateDateTime, CreateUserId) " +
-                                       "values (" + originMemberId + ",'MemberId " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "'," +
+                                       "values (" + originMemberId + ",'Member Card " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "'," +
                                        " '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', '" + cardsToCombine.CombinedBy + "', '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', -1)", true);
 
                 //Add note to target changelog

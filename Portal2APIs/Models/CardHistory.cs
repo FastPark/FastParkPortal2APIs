@@ -61,6 +61,12 @@ namespace Portal2APIs.Models
             set { m_Location = value; }
         }
         private string m_Location;
+        public int IsActive
+        {
+            get { return m_IsActive; }
+            set { m_IsActive = value; }
+        }
+        private int m_IsActive;
     }
 
 }

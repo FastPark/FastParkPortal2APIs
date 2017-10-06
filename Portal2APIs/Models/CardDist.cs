@@ -18,6 +18,7 @@ namespace Portal2APIs.Models
         private int _CardDistLocationID;
         private int _CardDistRepLineID;
         private int _CardDistBooth;
+        private int _NumberOfCards;
         private string _CardDistBusName;
         private Int64 _CardDistStartNumber;
         private Int64 _CardDistEndNumber;
@@ -75,6 +76,11 @@ namespace Portal2APIs.Models
         {
             get { return _CardDistRepName; }
             set { _CardDistRepName = value; }
+        }
+        public int NumberOfCards
+        {
+            get { return _NumberOfCards; }
+            set { _NumberOfCards = value; }
         }
         #endregion
     }

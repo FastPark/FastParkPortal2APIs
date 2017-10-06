@@ -133,6 +133,7 @@
     <Compile Include="Controllers\PendingManualEditsController.cs" />
     <Compile Include="Controllers\PendingReceiptsController.cs" />
     <Compile Include="Controllers\ProcessPendingManualEditsController.cs" />
+    <Compile Include="Controllers\RateListsController.cs" />
     <Compile Include="Controllers\RatesController.cs" />
     <Compile Include="Controllers\RedemptionsController.cs" />
     <Compile Include="Controllers\ReservationReportsController.cs" />
@@ -177,6 +178,7 @@
     <Compile Include="Models\PendingReceipt.cs" />
     <Compile Include="Models\ProcessPendingManualEdit.cs" />
     <Compile Include="Models\Rate.cs" />
+    <Compile Include="Models\RateList.cs" />
     <Compile Include="Models\Redemption.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\ReservationReport.cs" />
