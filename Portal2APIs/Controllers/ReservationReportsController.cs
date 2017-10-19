@@ -17,23 +17,36 @@ namespace Portal2APIs.Controllers
         {
             try
             {
+                LocAndDate = LocAndDate.Replace('-', '/');
                 string[] locAndDate = LocAndDate.Split('_');
 
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
                 ReservationReport thisReport = new ReservationReport();
 
-                strSQL = "select Count(*) " +
-                        "from reservations r " +
-                        "where ReservationStatusId <> 2 " +
-                        "and ReservationStatusId <> 3 " +
-                        "and '" + locAndDate[1].ToString() + "'  between Cast(CONVERT(VARCHAR(10), StartDatetime, 101) + ' 00:00:00' as datetime) and Cast(CONVERT(VARCHAR(10), EndDatetime, 101) + ' 23:59:59' as datetime) " +
-                        "and LocationId = " + locAndDate[0].ToString();
+                strSQL = "select (" +
+                                "select top 1 rf.MaxReservationCount " +
+                                "from ReservationFees rf " +
+                                "Where '" + locAndDate[1].ToString() + "' between rf.EffectiveDatetime and rf.ExpiresDatetime " +
+                                "and rf.IsDeleted = 0 " +
+                                "and rf.LocationId = " + locAndDate[0].ToString() + " " +
+                                "Order by CreateDatetime Desc " +
+                            ") - r.InventoryCount as Avaiable " +
+                            "from ReservationInventory r " +
+                            "Where '" + locAndDate[1].ToString() + "' = Convert(nvarchar, r.ReservationInventoryDate, 101) " +
+                            "and r.LocationId = " + locAndDate[0].ToString();
 
-                thisReport.onLot = Convert.ToInt16(thisADO.returnSingleValueForInternalAPIUse(strSQL, true));
+                thisReport.reserved = Convert.ToInt16(thisADO.returnSingleValueForInternalAPIUse(strSQL, true));
                 //thisReport.onLot = 127;
 
-               strSQL = "select Count(*) " +
+                strSQL = "select r.InventoryCount  as Reserved " +
+                            "from ReservationInventory r " +
+                            "Where '" + locAndDate[1].ToString() + "' = Convert(nvarchar, r.ReservationInventoryDate, 101) " +
+                            "and r.LocationId = " + locAndDate[0].ToString();
+
+                thisReport.available = Convert.ToInt16(thisADO.returnSingleValueForInternalAPIUse(strSQL, true));
+
+                strSQL = "select Count(*) " +
                         "from reservations r " +
                         "where ReservationStatusId <> 2 " +
                         "and ReservationStatusId <> 3 " +

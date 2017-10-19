@@ -46,5 +46,17 @@ namespace Portal2APIs.Models
             set { m_DayName = value; }
         }
         private string m_DayName;
+        public int available
+        {
+            get { return m_available; }
+            set { m_available = value; }
+        }
+        private int m_available;
+        public int reserved
+        {
+            get { return m_reserved; }
+            set { m_reserved = value; }
+        }
+        private int m_reserved;
     }
 }
