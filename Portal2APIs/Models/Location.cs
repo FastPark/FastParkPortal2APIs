@@ -34,5 +34,11 @@ namespace Portal2APIs.Models
             set { m_AirportId = value; }
         }
         private int m_AirportId;
+        public string Alert
+        {
+            get { return m_Alert; }
+            set { m_Alert = value; }
+        }
+        private string m_Alert;
     }
 }

@@ -145,5 +145,32 @@ namespace Portal2APIs.Controllers
                 throw new HttpResponseException(response);
             }
         }
+
+        [HttpGet]
+        [Route("api/Locations/GetLocationAlerts/{id}")]
+        public List<Location> GetLocationAlerts(int id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+
+                strSQL = "Select ShortLocationName, Alert from dbo.LocationDetails where LocationId=" + id + " and IsDeleted = 0 order by ShortLocationName";
+                List<Location> list = new List<Location>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
     }
 }

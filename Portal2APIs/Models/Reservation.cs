@@ -98,5 +98,17 @@ namespace Portal2APIs.Models
         }
         private string m_ReservationStatusName;
 
+        public string UpdateExternalUserData
+        {
+            get { return m_UpdateExternalUserData; }
+            set { m_UpdateExternalUserData = value; }
+        }
+        private string m_UpdateExternalUserData;
+        public decimal EstimatedCost
+        {
+            get { return m_EstimatedCost; }
+            set { m_EstimatedCost = value; }
+        }
+        private decimal m_EstimatedCost;
     }
 }

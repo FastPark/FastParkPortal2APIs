@@ -79,7 +79,7 @@ namespace Portal2APIs.Controllers
             try
             {
 
-                strSQL = "select r.RedemptionId, r.CertificateId, r.RedeemDate, r.DateUsed, rt.RedemptionTypeName, r.IsReturned, r.BeenUsed, rs.RedemptionSourceName " +
+                strSQL = "select r.RedemptionId, r.CertificateId, r.RedeemDate, r.DateUsed, rt.RedemptionTypeName, r.IsReturned, r.BeenUsed, rs.RedemptionSourceName, CancellationRequestedDatetime as [ReturnRequest], CancellationRequestProcessedDatetime as ReturnProcessed " +
                         "from Redemptions r " +
                         "Inner Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
                         "Inner Join RedemptionTypes rt on r.RedemptionTypeId = rt.RedemptionTypeId " +

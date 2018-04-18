@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "select fl.flyer_id, fl.promo_code, mr.FirstName, mr.LastName, cast(fl.rate_code as nvarchar(10)) + ' - ' + cast(cast(ra.RateAmount as float) / 100.00 as nvarchar(10)) as rate_code , fl.created_at, fl.updated_at, c.name as CompanyName, l.ShortLocationName " +
+                strSQL = "select fl.flyer_id, fl.promo_code, mr.FirstName, mr.LastName, cast(fl.rate_code as nvarchar(10)) + ' - ' + cast(cast(ra.RateAmount as float) / 100.00 as nvarchar(10)) as rate_code , fl.created_at, fl.updated_at, c.name as CompanyName, l.ShortLocationName, f.deleted_at " +
                         "from MarketingFlyer.dbo.flyer_locations fl " +
                         "Inner Join LocationDetails l on fl.location_id = l.LocationId " +
                         "Inner Join MarketingReps mr on Substring(fl.promo_code, 5, 1) = mr.RepMailerId " +

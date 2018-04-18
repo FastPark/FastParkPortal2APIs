@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
             try
             {
 
-                strSQL = "select r.ReservationId, r.ReservationNumber, l.ShortLocationName, r.StartDatetime, r.EndDatetime, r.CanceledDate, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber " +
+                strSQL = "select r.ReservationId, r.ReservationNumber, l.ShortLocationName, r.StartDatetime, r.EndDatetime, r.CanceledDate, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, r.EstimatedCost " +
                         "from Reservations r " +
                         "Left Outer Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
                         "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
@@ -71,7 +71,7 @@ namespace Portal2APIs.Controllers
                 //        "and r.CanceledDate is null " +
                 //        "order by r.StartDatetime";
 
-                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, case when IsNull(rf.ReservationId, 0) = 0 then 0 else 1 end as Options, rs.ReservationStatusName " +
+                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, case when IsNull(rf.ReservationId, 0) = 0 then 0 else 1 end as Options, rs.ReservationStatusName, r.UpdateExternalUserData " +
                         "from Reservations r " +
                         "Left Outer Join ReservationFeatures rf on r.ReservationId = rf.ReservationId " +
                         "Left Outer Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
@@ -115,7 +115,7 @@ namespace Portal2APIs.Controllers
             try
             {
 
-                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, rs.ReservationStatusName " +
+                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, rs.ReservationStatusName, r.UpdateExternalUserData " +
                         "from Reservations r " +
                         "Left Outer Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
                         "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
@@ -149,12 +149,15 @@ namespace Portal2APIs.Controllers
         public string CompleteReservation(string id)
         {
             string strSQL = "";
+
+            string[] Ids = id.Split('_');
+
             clsADO thisADO = new clsADO();
 
             try
             {
 
-                strSQL = "Update Reservations set ReservationStatusId = 3 where ReservationId = " + id;
+                strSQL = "Update Reservations set ReservationStatusId = 3, UpdateExternalUserData = '" + Ids[1] + "' where ReservationId = " + Ids[0];
                 
                 thisADO.updateOrInsert(strSQL, true);
 

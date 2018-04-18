@@ -26,7 +26,9 @@ namespace Portal2APIs.Controllers
                 
                 string rateNumber = Convert.ToString(thisADO.selectConvertToString(strSQL,true, true));
 
-                string rateSQL = "select RateAmount from RateAmounts where UpdateDatetime is null and LocationId = " + thisRate.LocationId + " and RateCode = " + rateNumber;
+                //string rateSQL = "select RateAmount from RateAmounts where UpdateDatetime is null and LocationId = " + thisRate.LocationId + " and RateCode = " + rateNumber;
+                string rateSQL = "select RateAmount from RateAmounts where LocationId = " + thisRate.LocationId + " and RateCode = " + rateNumber + " " +
+                                 "and CreateDatetime = (select max(CreateDatetime) from RateAmounts where RateCode = ra.RateCode and LocationId = ra.LocationId AND GETDATE() > EffectiveDatetime)";
 
                 string rate = Convert.ToString(thisADO.selectConvertToString(rateSQL, true, true));
 
@@ -71,6 +73,39 @@ namespace Portal2APIs.Controllers
                 thisReturn = rate + "," + rateNumber + "," + locationList;
 
                 return thisReturn;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Rates/GetRateDescriptionAmounts/{id}")]
+        public List<Rate> GetRateDescriptionAmounts(string id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+                strSQL = "select r.Designation, Convert(decimal(10,2),Cast(ra.RateAmount as decimal)/100) as RateAmount, l.ShortLocationName " +
+                         "from rates r " +
+                         "Inner Join rateAmounts ra on r.RateNumber = ra.RateCode and r.LocationId = ra.LocationId " +
+                         "Inner Join LocationDetails l on r.LocationId = l.LocationId " +
+                         "where ra.UpdateDatetime is null " +
+                         "and r.LocationId = " + id + " " +
+                         "Order by l.ShortLocationName, r.Designation ";
+
+                List <Rate> list = new List<Rate>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
             }
             catch (Exception ex)
             {

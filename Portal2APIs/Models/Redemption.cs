@@ -87,5 +87,17 @@ namespace Portal2APIs.Models
             set { m_RedemptionSourceName = value; }
         }
         private string m_RedemptionSourceName;
+        public DateTime ReturnRequest
+        {
+            get { return m_ReturnRequest; }
+            set { m_ReturnRequest = value; }
+        }
+        private DateTime m_ReturnRequest;
+        public DateTime ReturnProcessed
+        {
+            get { return m_ReturnProcessed; }
+            set { m_ReturnProcessed = value; }
+        }
+        private DateTime m_ReturnProcessed;
     }
 }

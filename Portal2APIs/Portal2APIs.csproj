@@ -120,26 +120,36 @@
     <Compile Include="Controllers\CombineMemberCardsController.cs" />
     <Compile Include="Controllers\CompanyChecksController.cs" />
     <Compile Include="Controllers\CompanyDropDownsController.cs" />
+    <Compile Include="Controllers\DashboardSettingsController.cs" />
     <Compile Include="Controllers\EmailsController.cs" />
+    <Compile Include="Controllers\FleetStatussController.cs" />
+    <Compile Include="Controllers\InsuranceVehiclesController.cs" />
     <Compile Include="Controllers\LocationHasFeaturesController.cs" />
     <Compile Include="Controllers\LocatonsController.cs" />
     <Compile Include="Controllers\MailerCodesController.cs" />
     <Compile Include="Controllers\ManualEditsController.cs" />
     <Compile Include="Controllers\MarketingCodeSavesController.cs" />
+    <Compile Include="Controllers\MarketingCodesController.cs" />
     <Compile Include="Controllers\MarketingRepsController.cs" />
     <Compile Include="Controllers\MemberNotesController.cs" />
     <Compile Include="Controllers\MembersController.cs" />
+    <Compile Include="Controllers\MemberThankYousController.cs" />
     <Compile Include="Controllers\OldPortalGuidsController.cs" />
     <Compile Include="Controllers\PendingManualEditsController.cs" />
     <Compile Include="Controllers\PendingReceiptsController.cs" />
     <Compile Include="Controllers\ProcessPendingManualEditsController.cs" />
+    <Compile Include="Controllers\RateAmountObjectsController.cs" />
     <Compile Include="Controllers\RateListsController.cs" />
     <Compile Include="Controllers\RatesController.cs" />
     <Compile Include="Controllers\RedemptionsController.cs" />
+    <Compile Include="Controllers\ReservationGuestSearchsController.cs" />
     <Compile Include="Controllers\ReservationReportsController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
     <Compile Include="Controllers\SearchTransactionsController.cs" />
+    <Compile Include="Controllers\SupportNotesController.cs" />
+    <Compile Include="Controllers\SupportTicketsController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
+    <Compile Include="Controllers\VehicleTrackingsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -161,7 +171,11 @@
     <Compile Include="Models\CombineMemberCard.cs" />
     <Compile Include="Models\CompanyCheck.cs" />
     <Compile Include="Models\CompanyDropDown.cs" />
+    <Compile Include="Models\DashboardSetting.cs" />
     <Compile Include="Models\Email.cs" />
+    <Compile Include="Models\FleetStatus.cs" />
+    <Compile Include="Models\InsuranceVehicle.cs" />
+    <Compile Include="Models\InsuranceVehiclesCoverage.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationHasFeature.cs" />
     <Compile Include="Models\MailerCode.cs" />
@@ -169,21 +183,28 @@
     <Compile Include="Models\ManualEdit.cs" />
     <Compile Include="Models\ManualEditPending.cs" />
     <Compile Include="Models\ManualEditType.cs" />
+    <Compile Include="Models\MarketingCode.cs" />
     <Compile Include="Models\MarketingCodeSave.cs" />
     <Compile Include="Models\MarketingRep.cs" />
     <Compile Include="Models\Member.cs" />
     <Compile Include="Models\MemberNote.cs" />
+    <Compile Include="Models\MemberThankYou.cs" />
     <Compile Include="Models\OldPortalGuid.cs" />
     <Compile Include="Models\PendingManualEdit.cs" />
     <Compile Include="Models\PendingReceipt.cs" />
     <Compile Include="Models\ProcessPendingManualEdit.cs" />
     <Compile Include="Models\Rate.cs" />
+    <Compile Include="Models\RateAmountObject.cs" />
     <Compile Include="Models\RateList.cs" />
     <Compile Include="Models\Redemption.cs" />
     <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\ReservationGuestSearch.cs" />
     <Compile Include="Models\ReservationReport.cs" />
     <Compile Include="Models\SearchTransaction.cs" />
+    <Compile Include="Models\SupportNote.cs" />
+    <Compile Include="Models\SupportTicket.cs" />
     <Compile Include="Models\Vehicle.cs" />
+    <Compile Include="Models\VehicleTracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

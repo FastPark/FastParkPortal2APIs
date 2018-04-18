@@ -70,7 +70,7 @@ namespace Portal2APIs.Controllers
             {
                 if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)")
                 {
-                    strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home, mi.UserName, mi.CompanyId " +
+                    strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home, mi.UserName, mi.CompanyId, mi.CityName as City, mi.StreetAddress " +
                              "from dbo.MemberInformationMain mi " +
                              "Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
                              "Inner Join MemberHasLocation mhl on mi.MemberId = mhl.MemberId " +

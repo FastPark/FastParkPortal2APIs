@@ -5,26 +5,24 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Portal2APIs.Common;
-using System.Data.SqlClient;
 using Portal2APIs.Models;
 
 namespace Portal2APIs.Controllers
 {
-    public class CompanyDropDownsController : ApiController
+    public class MemberThankYousController : ApiController
     {
         [HttpGet]
-        [Route("api/CompanyDropDowns/GetCompanies/")]
-        public List<CompanyDropDown> GetCompanies()
+        [Route("api/MemberThankYous/GetMemberThankYou/{id}")]
+        public List<MemberThankYou> GetCardDist(int id)
         {
             try
             {
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-
-                strSQL = "Select id, name + ' - ' + Cast(id as nvarchar) as name from dbo.companies";
-                List<CompanyDropDown> list = new List<CompanyDropDown>();
-                thisADO.returnSingleValueMarketing(strSQL, true, ref list);
+                strSQL = "Select MemberThankYouId, MemberThankYouUserId, MemberThankYouMemberId, MemberThankYouDate from MemberThankYou where MemberThankYouMemberId = " + id;
+                List<MemberThankYou> list = new List<MemberThankYou>();
+                thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
             }
@@ -37,24 +35,23 @@ namespace Portal2APIs.Controllers
                 };
                 throw new HttpResponseException(response);
             }
-
         }
 
-        [HttpGet]
-        [Route("api/CompanyDropDowns/GetCompanyName/{Id}")]
-        public List<CompanyDropDown> GetCompanyName(int Id)
+        [HttpPost]
+        [Route("api/MemberThankYous/PostMemberThankYou")]
+        public string Distribute(MemberThankYou mty)
         {
+            clsADO thisADO = new clsADO();
+            string strSQL = null;
+
             try
             {
-                string strSQL = "";
-                clsADO thisADO = new clsADO();
+                strSQL = "insert into MemberThankYou (MemberThankYouUserId, MemberThankYouMemberId, MemberThankYouDate) " +
+                                             "values ('" + mty.MemberThankYouUserId + "', " + mty.MemberThankYouMemberId + ", GetDate())";
 
+                thisADO.updateOrInsert(strSQL, false);
 
-                strSQL = "Select name from dbo.companies where ID = " + Id;
-                List<CompanyDropDown> list = new List<CompanyDropDown>();
-                thisADO.returnSingleValueMarketing(strSQL, true, ref list);
-
-                return list;
+                return "Success";
             }
             catch (Exception ex)
             {
@@ -65,7 +62,6 @@ namespace Portal2APIs.Controllers
                 };
                 throw new HttpResponseException(response);
             }
-
         }
     }
 }

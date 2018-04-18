@@ -27,9 +27,9 @@ namespace Portal2APIs.Controllers
                                 "where cmh.company_id = " + id + " " +
                             ") then ' **' Else '' End as RateDisplay " +
                             "from LocationDetails l " +
-                            "inner join RateAmounts ra on l.LocationId = ra.LocationId and dbo.GetlocationRateFunction(" + id + ", l.LocationId) = ra.RateCode " +
-                            "Where ra.UpdateDatetime is null " +
-                            "And l.SkiDataLocation = 1 " +
+                            //"inner join RateAmounts ra on l.LocationId = ra.LocationId and dbo.GetlocationRateFunction(" + id + ", l.LocationId) = ra.RateCode and getdate() between ra.EffectiveDatetime AND ISNULL(ra.UpdateDatetime, DATEADD(DAY,1,GETDATE())) " +
+                            "inner join RateAmounts ra on l.LocationId = ra.LocationId and dbo.GetlocationRateFunction(" + id + ", l.LocationId) = ra.RateCode and ra.CreateDatetime = (select max(CreateDatetime) from RateAmounts where RateCode = ra.RateCode and LocationId = ra.LocationId AND GETDATE() > EffectiveDatetime) " +
+                            "Where l.SkiDataLocation = 1 " +
                             "Order by l.ShortLocationName";
 
                 List<RateList> list = new List<RateList>();

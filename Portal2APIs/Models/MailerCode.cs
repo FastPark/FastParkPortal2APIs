@@ -56,6 +56,13 @@ namespace Portal2APIs.Models
         }
         private DateTime m_updated_at;
 
+        public DateTime deleted_at
+        {
+            get { return m_deleted_at; }
+            set { m_deleted_at = value; }
+        }
+        private DateTime m_deleted_at;
+
         public string CompanyName
         {
             get { return m_CompanyName; }

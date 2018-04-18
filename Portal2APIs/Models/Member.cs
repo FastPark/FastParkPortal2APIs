@@ -94,6 +94,13 @@ namespace Portal2APIs.Models
         }
         private string m_StreetAddress;
 
+        public string City
+        {
+            get { return m_City; }
+            set { m_City = value; }
+        }
+        private string m_City;
+
         public string Home
         {
             get { return m_Home; }
