@@ -12,13 +12,15 @@ namespace Portal2APIs.Controllers
     public class InsuranceVehiclesController : ApiController
     {
         [HttpGet]
-        [Route("api/InsuranceVehicles/GetVehiclesByLocation/{id}")]
-        public List<InsVehicles> GetVehicles(string id)
+        [Route("api/InsuranceVehicles/GetInsuranceVehicles/{id}")]
+        public List<InsVehicles> GetInsuranceVehicles(string id)
         {
             try
             {
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
+
+                string whereClause = "Where ";
 
                 //Update Vehicle Link by adding any new vehicles in the vehicle table
                 strSQL = "INSERT INTO InsuranceClaims.dbo.VehicleLink (VehicleId, VehicleCoverageId, CoverageStatus) " +
@@ -29,6 +31,41 @@ namespace Portal2APIs.Controllers
                 thisADO.updateOrInsert(strSQL, false);
 
                 id = id.Replace("_", ",");
+
+                string[] thisParams = id.Split('~');
+
+                if (thisParams[0].ToString() != "")
+                {
+                    whereClause = whereClause + "v.CurrentLocationId in (" + thisParams[0].ToString() + ") ";
+                }
+
+                if (thisParams[1].ToString() != "")
+                {
+                    if (whereClause == "Where ")
+                    {
+                        whereClause = whereClause + "v.StatusId in (" + thisParams[1].ToString() + ") ";
+                    }
+                    else
+                    {
+                        whereClause = whereClause + "and v.StatusId in (" + thisParams[1].ToString() + ") ";
+                    }
+                }
+
+                if (thisParams[2].ToString() != "")
+                {
+                    if (whereClause == "Where ")
+                    {
+                        whereClause = whereClause + "vl.VehicleCoverageId in (" + thisParams[2].ToString() + ")";
+                    }
+                    else
+                    {
+                        whereClause = whereClause + "and vl.VehicleCoverageId in (" + thisParams[2].ToString() + ")";
+                    }
+                }
+
+                //"where v.CurrentLocationId in (" + thisParams[0].ToString() + ") " +
+                //"and v.StatusId in (" + thisParams[1].ToString() + ") " +
+                //"and vl.VehicleCoverageId in (" + thisParams[2].ToString() + ")";
 
                 strSQL = "select v.VehicleId, s.StatusDescription, v.VehicleNumber, v.Year, vmake.MakeName, vm.ModelName, v.VINNumber, l.NameOfLocation as Garaged,  vpt.OriginalCost, vt.TypeDescription as Class, vc.VehicleCoveragename as Coverage, vl.VehicleCoverageId as CoverageCode, d.DriverName, " +
                         "vct.ChangeInitiatedDate as [ChangeDate], Replace(Replace(vct.ChangeNotes, char(13) + char(10), ''), char(9), '') as [ChangeNotes], v.ActiveDate as [AddDate], IsNull(v.InactiveDate, '') as [DeleteDate], " +
@@ -49,7 +86,7 @@ namespace Portal2APIs.Controllers
                             "from Vehicles.dbo.VehicleChangeTracking " +
                             "Order by ChangeInitiatedDate desc " +
                         ") vct on v.VehicleId = vl.VehicleId " +
-                        "where v.CurrentLocationId in (" + id + ")";
+                        whereClause;
 
                 List<InsVehicles> list = new List<InsVehicles>();
 
@@ -128,7 +165,7 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "Select VehicleCoverageId, VehicleCoveragename from InsuranceClaims.dbo.VehicleCoverage order by VehicleCoveragename";
+                strSQL = "Select VehicleCoverageId, VehicleCoveragename from InsuranceClaims.dbo.VehicleCoverage Order By VehicleCoveragename";
 
                 List<InsuranceVehiclesCoverage> list = new List<InsuranceVehiclesCoverage>();
 

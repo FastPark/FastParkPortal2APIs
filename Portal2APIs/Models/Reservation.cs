@@ -56,7 +56,13 @@ namespace Portal2APIs.Models
             set { m_CanceledDate = value; }
         }
         private DateTime m_CanceledDate;
-        
+        public DateTime CreateDatetime
+        {
+            get { return m_CreateDatetime; }
+            set { m_CreateDatetime = value; }
+        }
+        private DateTime m_CreateDatetime;
+
         public string FirstName
         {
             get { return m_FirstName; }
@@ -110,5 +116,17 @@ namespace Portal2APIs.Models
             set { m_EstimatedCost = value; }
         }
         private decimal m_EstimatedCost;
+        public string MemberNote
+        {
+            get { return m_MemberNote; }
+            set { m_MemberNote = value; }
+        }
+        private string m_MemberNote;
+        public string BrandName
+        {
+            get { return m_BrandName; }
+            set { m_BrandName = value; }
+        }
+        private string m_BrandName;
     }
 }

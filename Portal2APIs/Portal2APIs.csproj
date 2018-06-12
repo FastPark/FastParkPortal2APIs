@@ -204,6 +204,7 @@
     <Compile Include="Models\SupportNote.cs" />
     <Compile Include="Models\SupportTicket.cs" />
     <Compile Include="Models\Vehicle.cs" />
+    <Compile Include="Models\VehicleStatus.cs" />
     <Compile Include="Models\VehicleTracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

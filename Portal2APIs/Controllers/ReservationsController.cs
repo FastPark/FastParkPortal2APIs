@@ -47,6 +47,44 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet]
+        [Route("api/Reservations/GetReservationByMemberId/{id}")]
+        public List<Reservation> GetReservationByMemberId(string id)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+
+                strSQL = "select r.ReservationId, r.ReservationNumber, l.ShortLocationName, r.StartDatetime, r.EndDatetime, r.CreateDatetime, r.CanceledDate, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, r.EstimatedCost, rs.ReservationStatusName, b.BrandName, r.MemberNote " +
+                        "from Reservations r " +
+                        "Left Outer Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
+                        "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
+                        "Inner Join LocationDetails l on r.LocationId = l.LocationId " +
+                        "Inner Join ReservationStatus rs on r.ReservationStatusId = rs.ReservationStatusId " +
+                        "Inner Join Brands b on l.BrandId = b.BrandId " +
+                        "Where r.MemberId = '" + id + "' " +
+                        "and isnull(mc.IsPrimary, 1) = 1 " +
+                        "Order By r.StartDatetime desc";
+
+                List<Reservation> list = new List<Reservation>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
+
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
         [Route("api/Reservations/GetReservationIncomingDate/{id}")]
         public List<Reservation> GetReservationIncomingDate(string id)
         {

@@ -38,6 +38,33 @@ namespace Portal2APIs.Controllers
             }
         }
 
+        [HttpGet()]
+        [Route("api/Vehicles/GetVehiclesStatusList")]
+        public List<VehicleStatus> GetVehiclesStatusList()
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select StatusId, StatusDescription from Vehicles.dbo.Status Order By StatusDescription";
+                List<VehicleStatus> list = new List<VehicleStatus>();
+                //thisADO.returnSingleValueForPark09(strSQL, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list; ;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
         [HttpGet]
         [Route("api/Vehicles/GetLocations")]
         public List<Location> GetLocations()
