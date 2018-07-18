@@ -126,6 +126,7 @@
     <Compile Include="Controllers\InsuranceVehiclesController.cs" />
     <Compile Include="Controllers\LocationHasFeaturesController.cs" />
     <Compile Include="Controllers\LocatonsController.cs" />
+    <Compile Include="Controllers\MailChimpsController.cs" />
     <Compile Include="Controllers\MailerCodesController.cs" />
     <Compile Include="Controllers\ManualEditsController.cs" />
     <Compile Include="Controllers\MarketingCodeSavesController.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Models\InsuranceVehiclesCoverage.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\LocationHasFeature.cs" />
+    <Compile Include="Models\MailChimp.cs" />
     <Compile Include="Models\MailerCode.cs" />
     <Compile Include="Models\MailerCodeSend.cs" />
     <Compile Include="Models\ManualEdit.cs" />

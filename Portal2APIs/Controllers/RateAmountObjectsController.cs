@@ -53,9 +53,9 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Update RateAmounts set UpdateDatetime = GetDate() where RateCode = " + RAO.RateCode + " and UpdateDatetime is null and LocationId = " + RAO.LocationId;
+                //strSQL = "Update RateAmounts set UpdateDatetime = GetDate() where RateCode = " + RAO.RateCode + " and UpdateDatetime is null and LocationId = " + RAO.LocationId;
 
-                thisADO.updateOrInsert(strSQL, true);
+                //thisADO.updateOrInsert(strSQL, true);
 
                 strSQL = "Insert into RateAmounts (RateCode, RateAmount, EffectiveDatetime, LocationId, AdvertisedRate, HourlyRate, DailyRateThreshold, CreateUserId, IsDeleted, UpdateExternalUserData) " +
                                            "Values (" + RAO.RateCode + ", " + RAO.RateAmount + ", '" + RAO.EffectiveDatetime + "', " + RAO.LocationId + ", " + RAO.AdvertisedRate + ", " + RAO.HourlyRate + ", " + RAO.DailyRateThreshold + ", -1, 0, '" + RAO.UpdateExternalUserData +"')";

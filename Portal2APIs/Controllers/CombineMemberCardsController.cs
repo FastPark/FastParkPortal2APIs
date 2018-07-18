@@ -44,6 +44,8 @@ namespace Portal2APIs.Controllers
                 thisADO.updateOrInsert("Update MemberCard set IsPrimary = 1 where FPNumber = " + cardsToCombine.TargetCard, true);
                 //Set memberId of origin memberCard to target MemberId this will get synced from remote
                 thisADO.updateOrInsert("Update MemberCard set MemberId = " + targetMemberId + ", IsPrimary = 0 where FPNumber = " + cardsToCombine.OriginCard, true);
+                //Set all remaining cards from orig memberId to target memberId
+                thisADO.updateOrInsert("Update MemberCard set MemberId = " + targetMemberId + ", IsPrimary = 0 where MemberId = " + originMemberId, true);
 
 
                 //set email status and dateupdated for both member accounts and set deleted for origin
