@@ -150,6 +150,7 @@
     <Compile Include="Controllers\SupportNotesController.cs" />
     <Compile Include="Controllers\SupportTicketsController.cs" />
     <Compile Include="Controllers\VehiclesController.cs" />
+    <Compile Include="Controllers\VehicleStatesController.cs" />
     <Compile Include="Controllers\VehicleTrackingsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -206,6 +207,7 @@
     <Compile Include="Models\SupportNote.cs" />
     <Compile Include="Models\SupportTicket.cs" />
     <Compile Include="Models\Vehicle.cs" />
+    <Compile Include="Models\VehicleState.cs" />
     <Compile Include="Models\VehicleStatus.cs" />
     <Compile Include="Models\VehicleTracking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

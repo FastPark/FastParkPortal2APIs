@@ -110,31 +110,32 @@ namespace Portal2APIs.Controllers
         public string UpdateInsuranceVehicleStatus(InsVehicles iv)
         {
             string strSQL = "";
+            int thisState  = iv.StateID;
 
             try
             {
                 clsADO thisADO = new clsADO();
 
                 strSQL = "Update InsuranceClaims.dbo.VehicleLink " +
-                         "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = '" + iv.CoverageAdded + "', CoverageRemoved = '" + iv.CoverageRemoved + "' " +
+                         "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = '" + iv.CoverageAdded + "', CoverageRemoved = '" + iv.CoverageRemoved + "', StateID = " + thisState + " " +
                          "Where VehicleId = " + iv.VehicleId;
 
                 if (iv.CoverageAdded == null)
                 {
                     strSQL = "Update InsuranceClaims.dbo.VehicleLink " +
-                         "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = null, CoverageRemoved = '" + iv.CoverageRemoved + "' " +
+                         "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = null, CoverageRemoved = '" + iv.CoverageRemoved + "', StateID = " + thisState + " " +
                          "Where VehicleId = " + iv.VehicleId;
                 }
                 if (iv.CoverageRemoved == null)
                 {
                     strSQL = "Update InsuranceClaims.dbo.VehicleLink " +
-                         "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = '" + iv.CoverageAdded + "', CoverageRemoved = null " +
+                         "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = '" + iv.CoverageAdded + "', CoverageRemoved = null, StateID = " + thisState + " " +
                          "Where VehicleId = " + iv.VehicleId;
                 }
                 if (iv.CoverageAdded == null && iv.CoverageRemoved == null)
                 {
                     strSQL = "Update InsuranceClaims.dbo.VehicleLink " +
-                        "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = null, CoverageRemoved = null " +
+                        "Set VehicleCoverageId = " + iv.Coverage + ", CoverageStatus = " + iv.Insurance + ", CoverageAdded = null, CoverageRemoved = null, StateID = " + thisState + " " +
                         "Where VehicleId = " + iv.VehicleId;
                 }
 

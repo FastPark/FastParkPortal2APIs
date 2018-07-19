@@ -36,6 +36,7 @@ namespace Portal2APIs.Models
         private object _CoverageAdded;
         private object _CoverageRemoved;
         private string _State;
+        private int _StateID;
 
         #endregion
         #region Public Properties
@@ -149,6 +150,11 @@ namespace Portal2APIs.Models
         {
             get { return _State; }
             set { _State = value; }
+        }
+        public int StateID
+        {
+            get { return _StateID; }
+            set { _StateID = value; }
         }
         #endregion
     }
