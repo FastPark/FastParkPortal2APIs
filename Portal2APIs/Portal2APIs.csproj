@@ -143,6 +143,7 @@
     <Compile Include="Controllers\RateListsController.cs" />
     <Compile Include="Controllers\RatesController.cs" />
     <Compile Include="Controllers\RedemptionsController.cs" />
+    <Compile Include="Controllers\ReferralsController.cs" />
     <Compile Include="Controllers\ReservationGuestSearchsController.cs" />
     <Compile Include="Controllers\ReservationReportsController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
@@ -200,6 +201,7 @@
     <Compile Include="Models\RateAmountObject.cs" />
     <Compile Include="Models\RateList.cs" />
     <Compile Include="Models\Redemption.cs" />
+    <Compile Include="Models\Referral.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\ReservationGuestSearch.cs" />
     <Compile Include="Models\ReservationReport.cs" />
