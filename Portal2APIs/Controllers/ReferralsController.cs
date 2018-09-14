@@ -20,7 +20,7 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "Select mi.MemberId, r.ReferralId, rt.ReferralTypeName, r.SentToEmail, r.CreateDatetime As RefferedDate, mi.MemberSince as SignedDate, mi.ReferralPointsAwarded, DATEADD(DAY, -1, mi.ReferralCompleteDate) " +
+                strSQL = "Select mi.MemberId, r.ReferralId, rt.ReferralTypeName, r.SentToEmail, r.CreateDatetime As RefferedDate, mi.MemberSince as SignedDate, mi.ReferralPointsAwarded, DATEADD(DAY, -1, mi.ReferralCompleteDate) as ReferralCompleteDate " +
                         "from referral r " +
                         "Inner Join ReferralType rt on r.ReferralTypeId = rt.ReferralTypeId " +
                         "Left Outer Join MemberInformationMain mi on r.ReferralId = mi.ReferralId " +
