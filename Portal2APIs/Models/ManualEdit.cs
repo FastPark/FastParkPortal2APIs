@@ -42,19 +42,19 @@ namespace Portal2APIs.Models
         }
         private DateTime m_SubmittedDate;
 
-        public string PerformedBy
+        public int PerformedBy
         {
             get { return m_PerformedBy; }
             set { m_PerformedBy = value; }
         }
-        private string m_PerformedBy;
+        private int m_PerformedBy;
 
-        public string SubmittedBy
+        public int SubmittedBy
         {
             get { return m_SubmittedBy; }
             set { m_SubmittedBy = value; }
         }
-        private string m_SubmittedBy;
+        private int m_SubmittedBy;
 
         public int ExplanationId
         {
@@ -162,5 +162,11 @@ namespace Portal2APIs.Models
             set { m_UpdateExternalUserData = value; }
         }
         private String m_UpdateExternalUserData;
+        public String Name
+        {
+            get { return m_Name; }
+            set { m_Name = value; }
+        }
+        private String m_Name;
     }
 }

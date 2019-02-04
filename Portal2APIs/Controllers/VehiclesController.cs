@@ -39,6 +39,37 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet()]
+        [Route("api/Vehicles/GetVehicleByID/{id}")]
+        public List<Vehicle> GetVehiclesByID(int Id)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select v.VehicleId, v.VehicleNumber, v.Year,  vm.MakeName, vmd.ModelName, Vehicles.dbo.GetMileage(V.VehicleId) as Mileage, Vehicles.dbo.GetHours(V.VehicleId) as Hours, VINNumber, v.ModelId, v.FuelTypeId " +
+                         "from Vehicles.dbo.Vehicles v " +
+                         "inner join Vehicles.dbo.VehicleModels vmd on v.ModelID = vmd.ModelID " +
+                         "inner join Vehicles.dbo.VehicleMakes vm on vmd.MakeID = vm.MakeID " +
+                         "where VehicleID = " + Id;
+                List<Vehicle> list = new List<Vehicle>();
+                //thisADO.returnSingleValueForPark09(strSQL, ref list);
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list; ;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet()]
         [Route("api/Vehicles/GetVehiclesStatusList")]
         public List<VehicleStatus> GetVehiclesStatusList()
         {
@@ -53,6 +84,60 @@ namespace Portal2APIs.Controllers
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list; ;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPost()]
+        [Route("api/Vehicles/GetVehicleMileageByDate/")]
+        public string GetVehicleMileageByDate(Vehicle v)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select EndingMileage from Vehicles.dbo.VehicleDailyTracking where vehicleId = " + v.VehicleId + " and Convert(nvarchar, TrackingDate, 101) = Convert(nvarchar, CAST('" + v.MileageDate + "' as datetime), 101)";
+                List<Vehicle> list = new List<Vehicle>();
+                //thisADO.returnSingleValueForPark09(strSQL, ref list);
+                string thisMileage = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                return thisMileage; ;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPost()]
+        [Route("api/Vehicles/GetVehicleHoursByDate/")]
+        public string GetVehicleHoursByDate(Vehicle v)
+        {
+            string strSQL = "";
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+                strSQL = "Select EndingEngineHours as Hours from Vehicles.dbo.VehicleDailyTracking where vehicleId = " + v.VehicleId + " and Convert(nvarchar, TrackingDate, 101) = Convert(nvarchar, CAST('" + v.MileageDate + "' as datetime), 101)";
+                List<Vehicle> list = new List<Vehicle>();
+                //thisADO.returnSingleValueForPark09(strSQL, ref list);
+                string thisMileage = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                return thisMileage; ;
             }
             catch (Exception ex)
             {

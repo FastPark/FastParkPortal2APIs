@@ -75,7 +75,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select LocationId, ShortLocationName as NameOfLocation from CardDistribution.dbo.LocationDetails where LocationID not in (5, 8)";
+                strSQL = "Select LocationId, ShortLocationName as NameOfLocation from CardDistribution.dbo.LocationDetails where LocationID not in (5, 8) order by ShortLocationName";
                 List<CardLocation> list = new List<CardLocation>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 

@@ -21,7 +21,12 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select me.*, met.Explanation  from dbo.ManualEdits me inner join ManualEditTypes met on me.ExplanationId = met.ExplanationId where ManualEditID=" + id;
+                strSQL = "Select met.Explanation, isnull(me.UpdateExternalUserData, '') as UpdateExternalUserData, isnull(mi.FirstName + ' ' + mi.LastName, '') as Name, me.* " +
+                         "from dbo.ManualEdits me " +
+                         "Left Outer Join ManualEditTypes met on me.ExplanationId = met.ExplanationId " +
+                         "Left Outer Join MemberInformationMain mi on me.CreateUserId = mi.MemberId  and me.CreateUserId <> -1 and me.CreateUserId <> 1 " +
+                         "where ManualEditID = " + id;
+
                 List<ManualEdit> list = new List<ManualEdit>();
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
