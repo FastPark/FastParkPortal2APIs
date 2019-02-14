@@ -122,6 +122,45 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpPost]
+        [Route("api/ManualEdits/AddManualEditDirectly/")]
+        public string AddManualEditDirectly(ManualEdit man)
+        {
+            try
+            {
+                string strSQL;
+                clsADO thisADO = new clsADO();
+
+                strSQL = "INSERT INTO ManualEdits " +
+                         "(PointsChanged, LocationId, MemberID, ManualEditDate, CertificateNumber, ExplanationID, Notes, UpdateExternalUserData, CompanyId, CreateUserId, CreateDatetime, SubmittedDate) " +
+                         "VALUES (" + man.PointsChanged + ", " + man.LocationId + ", " + man.MemberId + ", '" + man.ManualEditDate + "', '" + man.CertificateNumber +
+                         "', " + man.ExplanationId + ", '" + man.Notes + "', '" + man.UpdateExternalUserData + "', " + man.CompanyId + ", -1, '" + DateTime.Now + "', '" + DateTime.Now + "')";
+
+
+                //strSQL = "INSERT INTO dbo.ManualEdits (MemberID,LocationID,ManualEditDate,SubmittedDate,PerformedBy, " +
+                //         "SubmittedBy, ExplanationID,PointsChanged,CertificateNumber,ParkingTransactionNumber,CompanyID, " +
+                //         "Notes,PerformedByUserID,SubmittedByUserID) " +
+                //         "Values (" + man.MemberId + ", " + man.LocationId + ", '" + man.ManualEditDate + "', '" + man.SubmittedDate + "', '" +
+                //         man.PerformedBy + "', '" + man.SubmittedBy + "', " + man.ExplanationId + ", " + man.PointsChanged + ", '" +
+                //         man.CertificateNumber + "', '" + man.ParkingTransactionNumber + "', " + man.CompanyId + ", '" + man.Notes + "', '" +
+                //         man.PerformedByUserId + "', '" + man.SubmittedByUserId + "')";
+
+                thisADO.updateOrInsert(strSQL, true);
+
+                return "Success";
+
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(Convert.ToString(ex), System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPost]
         [Route("api/ManualEdits/UpdateManualEdit/")]
         public void UpdateManualEdit(ManualEdit man)
         {
