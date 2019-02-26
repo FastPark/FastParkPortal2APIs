@@ -179,5 +179,37 @@ namespace Portal2APIs.Controllers
                 throw new HttpResponseException(response);
             }
         }
+
+        [HttpGet]
+        [Route("api/Vehicles/GetUsersVehicleLocations/{id}")]
+        public List<Location> GetUsersVehicleLocations(string Id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+
+                strSQL = "Select ShortLocationName " +
+                        "from aspnetdb.dbo.aspnet_users u " +
+                        "Inner Join Vehicles.dbo.UserVehicleLocations vl on u.UserId = vl.UserId " +
+                        "Inner Join Location l on vl.LocationId = l.LocationId " +
+                        "where u.UserName = '" + Id + "'";
+
+                List<Location> list = new List<Location>();
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
     }
 }

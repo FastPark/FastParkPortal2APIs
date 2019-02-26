@@ -68,6 +68,13 @@ namespace Portal2APIs.Models
             set { m_IsReturned = value; }
         }
         private int m_IsReturned;
+
+        public int IsExpired
+        {
+            get { return m_IsExpired; }
+            set { m_IsExpired = value; }
+        }
+        private int m_IsExpired;
         public string UpdateExternalUserData
         {
             get { return m_UpdateExternalUserData; }

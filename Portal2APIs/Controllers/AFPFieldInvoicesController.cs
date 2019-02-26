@@ -62,7 +62,8 @@ namespace Portal2APIs.Controllers
                         "from AFPExpenses.dbo.Invoice i " +
                         "Left Outer Join AFPExpenses.dbo.ExpenseCategory ec on i.ExpenseCategoryID = ec.ExpenseCategoryID " +
                         "Left Outer Join AFPExpenses.dbo.Vendor v on i.VendorID = v.VendorId " +
-                        thisWhere + 
+                        thisWhere +
+                        " and i.IsDeleted = 0 " +
                         " order by InvoiceDate desc";
 
                     List<AFPFieldInvoice> list = new List<AFPFieldInvoice>();
@@ -96,7 +97,9 @@ namespace Portal2APIs.Controllers
                         "from AFPExpenses.dbo.Invoice i " +
                         "Inner Join AFPExpenses.dbo.ExpenseCategory ec on i.ExpenseCategoryID = ec.ExpenseCategoryID " +
                         "Inner Join AFPExpenses.dbo.Vendor v on i.VendorID = v.VendorId " +
-                        "Where i.LocationId = " + id + " order by InvoiceDate desc";
+                        "Where i.LocationId = " + id + " " +
+                        "and i.IsDeleted = 0 " +
+                        "order by InvoiceDate desc";
 
                 List<AFPFieldInvoice> list = new List<AFPFieldInvoice>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
@@ -128,9 +131,10 @@ namespace Portal2APIs.Controllers
                         "from AFPExpenses.dbo.Invoice i " +
                         "Left Outer Join AFPExpenses.dbo.ExpenseCategory ec on i.ExpenseCategoryID = ec.ExpenseCategoryID " +
                         "Left Outer Join AFPExpenses.dbo.Vendor v on i.VendorID = v.VendorID " +
-                        "Where i.InvoiceID = " + id;
+                        "Where i.InvoiceID = " + id + " " +
+                        "and i.IsDeleted = 0 ";
 
-                List<AFPFieldInvoice> list = new List<AFPFieldInvoice>();
+                List <AFPFieldInvoice> list = new List<AFPFieldInvoice>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
@@ -161,9 +165,10 @@ namespace Portal2APIs.Controllers
                         "from AFPExpenses.dbo.Invoice i " +
                         "Inner Join AFPExpenses.dbo.ExpenseCategory ec on i.ExpenseCategoryID = ec.ExpenseCategoryID " +
                         "Inner Join AFPExpenses.dbo.Vendor v on i.VendorID = v.VendorID " +
-                        "Where i.InvoiceNumber = '" + id + "'";
+                        "Where i.InvoiceNumber = '" + id + "' " +
+                        "and i.IsDeleted = 0 ";
 
-                List<AFPFieldInvoice> list = new List<AFPFieldInvoice>();
+                List <AFPFieldInvoice> list = new List<AFPFieldInvoice>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
                 return list;
@@ -316,7 +321,7 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "Delete from AFPExpenses.dbo.Invoice where InvoiceID = " + id;
+                strSQL = "Update AFPExpenses.dbo.Invoice set IsDeleted = 1, DeleteDate = GetDate() where InvoiceID = " + id;
                 
                 thisADO.updateOrInsert(strSQL, false);
 
