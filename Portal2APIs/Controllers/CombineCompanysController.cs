@@ -22,7 +22,7 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "select c.id, name, address_1, city, state, zip, home_rate_code, away_rate_code " +
+                strSQL = "select c.id, name, address_1, city, state, zip, home_rate_code, away_rate_code, website " +
                         "from companies c " +
                         "Inner Join company_market_histories_For_Import_Current cmh on c.id = cmh.company_id " +
                         "where c.id = " + id;

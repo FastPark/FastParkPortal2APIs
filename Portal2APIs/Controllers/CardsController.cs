@@ -60,5 +60,36 @@ namespace Portal2APIs.Controllers
                 return "Error - " + ex.ToString();
             }
         }
+
+        [HttpGet]
+        [Route("api/Cards/ValidateCard/{id}")]
+        public Int64 ValidateCard(int id)
+        {
+            Int64  validationNumber = -10;
+
+            try
+            {
+                clsADO thisADO = new clsADO();
+
+                string strSQLPendingDelete = "Select CardValidationNumber from CardDistributionInventory where CardFPNumber = " + id;
+
+                validationNumber = Convert.ToInt64(thisADO.returnSingleValueForInternalAPIUse(strSQLPendingDelete, true));
+
+                if (validationNumber > 0)
+                {
+                    return validationNumber;
+                }
+                else
+                {
+                    return -10;
+                }
+
+                
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+        }
     }
 }

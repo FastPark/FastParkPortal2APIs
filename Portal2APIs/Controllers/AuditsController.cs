@@ -30,7 +30,7 @@ namespace Portal2APIs.Controllers
                         "select cl.changeID as MemberId, mi.FirstName, mi.LastName, ChangeNote as DataChanged, ChangeValOld as OldValue, changeValNew as NewValue, 'Portal' as ChangeType, changeUser, changeDate, changeDate as orderColumn " +
                         "from changelog cl " +
                         "Left Outer Join MemberInformationMain mi on cl.ChangeId = mi.memberId " +
-                        "where cl.ChangeId = " + id + ") audits " +
+                        "where cl.ChangeId = " + id + " and cl.ChangeNote <> 'Set Reservation Complete') audits " +
                         "order by orderColumn desc";
 
                 List<Audit> list = new List<Audit>();

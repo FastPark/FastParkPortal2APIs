@@ -47,7 +47,7 @@ namespace Portal2APIs.Controllers
                     vp.PartCategoryId = 0;
                     vp.FuelTypeId = ((VehicleMaintenancePart)vmp).FuelTypeId;
                     vp.PartName = ((VehicleMaintenancePart)vmp).PartDescription;
-                    vp.PartModel = "";
+                    vp.PartModel = ((VehicleMaintenancePart)vmp).PartModel;
                     vp.PartManufacturer = "";
                     vp.PartDescription = ((VehicleMaintenancePart)vmp).PartDescription;
                     vp.Stockable = 0;

@@ -128,5 +128,11 @@ namespace Portal2APIs.Models
             set { m_BrandName = value; }
         }
         private string m_BrandName;
+        public string EmailAddress
+        {
+            get { return m_EmailAddress; }
+            set { m_EmailAddress = value; }
+        }
+        private string m_EmailAddress;
     }
 }

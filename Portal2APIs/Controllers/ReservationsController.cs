@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
             try
             {
 
-                strSQL = "select r.ReservationId, r.ReservationNumber, l.ShortLocationName, r.StartDatetime, r.EndDatetime, r.CanceledDate, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, r.EstimatedCost " +
+                strSQL = "select r.ReservationId, r.ReservationNumber, l.ShortLocationName, r.StartDatetime, r.EndDatetime, r.CanceledDate, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, r.EstimatedCost, mi.EmailAddress " +
                         "from Reservations r " +
                         "Left Outer Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
                         "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +

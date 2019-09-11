@@ -26,6 +26,7 @@ namespace Portal2APIs.Models
         private object _Tax;
         private int _ModelId;
         private int _FuelTypeId;
+        private string _PartModel;
         #endregion
         #region Public Properties
         public int VehicleMaintenanceId
@@ -97,6 +98,11 @@ namespace Portal2APIs.Models
         {
             get { return _PartSupplierName; }
             set { _PartSupplierName = value; }
+        }
+        public string PartModel
+        {
+            get { return _PartModel; }
+            set { _PartModel = value; }
         }
         #endregion
     }

@@ -91,5 +91,11 @@ namespace Portal2APIs.Models
             set { m_flyers = value; }
         }
         private int m_flyers;
+        public string website
+        {
+            get { return m_website; }
+            set { m_website = value; }
+        }
+        private string m_website;
     }
 }

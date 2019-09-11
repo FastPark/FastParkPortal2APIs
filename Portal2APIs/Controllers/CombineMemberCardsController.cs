@@ -25,6 +25,9 @@ namespace Portal2APIs.Controllers
 
                 clsADO thisADO = new clsADO();
 
+                //Get back out Batch
+                var backOutBatchSQL = "Select Max(Batch) + 1 from CardCombineBackOut";
+                var backoutBatch = thisADO.returnSingleValueForInternalAPIUse(backOutBatchSQL, false);
 
                 targetMemberId = Convert.ToInt32(thisADO.returnSingleValueForInternalAPIUse("select MemberId from MemberCard where FPNumber = '" + cardsToCombine.TargetCard + "'", false));
                 originMemberId = Convert.ToInt32(thisADO.returnSingleValueForInternalAPIUse("select MemberId from MemberCard where FPNumber = '" + cardsToCombine.OriginCard + "'", false));
@@ -40,6 +43,21 @@ namespace Portal2APIs.Controllers
                     return "The same MemberID was returned from the entered cards.  Please contact IT with the card numbers for investigation.";
                 }
 
+                //Back Out for Cards gets original state of cards. +++++++++++++++++++++++++++++++++
+                var cardBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberCard set MemberId = ' + Convert(nvarchar(max), MemberId) + ', IsPrimary = ' + Convert(nvarchar(2), IsPrimary) + ', IsActive = ' + Convert(nvarchar(2), IsActive) + ', UpdateDateTime = GetDate() where CardId = ' + Convert(nvarchar(max), CardId), " + backoutBatch + " " +
+                                    "from MemberCard " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(cardBackOutSQL, false);
+                thisADO.updateOrInsert(cardBackOutSQL, true);
+
+                cardBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberCard set MemberId = ' + Convert(nvarchar(max), MemberId) + ', IsPrimary = ' + Convert(nvarchar(2), IsPrimary) + ', IsActive = ' + Convert(nvarchar(2), IsActive) + ', UpdateDateTime = GetDate() where CardId = ' + Convert(nvarchar(max), CardId), " + backoutBatch + " " +
+                                    "from MemberCard " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(cardBackOutSQL, false);
+                thisADO.updateOrInsert(cardBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                 //Set target card as primary
                 thisADO.updateOrInsert("Update MemberCard set IsPrimary = 1 where FPNumber = " + cardsToCombine.TargetCard, true);
                 //Set memberId of origin memberCard to target MemberId this will get synced from remote
@@ -47,24 +65,119 @@ namespace Portal2APIs.Controllers
                 //Set all remaining cards from orig memberId to target memberId
                 thisADO.updateOrInsert("Update MemberCard set MemberId = " + targetMemberId + ", IsPrimary = 0 where MemberId = " + originMemberId, true);
 
+                //Back Out for MemberInformation gets original state of member+++++++++++++++++++++++
+                var memberInfoBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberInformationMain set EmailStatus = ' + Convert(nvarchar(max), EmailStatus) + ', IsDeleted = ' + Convert(nvarchar(2), IsDeleted) + ', EmailAddress = ''' + EmailAddress + ''', UpdateDateTime = GetDate() where MemberId = ' + Convert(nvarchar(max), MemberId), " + backoutBatch + " " +
+                                    "from MemberInformationMain " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(memberInfoBackOutSQL, false);
+                thisADO.updateOrInsert(memberInfoBackOutSQL, true);
+
+                memberInfoBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberInformationMain set EmailStatus = ' + Convert(nvarchar(max), EmailStatus) + ', IsDeleted = ' + Convert(nvarchar(2), IsDeleted) + ', EmailAddress = ''' + EmailAddress + ''', UpdateDateTime = GetDate() where MemberId = ' + Convert(nvarchar(max), MemberId), " + backoutBatch + " " +
+                                    "from MemberInformationMain " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(memberInfoBackOutSQL, false);
+                thisADO.updateOrInsert(memberInfoBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                 //set email status and dateupdated for both member accounts and set deleted for origin
                 thisADO.updateOrInsert("Update MemberInformationMain set EmailStatus = 7, UpdateDatetime = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "' where MemberId = " + targetMemberId, true);
                 thisADO.updateOrInsert("Update MemberInformationMain set EmailStatus = 0, EmailAddress = '', UpdateDatetime = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + "' where MemberId = " + originMemberId, true);
                 thisADO.updateOrInsert("Update MemberInformationMain set IsDeleted = 1 where MemberId = " + originMemberId, true);
 
+                //Back Out for Activity gets original state of Activity+++++++++++++++++++++++
+                var ActivityBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update Activity set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where ParkingTransactionNumber = ''' + ParkingTransactionNumber + '''', " + backoutBatch + " " +
+                                    "from Activity " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(ActivityBackOutSQL, false);
+                thisADO.updateOrInsert(ActivityBackOutSQL, true);
+
+                ActivityBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update Activity set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where ParkingTransactionNumber = ''' + ParkingTransactionNumber + '''', " + backoutBatch + " " +
+                                    "from Activity " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(ActivityBackOutSQL, false);
+                thisADO.updateOrInsert(ActivityBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                 //Set memberId of origin activity to target MemberId and do on both remote and local since it does not sync
                 thisADO.updateOrInsert("Update Activity set MemberId = " + targetMemberId + " where MemberId = " + originMemberId, false);
                 thisADO.updateOrInsert("Update Activity set MemberId = " + targetMemberId + " where MemberId = " + originMemberId, true);
 
+                //Back Out for ManualEdits gets original state of ManualEdits+++++++++++++++++++++++
+                var manualEditBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update ManualEdits set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where ManualEditID = ' + Convert(nvarchar(max), ManualEditID), " + backoutBatch + " " +
+                                    "from ManualEdits " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(manualEditBackOutSQL, false);
+                thisADO.updateOrInsert(manualEditBackOutSQL, true);
+
+                manualEditBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update ManualEdits set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where ManualEditID = ' + Convert(nvarchar(max), ManualEditID), " + backoutBatch + " " +
+                                    "from ManualEdits " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(manualEditBackOutSQL, false);
+                thisADO.updateOrInsert(manualEditBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                 //Set memberId of origin Manual Edits to target MemberId this will get synced from remote
                 thisADO.updateOrInsert("Update ManualEdits set MemberId = " + targetMemberId + " where MemberId = " + originMemberId, true);
+
+                //Back Out for Reservations gets original state of Reservations+++++++++++++++++++++++
+                var reservationBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update Reservations set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where ReservationId = ' + Convert(nvarchar(max), ReservationId), " + backoutBatch + " " +
+                                    "from Reservations " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(reservationBackOutSQL, false);
+                thisADO.updateOrInsert(reservationBackOutSQL, true);
+
+                reservationBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update Reservations set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where ReservationId = ' + Convert(nvarchar(max), ReservationId), " + backoutBatch + " " +
+                                    "from Reservations " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(reservationBackOutSQL, false);
+                thisADO.updateOrInsert(reservationBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                 //Set memberId of origin Reservations to target MemberId this will get synced from remote
                 thisADO.updateOrInsert("Update Reservations set MemberId = " + targetMemberId + " where MemberId = " + originMemberId, true);
 
+                //Back Out for Redemptions gets original state of Redemptions+++++++++++++++++++++++
+                var redemptionBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update Redemptions set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where RedemptionId = ' + Convert(nvarchar(max), RedemptionId), " + backoutBatch + " " +
+                                    "from Redemptions " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(redemptionBackOutSQL, false);
+                thisADO.updateOrInsert(redemptionBackOutSQL, true);
+
+                redemptionBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update Redemptions set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where RedemptionId = ' + Convert(nvarchar(max), RedemptionId), " + backoutBatch + " " +
+                                    "from Redemptions " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(redemptionBackOutSQL, false);
+                thisADO.updateOrInsert(redemptionBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                 //Set memberId of origin Redemptions to target MemberId this will get synced from remote
                 thisADO.updateOrInsert("Update Redemptions set MemberId = " + targetMemberId + " where MemberId = " + originMemberId, true);
+
+                //Back Out for BeginningPoints gets original state of BeginningPoints+++++++++++++++++++++++
+                var beginningBalanceBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberBeginningBalance set BeginningPoints = ' + Convert(nvarchar(max), BeginningPoints) + ' where MemberId = ' + Convert(nvarchar(max), MemberId), " + backoutBatch + " " +
+                                    "from MemberBeginningBalance " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(beginningBalanceBackOutSQL, false);
+                thisADO.updateOrInsert(beginningBalanceBackOutSQL, true);
+
+                beginningBalanceBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberBeginningBalance set BeginningPoints = ' + Convert(nvarchar(max), BeginningPoints) + ' where MemberId = ' + Convert(nvarchar(max), MemberId), " + backoutBatch + " " +
+                                    "from MemberBeginningBalance " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(beginningBalanceBackOutSQL, false);
+                thisADO.updateOrInsert(beginningBalanceBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
                 //Get beginning balance for both target and origin
                 targetBeginningBalance = Convert.ToInt32(thisADO.returnSingleValueForInternalAPIUse("select BeginningPoints from MemberBeginningBalance where MemberId = " + targetMemberId, true));
@@ -82,29 +195,64 @@ namespace Portal2APIs.Controllers
                 thisADO.updateOrInsert("Update MemberBeginningBalance set BeginningPoints = 0 where MemberId = " + originMemberId, false);
                 thisADO.updateOrInsert("Update MemberBeginningBalance set BeginningPoints = 0 where MemberId = " + originMemberId, true);
 
+                //Back Out for BeginningPoints gets original state of BeginningPoints+++++++++++++++++++++++
+                var memberVisitBackOutSQL = "Insert into CardCombineBackOut " +
+                                            "Select 'Delete from MemberVisitTracking where MemberId = " + originMemberId + "', " + backoutBatch;
+                thisADO.updateOrInsert(memberVisitBackOutSQL, false);
+                thisADO.updateOrInsert(memberVisitBackOutSQL, true);
+
+                memberVisitBackOutSQL = "Insert into CardCombineBackOut " +
+                                        "Select 'exec dbo.UpdateMarketingTrackingNewByMember " + originMemberId + "', " + backoutBatch;
+                thisADO.updateOrInsert(memberVisitBackOutSQL, false);
+                thisADO.updateOrInsert(memberVisitBackOutSQL, true);
+
+                memberVisitBackOutSQL = "Insert into CardCombineBackOut " +
+                                        "Select 'exec dbo.UpdateMarketingTrackingNewByMember " + targetMemberId + "', " + backoutBatch;
+                thisADO.updateOrInsert(memberVisitBackOutSQL, false);
+                thisADO.updateOrInsert(memberVisitBackOutSQL, true);
+                //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                 //Delete all marketing visit tracking for target account
                 thisADO.updateOrInsert("Delete from MemberVisitTracking where MemberId = " + targetMemberId, false);
 
                 //Set IsCombined = 1 in marketing visit tracking for origin MemberId
                 thisADO.updateOrInsert("Update MemberVisitTracking set IsCombined = 1 where MemberId = " + originMemberId, false);
-
-
+                
                 //Call stored procedure to run the visit tracking on this target members ID on remote it gets synced
                 thisADO.UpdateMemberVisitTracking(targetMemberId, false);
 
+                //add note for backout++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                var noteBackOutSQL = "Insert into CardCombineBackOut " +
+                                        "Select 'Insert into MemberNotes (MemberId, Note, Date, SubmittedBy, CreateDateTime, CreateUserId) values (" + originMemberId + ",''Member Card " + cardsToCombine.OriginCard + " was uncombined from " + cardsToCombine.TargetCard + " on '' + Convert(nvarchar,GetDate(), 101) + '' by check change log'', Convert(nvarchar,GetDate(), 101), -1, Convert(nvarchar,GetDate(), 101), -1)', " + backoutBatch;
+                thisADO.updateOrInsert(noteBackOutSQL, false);
+                thisADO.updateOrInsert(noteBackOutSQL, true);
+
+                noteBackOutSQL = "Insert into CardCombineBackOut " +
+                                        "Select 'Insert into MemberNotes (MemberId, Note, Date, SubmittedBy, CreateDateTime, CreateUserId) values (" + targetMemberId + ",''Member Card " + cardsToCombine.OriginCard + " was uncombined from " + cardsToCombine.TargetCard + " on '' + Convert(nvarchar,GetDate(), 101) + '' by check change log'', Convert(nvarchar,GetDate(), 101) , -1, Convert(nvarchar,GetDate(), 101), -1)', " + backoutBatch;
+                thisADO.updateOrInsert(noteBackOutSQL, false);
+                thisADO.updateOrInsert(noteBackOutSQL, true);
+                //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
                 //Add note to target member account
                 thisADO.updateOrInsert("Insert into MemberNotes (MemberId, Note, Date, SubmittedBy, CreateDateTime, CreateUserId) " +
-                                       "values (" + targetMemberId + ",'Member Card " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "'," +
+                                       "values (" + targetMemberId + ",'Member Card " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + " back out is " + backoutBatch + "', " +
                                        " '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', '" + cardsToCombine.CombinedBy + "', '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', -1)", true);
 
                 //Add note to origin member account
                 thisADO.updateOrInsert("Insert into MemberNotes (MemberId, Note, Date, SubmittedBy, CreateDateTime, CreateUserId) " +
-                                       "values (" + originMemberId + ",'Member Card " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "'," +
+                                       "values (" + originMemberId + ",'Member Card " + cardsToCombine.OriginCard + " was combined into " + cardsToCombine.TargetCard + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + " back out is " + backoutBatch + "', " +
                                        " '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', '" + cardsToCombine.CombinedBy + "', '" + DateTime.Now.ToString("yyyy - MM - dd HH: mm:ss.fff") + "', -1)", true);
 
                 //Add note to target changelog
                 string strInsertLogSQL = "Insert into changeLog " + "(changeUser, changeDate, changeID, changeValOld, changeValNew, changeTable, changeNote, changeBatch, CreateUserId) " +
                      "Values ('" + cardsToCombine.CombinedBy + "', '" + DateTime.Now + "', '" + originMemberId + "', '" + originMemberId + "', '" + targetMemberId + "', '" +
+                              "" + "', '" + "MemberId " + originMemberId + " was combined with " + targetMemberId + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "', 0, -1)";
+
+                thisADO.updateOrInsert(strInsertLogSQL, true);
+
+                //Add note to target changelog
+                strInsertLogSQL = "Insert into changeLog " + "(changeUser, changeDate, changeID, changeValOld, changeValNew, changeTable, changeNote, changeBatch, CreateUserId) " +
+                     "Values ('" + cardsToCombine.CombinedBy + "', '" + DateTime.Now + "', '" + targetMemberId + "', '" + originMemberId + "', '" + targetMemberId + "', '" +
                               "" + "', '" + "MemberId " + originMemberId + " was combined with " + targetMemberId + " on " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff") + " by " + cardsToCombine.CombinedBy + "', 0, -1)";
 
                 thisADO.updateOrInsert(strInsertLogSQL, true);
@@ -118,7 +266,7 @@ namespace Portal2APIs.Controllers
 
 
         }
-
+        
         [HttpPost]
         [Route("api/CombineMemberCardsController/CombineCardsWithRollBack/")]
         public string CombineCardsWithRollBack(CombineMemberCard cardsToCombine)

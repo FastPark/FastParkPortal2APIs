@@ -61,6 +61,11 @@ namespace Portal2APIs.Common
                             reflec.FillObjectWithProperty(ref instance,
                             drow.ItemArray[0].ToString(), Convert.ToDecimal(dr[drow.ItemArray[0].ToString()]));
                         }
+                        else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "Double")
+                        {
+                            reflec.FillObjectWithProperty(ref instance,
+                            drow.ItemArray[0].ToString(), Convert.ToDecimal(dr[drow.ItemArray[0].ToString()]));
+                        }
                         else if (dr[drow.ItemArray[0].ToString()].GetType().Name == "Guid")
                         {
                             reflec.FillObjectWithProperty(ref instance,

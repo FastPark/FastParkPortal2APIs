@@ -184,5 +184,26 @@ namespace Portal2APIs.Controllers
                 throw new HttpResponseException(response);
             }
         }
+
+        [HttpGet]
+        [Route("api/InsuranceVehicles/GetStateId/{id}")]
+        public string GetStateId(string id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+                strSQL = "Select StateId from InsuranceClaims.dbo.VehicleState where PostalAbrev = '" + id + "'";
+
+                string returnId = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                return returnId;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
     }
 }
