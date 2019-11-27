@@ -23,12 +23,14 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select mi.FirstName + ' ' + mi.LastName as FullName, met.Explanation, " +
                          "pme.Points, pme.LocationId, pme.MemberID, pme.DateOfRequest, pme.CertificateNumber, pme.ManualEditID, " + 
-                         "pme.ExplanationID, pme.Delivery, pme.Notes, pme.AddedByUserId, pme.CompanyId " +
+                         "pme.ExplanationID, pme.Delivery, pme.Notes, pme.AddedByUserId, pme.CompanyId, mc.FPNumber " +
                          "from dbo.ManualEditHoldingArea pme " +
                          "Inner Join MemberInformationMain mi on pme.MemberID = mi.MemberID " +
+                         "Inner Join MemberCard mc on pme.MemberID = mc.MemberID " +
                          "Inner Join ManualEditTypes met on pme.ExplanationId = met.ExplanationId " +
-                         "Where pme.LocationId=" + id + "";
+                         "Where pme.LocationId=" + id + " and mc.IsPrimary = 1";
                 List<PendingManualEdit> list = new List<PendingManualEdit>();
+
                 thisADO.returnSingleValue(strSQL, true, ref list);
 
                 return list;
