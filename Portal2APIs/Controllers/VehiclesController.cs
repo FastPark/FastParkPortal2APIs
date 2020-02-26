@@ -47,11 +47,12 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                strSQL = "Select v.VehicleId, v.VehicleNumber, v.Year,  vm.MakeName, vmd.ModelName, Vehicles.dbo.GetMileage(V.VehicleId) as Mileage, Vehicles.dbo.GetHours(V.VehicleId) as Hours, VINNumber, v.ModelId, v.FuelTypeId " +
+                strSQL = "Select v.VehicleId, vr.RegistrationNumber, vr.StateRegisteredId, v.VehicleNumber, v.Year,  vm.MakeName, vmd.ModelName, Vehicles.dbo.GetMileage(V.VehicleId) as Mileage, Vehicles.dbo.GetHours(V.VehicleId) as Hours, VINNumber, v.ModelId, v.FuelTypeId " +
                          "from Vehicles.dbo.Vehicles v " +
                          "inner join Vehicles.dbo.VehicleModels vmd on v.ModelID = vmd.ModelID " +
                          "inner join Vehicles.dbo.VehicleMakes vm on vmd.MakeID = vm.MakeID " +
-                         "where VehicleID = " + Id;
+                         "Left Outer Join Vehicles.dbo.VehicleRegistration vr on v.VehicleID = vr.VehicleID " +
+                         "where v.VehicleID = " + Id;
                 List<Vehicle> list = new List<Vehicle>();
                 //thisADO.returnSingleValueForPark09(strSQL, ref list);
                 thisADO.returnSingleValue(strSQL, false, ref list);

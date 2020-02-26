@@ -205,5 +205,38 @@ namespace Portal2APIs.Controllers
                 return ex.ToString();
             }
         }
+
+        [HttpGet]
+        [Route("api/InsuranceVehicles/GetInvuranceVehiclesByLocation/{id}")]
+        public List<InsVehicles> GetInvuranceVehiclesByLocation(string id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+                strSQL = "Select v.VehicleId, v.VehicleNumber " +
+                            "from Vehicles.dbo.Vehicles v " +
+                            "Inner Join InsurancePCA.dbo.Location l on v.CurrentLocationId = l.VehicleLocationId " +
+                            "Where StatusId = 1 " +
+                            "and v.VehicleNumber not like '%stock%' " +
+                            "and l.locationId = " + id;
+
+                List<InsVehicles> list = new List<InsVehicles>();
+
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
     }
 }

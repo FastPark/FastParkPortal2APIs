@@ -41,6 +41,8 @@ namespace Portal2APIs.Models
         private string _MakeName;
         private string _ModelName;
         private DateTime _MileageDate;
+        private string _RegistrationNumber;
+        private int _StateRegisteredId;
         #endregion
         #region Public Properties
         public int VehicleId
@@ -172,6 +174,16 @@ namespace Portal2APIs.Models
         {
             get { return _MileageDate; }
             set { _MileageDate = value; }
+        }
+        public string RegistrationNumber
+        {
+            get { return _RegistrationNumber; }
+            set { _RegistrationNumber = value; }
+        }
+        public int StateRegisteredId
+        {
+            get { return _StateRegisteredId; }
+            set { _StateRegisteredId = value; }
         }
         #endregion
     }

@@ -20,7 +20,7 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "Select StateId, PostalAbrev, State from InsuranceClaims.dbo.VehicleState order by StateID";
+                strSQL = "Select StateId, PostalAbrev, State from InsuranceClaims.dbo.VehicleState order by PostalAbrev";
                 List<VehicleState> list = new List<VehicleState>();
                 thisADO.returnSingleValue(strSQL, false, ref list);
 
