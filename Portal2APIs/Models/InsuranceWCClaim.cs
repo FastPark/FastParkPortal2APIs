@@ -15,7 +15,7 @@ namespace Portal2APIs.Models
         #endregion
         #region Private Fields
         private int _WCClaimID;
-        private int _ClaimId;
+        private int _ClaimID;
         private string _WCClaimNumber;
         private int _WCInvestigationID;
         private object _WCIncidentDate;
@@ -30,7 +30,7 @@ namespace Portal2APIs.Models
         private string _LiteRelease;
         private int _NumberOfLiteDutyDays;
         private object _FullReleaseDate;
-        private object _DateReturnedToWork;
+        private object _ReturnedToWorkDate;
         private object _FollowUpApptDate;
         private int _ImpairmentRating;
         private int _Subro;
@@ -51,6 +51,8 @@ namespace Portal2APIs.Models
         private string _IncidentNumber;
         private string _ClaimantName;
         private int _LocationID;
+        private int _Closed;
+        private string _LocationName;
         #endregion
         #region Public Properties
         public int WCClaimID
@@ -58,10 +60,10 @@ namespace Portal2APIs.Models
             get { return _WCClaimID; }
             set { _WCClaimID = value; }
         }
-        public int ClaimId
+        public int ClaimID
         {
-            get { return _ClaimId; }
-            set { _ClaimId = value; }
+            get { return _ClaimID; }
+            set { _ClaimID = value; }
         }
         public string WCClaimNumber
         {
@@ -133,10 +135,10 @@ namespace Portal2APIs.Models
             get { return _FullReleaseDate; }
             set { _FullReleaseDate = value; }
         }
-        public object DateReturnedToWork
+        public object ReturnedToWorkDate
         {
-            get { return _DateReturnedToWork; }
-            set { _DateReturnedToWork = value; }
+            get { return _ReturnedToWorkDate; }
+            set { _ReturnedToWorkDate = value; }
         }
         public object FollowUpApptDate
         {
@@ -237,6 +239,16 @@ namespace Portal2APIs.Models
         {
             get { return _LocationID; }
             set { _LocationID = value; }
+        }
+        public int Closed
+        {
+            get { return _Closed; }
+            set { _Closed = value; }
+        }
+        public string LocationName
+        {
+            get { return _LocationName; }
+            set { _LocationName = value; }
         }
         #endregion
     }

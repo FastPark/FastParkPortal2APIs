@@ -186,8 +186,12 @@
     <Compile Include="Models\CardLocation.cs" />
     <Compile Include="Models\CardOrder.cs" />
     <Compile Include="Models\CardShip.cs" />
+    <Compile Include="Models\EmployeeStatement.cs" />
+    <Compile Include="Models\IncidentOtherInvolved.cs" />
     <Compile Include="Models\InsuranceClaimNote.cs" />
     <Compile Include="Models\InsuranceClaimPayable.cs" />
+    <Compile Include="Models\InsuranceManagerInvestigation.cs" />
+    <Compile Include="Models\InsuranceWitness.cs" />
     <Compile Include="Models\InuranceClaimReceivable.cs" />
     <Compile Include="Models\InsuranceClaimStatus.cs" />
     <Compile Include="Models\InsuranceClaimType.cs" />
@@ -214,10 +218,12 @@
     <Compile Include="Models\MailerCode.cs" />
     <Compile Include="Models\MailerCodeSend.cs" />
     <Compile Include="Models\MaintenancePackagePart.cs" />
+    <Compile Include="Models\ManagerRecomendation.cs" />
     <Compile Include="Models\PCARep.cs" />
     <Compile Include="Models\PCAVehicleClaim.cs" />
     <Compile Include="Models\PendingClaimStatus.cs" />
     <Compile Include="Models\PolicyType.cs" />
+    <Compile Include="Models\ThirdPartyStatement.cs" />
     <Compile Include="Models\ThirdPartyVehicleClaim.cs" />
     <Compile Include="Models\VehicleMaintenance.cs" />
     <Compile Include="Models\VehicleMaintenancePackage.cs" />
@@ -253,6 +259,8 @@
     <Compile Include="Models\VehicleState.cs" />
     <Compile Include="Models\VehicleStatus.cs" />
     <Compile Include="Models\VehicleTracking.cs" />
+    <Compile Include="Models\InsuranceWCClaimNote.cs" />
+    <Compile Include="Models\WitnessStatement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,12 @@ namespace Portal2APIs.Models
         private int _TagStateID;
         private int _Injuries;
         private string _StateAbbreviation;
+        private int _DrugTest;
+        private object _DateOfHire;
+        private string _PoliceReportNumber;
+        private object _PCAReceivedClaimDate;
+        private int _LocationID;
+        private object _WCIncidentDate;
         #endregion
         #region Public Properties
         public int IncidentPCAVehicleID
@@ -111,6 +117,36 @@ namespace Portal2APIs.Models
         {
             get { return _TagStateID; }
             set { _TagStateID = value; }
+        }
+        public int DrugTest
+        {
+            get { return _DrugTest; }
+            set { _DrugTest = value; }
+        }
+        public object DateOfHire
+        {
+            get { return _DateOfHire; }
+            set { _DateOfHire = value; }
+        }
+        public object PCAReceivedClaimDate
+        {
+            get { return _PCAReceivedClaimDate; }
+            set { _PCAReceivedClaimDate = value; }
+        }
+        public string PoliceReportNumber
+        {
+            get { return _PoliceReportNumber; }
+            set { _PoliceReportNumber = value; }
+        }
+        public int LocationID
+        {
+            get { return _LocationID; }
+            set { _LocationID = value; }
+        }
+        public object WCIncidentDate
+        {
+            get { return _WCIncidentDate; }
+            set { _WCIncidentDate = value; }
         }
         #endregion
     }

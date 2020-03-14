@@ -22,7 +22,7 @@ namespace Portal2APIs.Models
         private int _PolicyTypeID;
         private int _ClaimStatusID;
         private object _ClaimStatusDate;
-        private object _IncidentReceivedDate;
+        private object _PCAReceiveDate;
         private object _RepFollowUpDate;
         private string _PCAInsuranceClaimNumber;
         private string _OtherInsuranceClaimNumber;
@@ -42,9 +42,11 @@ namespace Portal2APIs.Models
         private string _PoliceReportNumber;
         private string _IncidentLocationName;
         private decimal _Reserve;
-        private int _EmployeeEnvolvedClaimID;
+        private int _EmployeeInvolvedClaimID;
+        private string _EmployeeInvolvedName;
         private int _ClaimantNameClaimID;
         private string _ClaimantName;
+        private int _Closed;
 
         #endregion
         #region Public Properties
@@ -188,20 +190,30 @@ namespace Portal2APIs.Models
             get { return _Reserve; }
             set { _Reserve = value; }
         }
-        public int EmployeeEnvolvedClaimID
+        public int EmployeeInvolvedClaimID
         {
-            get { return _EmployeeEnvolvedClaimID; }
-            set { _EmployeeEnvolvedClaimID = value; }
+            get { return _EmployeeInvolvedClaimID; }
+            set { _EmployeeInvolvedClaimID = value; }
         }
         public int ClaimantNameClaimID
         {
             get { return _ClaimantNameClaimID; }
             set { _ClaimantNameClaimID = value; }
         }
-        public object IncidentReceivedDate
+        public object PCAReceiveDate
         {
-            get { return _IncidentReceivedDate; }
-            set { _IncidentReceivedDate = value; }
+            get { return _PCAReceiveDate; }
+            set { _PCAReceiveDate = value; }
+        }
+        public string EmployeeInvolvedName
+        {
+            get { return _EmployeeInvolvedName; }
+            set { _EmployeeInvolvedName = value; }
+        }
+        public int Closed
+        {
+            get { return _Closed; }
+            set { _Closed = value; }
         }
         #endregion
     }

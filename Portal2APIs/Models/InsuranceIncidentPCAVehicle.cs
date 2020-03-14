@@ -24,6 +24,7 @@ namespace Portal2APIs.Models
         private int _TagStateID;
         private string _PoliceReportNumber;
         private object _PCAReceivedClaimDate;
+        
         #endregion
         #region Public Properties
         public int IncidentPCAVehicleID
@@ -76,6 +77,7 @@ namespace Portal2APIs.Models
             get { return _PoliceReportNumber; }
             set { _PoliceReportNumber = value; }
         }
+        
         #endregion
     }
 }

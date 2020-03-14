@@ -56,6 +56,10 @@ namespace Portal2APIs.Models
         private int _WCClaimID;
         private int _ClaimID;
         private int _Deleted;
+        private string _FacilityManagerName;
+        private string _Closed;
+        private int _ClaimStatusID;
+        private string _ViewSettings;
 
         #endregion
         #region Public Properties
@@ -269,6 +273,27 @@ namespace Portal2APIs.Models
         {
             get { return _Deleted; }
             set { _Deleted = value; }
+        }
+        public string FacilityManagerName
+        {
+            get { return _FacilityManagerName; }
+            set { _FacilityManagerName = value; }
+        }
+        public string Closed
+        {
+            get { return _Closed; }
+            set { _Closed = value; }
+        }
+
+        public int ClaimStatusID
+        {
+            get { return _ClaimStatusID; }
+            set { _ClaimStatusID = value; }
+        }
+        public string ViewSettings
+        {
+            get { return _ViewSettings; }
+            set { _ViewSettings = value; }
         }
         #endregion
     }

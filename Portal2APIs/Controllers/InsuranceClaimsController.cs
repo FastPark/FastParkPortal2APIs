@@ -11,6 +11,8 @@ namespace Portal2APIs.Controllers
 {
     public class InsuranceClaimsController : ApiController
     {
+
+
         [HttpGet]
         [Route("api/InsuranceClaims/GetClaimByID/{Id}")]
         public List<InsuranceClaim> GetIncidentByID(string Id)
@@ -22,11 +24,13 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "SELECT c.ClaimID ,c.IncidentID ,ClaimTypeID ,PolicyTypeID ,ClaimantName, ClaimantNameClaimID ,ClaimStatusID, i.IncidentReceivedDate ," +
-                            "ClaimStatusDate ,RepFollowUpDate ,PCAInsuranceClaimNumber ,OtherInsuranceClaimNumber, EmployeeEnvolvedClaimID ," +
+                strSQL = "SELECT c.ClaimID ,c.IncidentID ,ClaimTypeID ,PolicyTypeID ,ClaimantName, ClaimantNameClaimID ,ClaimStatusID, i.PCAReceiveDate ," +
+                            "Case When Convert(nvarchar, c.ClaimStatusDate, 101) = '01/01/1900' Then NULL Else c.ClaimStatusDate End as ClaimStatusDate " +
+                            ",PCAInsuranceClaimNumber ,OtherInsuranceClaimNumber, EmployeeInvolvedClaimID ," +
                             "PCARepID ,PaidByInsurance ,PaidByThridPartyInsurance ,PCADeductible ,PCAOutOfPocket, Reserve, MonthlyAllocation ," +
                             "EmployeePaid ,PendingStatusID, v.VehicleNumber, i.IncidentNumber + '-' + c.ClaimNumber as ClaimNumber, ipv.DriverName , " +
-                            "itpv.CustomerName, i.IncidentDate, i.LocationID, c.RepFollowUpDate, c.PaidByInsurance, c.PaidByThridPartyInsurance, " +
+                            "itpv.CustomerName, i.IncidentDate, i.LocationID, Case When Convert(nvarchar, c.RepFollowUpDate, 101) = '01/01/1900' Then NULL Else c.RepFollowUpDate End as RepFollowUpDate, " +
+                            "c.PaidByInsurance, c.PaidByThridPartyInsurance, c.Closed, " +
                             "c.PCADeductible,c.PCAOutOfPocket, c.EmployeePaid, i.PoliceReportNumber, l.LocationName + '-' + l.LocationGLCode as IncidentLocationName " +
                             "FROM InsurancePCA.dbo.Claim c " +
                             "Inner Join InsurancePCA.dbo.Incident i on c.IncidentID = i.IncidentID " +
@@ -54,8 +58,8 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet]
-        [Route("api/InsuranceClaims/GetEmployeeEnvolved/{Id}")]
-        public List<InsuranceClaim> GetEmployeeEnvolved(string Id)
+        [Route("api/InsuranceClaims/GetEmployeeInvolved/{Id}")]
+        public List<InsuranceClaim> GetEmployeeInvolved(string Id)
         {
 
             try
@@ -145,10 +149,12 @@ namespace Portal2APIs.Controllers
                         " ,PendingStatusID = " + I.PendingStatusID +
                         " ,MonthlyAllocation = " + I.MonthlyAllocation +
                         " ,Reserve = " + I.Reserve +
-                        " ,EmployeeEnvolvedClaimID = " + I.EmployeeEnvolvedClaimID +
-                        " ,ClaimantNameClaimID = " + I.ClaimantNameClaimID +
+                        " ,EmployeeInvolvedClaimID = " + I.EmployeeInvolvedClaimID +
+                        " ,EmployeeInvolvedName = '" +I.EmployeeInvolvedName +
+                        "' ,ClaimantNameClaimID = " + I.ClaimantNameClaimID +
                         " ,ClaimantName = '" + I.ClaimantName +
-                        "' WHERE ClaimID = " + I.ClaimID;
+                        "' ,Closed = " + I.Closed +
+                        " WHERE ClaimID = " + I.ClaimID;
 
                 thisADO.updateOrInsert(strSQL, false);
                 return "Success";
@@ -275,8 +281,93 @@ namespace Portal2APIs.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("api/InsuranceClaims/PostReceivable")]
+        public string PostReceivable(InsuranceClaimReceivable I)
+        {
+            clsADO thisADO = new clsADO();
+            string strSQL = null;
+
+            try
+            {
+                strSQL = "INSERT INTO InsurancePCA.dbo.ClaimReceivable " +
+                        "(ClaimID " +
+                        ",ClaimReceivablePayor " +
+                        ",ClaimReceivableCheckNumber " +
+                        ",ClaimReceivableCheckAmount) " +
+                        "VALUES " +
+                        "(" + I.ClaimID +
+                        ",'" + I.ClaimReceivablePayor + "'" +
+                        ",'" + I.ClaimReceivableCheckNumber + "'" +
+                        "," + I.ClaimReceivableCheckAmount + ")";
+
+                thisADO.updateOrInsert(strSQL, false);
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
         [HttpGet]
-        [Route("api/InsuranceClaims/GetClaimTypes/")]
+        [Route("api/InsuranceClaims/GetClaimReceivable/{id}")]
+        public List<InsuranceClaimReceivable> GetClaimReceivable(string id)
+        {
+            clsADO thisADO = new clsADO();
+            string strSQL = null;
+
+            try
+            {
+                strSQL = "Select ClaimReceivableID, ClaimReceivablePayor, ClaimReceivableCheckNumber, ClaimReceivableCheckAmount from InsurancePCA.dbo.ClaimReceivable where ClaimID = " + id;
+
+                List<InsuranceClaimReceivable> list = new List<InsuranceClaimReceivable>();
+
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/InsuranceClaims/GetPCAInvolvedVehicleNumber/{Id}")]
+        public string GetPCAInvolvedVehicleNumber(string Id)
+        {
+
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+
+                strSQL = "Select v.VehicleNumber " +
+                            "from InsurancePCA.dbo.IncidentPCAVehicle pcav " +
+                            "Inner Join Vehicles.dbo.Vehicles v on pcav.VehicleID = v.VehicleId " +
+                            "Where pcav.ClaimID = " + Id;
+
+                var thisVehicle = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                return thisVehicle;
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        //++++++++++++++++++++++++++++++++++++++++++   Loading Type, Status and Rep Drop Downs ++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        [HttpGet]
+        [Route("api/InsuranceClaims/GetClaimTypes")]
         public List<InsuranceClaimType> GetClaimTypes()
         {
             try
@@ -306,7 +397,7 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet]
-        [Route("api/InsuranceClaims/GetPolicyTypes/")]
+        [Route("api/InsuranceClaims/GetPolicyTypes")]
         public List<PolicyType> GetPolicyTypes()
         {
             try
@@ -336,7 +427,7 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet]
-        [Route("api/InsuranceClaims/GetClaimStatuses/")]
+        [Route("api/InsuranceClaims/GetClaimStatuses")]
         public List<InsuranceClaimStatus> GetClaimStatuses()
         {
             try
@@ -366,7 +457,7 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet]
-        [Route("api/InsuranceClaims/GetPendingClaimStatuses/")]
+        [Route("api/InsuranceClaims/GetPendingClaimStatuses")]
         public List<PendingClaimStatus> GetPendingClaimStatuses()
         {
             try
@@ -424,5 +515,6 @@ namespace Portal2APIs.Controllers
                 throw new HttpResponseException(response);
             }
         }
+
     }
 }

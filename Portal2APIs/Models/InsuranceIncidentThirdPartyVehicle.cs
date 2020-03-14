@@ -22,8 +22,8 @@ namespace Portal2APIs.Models
         private string _CustomerCity;
         private int _CustomerStateID;
         private string _CustomerZip;
-        private string _CustomerPhoneDay;
-        private string _CustomerPhoneEvening;
+        private string _CustomerPhoneMobile;
+        private string _CustomerPhoneHome;
         private string _CustomerDriverLicenseNumber;
         private string _InsuranceCompany;
         private string _InsCompAddress;
@@ -81,15 +81,15 @@ namespace Portal2APIs.Models
             get { return _CustomerZip; }
             set { _CustomerZip = value; }
         }
-        public string CustomerPhoneDay
+        public string CustomerPhoneMobile
         {
-            get { return _CustomerPhoneDay; }
-            set { _CustomerPhoneDay = value; }
+            get { return _CustomerPhoneMobile; }
+            set { _CustomerPhoneMobile = value; }
         }
-        public string CustomerPhoneEvening
+        public string CustomerPhoneHome
         {
-            get { return _CustomerPhoneEvening; }
-            set { _CustomerPhoneEvening = value; }
+            get { return _CustomerPhoneHome; }
+            set { _CustomerPhoneHome = value; }
         }
         public string CustomerDriverLicenseNumber
         {
