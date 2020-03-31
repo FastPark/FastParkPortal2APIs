@@ -20,6 +20,19 @@ namespace Portal2APIs.Common
                     return 0;
                 }
             }
+
+            if (thisData == null)
+            {
+                if (thisString == true)
+                {
+                    return "";
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+            
             return thisData;
         }
 

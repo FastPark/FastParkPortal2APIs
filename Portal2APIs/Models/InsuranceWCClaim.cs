@@ -27,7 +27,7 @@ namespace Portal2APIs.Models
         private string _OSHALog;
         private int _DaysMissed;
         private int _NumberOfDaysMissed;
-        private string _LiteRelease;
+        private int _LiteRelease;
         private int _NumberOfLiteDutyDays;
         private object _FullReleaseDate;
         private object _ReturnedToWorkDate;
@@ -53,6 +53,10 @@ namespace Portal2APIs.Models
         private int _LocationID;
         private int _Closed;
         private string _LocationName;
+        private string _ViewSettings;
+        private string _CompanionIncident;
+        private string _Number;
+        private string _WCStatus;
         #endregion
         #region Public Properties
         public int WCClaimID
@@ -120,7 +124,7 @@ namespace Portal2APIs.Models
             get { return _NumberOfDaysMissed; }
             set { _NumberOfDaysMissed = value; }
         }
-        public string LiteRelease
+        public int LiteRelease
         {
             get { return _LiteRelease; }
             set { _LiteRelease = value; }
@@ -249,6 +253,26 @@ namespace Portal2APIs.Models
         {
             get { return _LocationName; }
             set { _LocationName = value; }
+        }
+        public string ViewSettings
+        {
+            get { return _ViewSettings; }
+            set { _ViewSettings = value; }
+        }
+        public string CompanionIncident
+        {
+            get { return _CompanionIncident; }
+            set { _CompanionIncident = value; }
+        }
+        public string Number
+        {
+            get { return _Number; }
+            set { _Number = value; }
+        }
+        public string WCStatus
+        {
+            get { return _WCStatus; }
+            set { _WCStatus = value; }
         }
         #endregion
     }

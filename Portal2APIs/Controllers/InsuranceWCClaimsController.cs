@@ -13,74 +13,57 @@ namespace Portal2APIs.Controllers
     public class InsuranceWCClaimsController : ApiController
     {
         [HttpPost]
-        [Route("api/InsuranceIncidents/SearchIncidentList/")]
-        public List<InsuranceIncident> SearchIncidentList(InsuranceIncident I)
+        [Route("api/InsuranceWCClaims/SearchWCClaimsList/")]
+        public List<InsuranceWCClaim> SearchIncidentList(InsuranceWCClaim I)
         {
             var thisWhere = " where (1 = 1)";
 
-            if (I.IncidentNumber != null)
-            {
-                thisWhere = thisWhere + " and I.IncidentNumber = '" + I.IncidentNumber + "'";
-            }
-
-            if (I.ClaimNumber != null)
-            {
-
-                thisWhere = thisWhere + " and c.ClaimNumber = '" + I.ClaimNumber + "'";
-            }
-
             if (I.WCClaimNumber != null)
             {
-
                 thisWhere = thisWhere + " and wcc.WCClaimNumber = '" + I.WCClaimNumber + "'";
             }
 
-            if (I.IncidentDate.ToString() != "1/1/0001 12:00:00 AM")
+            if (I.IncidentNumber != null)
             {
-                thisWhere = thisWhere + " and Convert(nvarchar, I.IncidentDate, 101) =  Convert(nvarchar, CAST('" + I.IncidentDate + "' as date), 101)";
+
+                thisWhere = thisWhere + " and i.IncidentNumber = '" + I.IncidentNumber + "'";
             }
 
-            if (I.IncidentStatus != null)
+            if (I.WCIncidentDate.ToString() != "1/1/0001 12:00:00 AM")
             {
-                thisWhere = thisWhere + " I.IncidentStatus = '" + I.IncidentStatus + "'";
+
+                thisWhere = thisWhere + " and wcc.WCIncidentDate = '" + I.WCIncidentDate + "'";
             }
 
-            if (I.ClaimStatusID != 0)
+            if (I.Closed != 0)
             {
-                thisWhere = thisWhere + " and c.ClaimStatusID = " + I.ClaimStatusID;
+                thisWhere = thisWhere + " and wcc.Closed = " + I.Closed;
             }
 
-            if (I.LocationId != 0)
+            if (I.WCClaimStatusID != 0)
             {
-                thisWhere = thisWhere + " and I.LocationId = '" + I.LocationId + "'";
+                thisWhere = thisWhere + " wcc.WCClaimStatusID = " + I.WCClaimStatusID;
+            }
+
+            if (I.LocationID != 0)
+            {
+                thisWhere = thisWhere + " and wcc.LocationID = " + I.LocationID;
             }
 
             if (I.ClaimantName != null)
             {
-                thisWhere = thisWhere + " and c.ClaimantName = '" + I.ClaimantName + "'";
-            }
-
-            if (I.PCAInsuranceClaimNumber != null)
-            {
-                thisWhere = thisWhere + " and c.PCAInsuranceClaimNumber = '" + I.PCAInsuranceClaimNumber + "'";
-            }
-
-            if (I.Closed != null)
-            {
-                thisWhere = thisWhere + " and c.Closed = " + I.Closed;
+                thisWhere = thisWhere + " and wcc.ClaimantName = '" + I.ClaimantName + "'";
             }
 
             string[] results = I.ViewSettings.Split(',');
             if (results.Length > 1)
             {
-                thisWhere = thisWhere + " And i.LocationId in (" + I.ViewSettings + ") " +
-                            "And i.IncidentStatusID <> 3 and (i.Deleted is null or i.Deleted = 0)";
+                thisWhere = thisWhere + " And wcc.LocationId in (" + I.ViewSettings + ") ";
             }
             else
             {
-                thisWhere = thisWhere + " And i.IncidentCreatedBy = '" + results[1].ToString() + "'  " +
-                            "And i.LocationId in (" + results[0].ToString() + ") " +
-                            "And i.IncidentStatusID <> 3 and (i.Deleted is null or i.Deleted = 0)";
+                thisWhere = thisWhere + " And wcc.WCClaimCreatedBy = '" + results[1].ToString() + "'  " +
+                            "And wcc.LocationId in (" + results[0].ToString() + ") ";
             }
 
             try
@@ -89,26 +72,26 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select i.IncidentID,i.IncidentNumber,i.PCAReceiveDate,i.LocationId,l.LocationName + '-' + l.LocationGLCode as LocationName,i.LotID,i.IncidentStreetAddress,i.IncidentCity, " +
-                            "i.IncidentStateID,i.IncidentZip,i.IncidentPhone,i.IncidentLotRowSpace,i.OperationTypeID,i.IncidentDate, i.IncidentTime, " +
-                            "Case When c.Closed = 0 Then 'No' Else 'Yes' End as Closed, " +
-                            "i.StayDuration,i.IncidentInjuries,i.PoliceReportNumber,i.OfficerName,i.NumberOfVehilesInvolved,i.PhysicalDamage,istat.IncidentStatus, " +
-                            "i.PhysicalDamageDesc,i.IncidentCreatedBy, lot.LotName, locState.StateAbbreviation as LocState, s.StateAbbreviation, o.OperationTypeName, " +
-                            "c.ClaimNumber, cs.ClaimStatusDesc, c.ClaimantName, c.PCAInsuranceClaimNumber, wcc.WCClaimNumber + '- 01' as WCClaimNumber, wcc.WCClaimID, c.ClaimID " +
-                            "from InsurancePCA.dbo.Incident I " +
-                            "Left Outer Join InsurancePCA.dbo.Claim c on i.IncidentID = c.IncidentID " +
-                            "Left Outer Join InsurancePCA.dbo.ClaimStatus cs on c.ClaimStatusID = cs.ClaimStatusID " +
-                            "Left Outer Join InsurancePCA.dbo.WCClaim wcc on c.ClaimID = wcc.ClaimId " +
-                            "Left Outer Join InsurancePCA.dbo.Location l on I.LocationId = l.LocationID " +
-                            "Left Outer Join InsurancePCA.dbo.State LocState on l.LocationStateID = LocState.StateId " +
-                            "Left Outer Join InsurancePCA.dbo.Lot on I.LotID = Lot.LotId " +
-                            "Left Outer Join InsurancePCA.dbo.State s on i.IncidentStateID = s.StateId " +
-                            "Left Outer Join InsurancePCA.dbo.OperationType o on i.OperationTypeID = o.OperationTypeID " +
-                            "Left Outer Join InsurancePCA.dbo.IncidentStatus istat on i.IncidentStatusID = istat.IncidentStatusID " +
-                            thisWhere;
+                strSQL = "Select WCClaimID, WCClaimNumber, " +
+                        "'01' as Number, " +
+                        "i.IncidentNumber + '-' + c.ClaimNumber as CompanionIncident, " +
+                        "i.IncidentNumber, " +
+                        "wcc.WCIncidentDate, " +
+                        "wcc.Closed, " +
+                        "wcc.PCAInsuranceNumber, " +
+                        "wcs.WCStatus, " +
+                        "l.LocationName + '-' + l.LocationGLCode as LocationName, " +
+                        "wcc.ClaimantName " +
+                        "from InsurancePCA.dbo.WCClaim wcc " +
+                        "Left Outer Join InsurancePCA.dbo.WCInvestigation wci on wcc.WCInvestigtionID = wci.WCInvestigationID " +
+                        "Left Outer Join InsurancePCA.dbo.Claim c on wci.ClaimID = c.ClaimID " +
+                        "Left Outer Join InsurancePCA.dbo.Incident i on c.IncidentID = i.IncidentID " +
+                        "Left Outer Join InsurancePCA.dbo.WCStatus wcs on wcc.WCClaimStatusID = wcs.WCStatusid " +
+                        "Left Outer Join InsurancePCA.dbo.Location l on wcc.locationId = l.LocationID " +
+                        thisWhere;
 
 
-                List<InsuranceIncident> list = new List<InsuranceIncident>();
+                List<InsuranceWCClaim> list = new List<InsuranceWCClaim>();
 
 
                 thisADO.returnSingleValue(strSQL, false, ref list);
@@ -127,7 +110,7 @@ namespace Portal2APIs.Controllers
         }
 
         [HttpGet]
-        [Route("api/InsuranceWCClaims/GetWCClaimByID/{Id}")]
+        [Route("api/InsuranceWCClaims/GetWCClaimByWCInvestigationID/{Id}")]
         public List<InsuranceWCClaim> GetWCClaimByID(string Id)
         {
 
@@ -136,18 +119,19 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
                 
-                strSQL = "SELECT wcc.WCClaimID ,wcc.ClaimID ,wcc.WCClaimNumber ,wcc.WCInvestigationID ,i.IncidentDate as WCIncidentDate ,wcc.ReportedToCarrierDate , " +
+                strSQL = "SELECT wcc.WCClaimID ,wcc.WCClaimNumber ,wcc.WCInvestigationID ,wcc.WCIncidentDate ,wcc.ReportedToCarrierDate , " +
                             "wcc.PolicyTypeID ,wcc.PCAInsuranceNumber ,wcc.WCClaimStatusID ,wcc.WCClaimStatusDate ,wcc.OSHALog ,wcc.DaysMissed , " +
                             "wcc.NumberOfDaysMissed ,wcc.LiteRelease ,wcc.NumberOfLiteDutyDays ,wcc.FullReleaseDate ,wcc.ReturnedToWorkDate , " +
                             "wcc.FollowUpApptDate ,wcc.ImpairmentRating ,wcc.Subro ,wcc.JobClass ,wcc.RepFollowUpDate ,wcc.ModifiedDutyRequired , " +
                             "wcc.IndemnityCompPaid ,wcc.IndemnityCompReserve ,wcc.MedicalPaid ,wcc.MedicalReserve ,wcc.WCClaimExpensePaid , " +
                             "wcc.WCExpenseReserve ,wcc.SubroAmount ,wcc.Settlement ,wcc.PoliceReportNumber ,wcc.PCAReceivedClaimDate , " +
-                            "wcc.PCARepID , i.IncidentNumber, ipv.DriverName as ClaimantName, i.LocationID, wcc.Closed  " +
+                            "wcc.PCARepID , i.IncidentNumber, wcc.ClaimantName, wcc.LocationID, wcc.Closed  " +
                             "FROM InsurancePCA.dbo.WCClaim wcc  " +
-                            "Left Outer Join InsurancePCA.dbo.Claim c on wcc.ClaimId = c.ClaimID  " +
+                            "Left Outer Join InsurancePCA.dbo.WCInvestigation wci on wcc.WCInvestigationID = wci.WCInvestigationID " +
+                            "Left Outer Join InsurancePCA.dbo.Claim c on wci.ClaimId = c.ClaimID  " +
                             "Left Outer Join InsurancePCA.dbo.Incident i on c.IncidentID = i.IncidentID  " +
                             "Left Outer Join InsurancePCA.dbo.IncidentPCAVehicle ipv on c.ClaimID = ipv.ClaimID " +
-                            "Where wcc.WCCLaimID = " + Id;
+                            "Where wcc.WCInvestigationID = " + Id;
 
                 List<InsuranceWCClaim> list = new List<InsuranceWCClaim>();
 
@@ -184,10 +168,11 @@ namespace Portal2APIs.Controllers
                 var WCClaimID = thisADO.updateOrInsertWithId(strSQL, false);
 
                 I.WCClaimID = WCClaimID;
+                I.WCClaimNumber = thisWCClaimNumber;
 
                 PutWCClaim(I);
                 
-                return "Success";
+                return WCClaimID.ToString();
             } 
             catch (Exception ex)
             {
@@ -206,8 +191,7 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "UPDATE InsurancePCA.dbo.WCClaim " +
-                        "SET ClaimID = " + I.ClaimID +
-                        ",WCClaimNumber = '" + I.WCClaimNumber +
+                        "SET WCClaimNumber = '" + I.WCClaimNumber +
                         "',PolicyTypeID = " + I.PolicyTypeID +
                         ",PCAInsuranceNumber = '" + I.PCAInsuranceNumber +
                         "',WCClaimStatusID = " + I.WCClaimStatusID +
@@ -236,12 +220,15 @@ namespace Portal2APIs.Controllers
                         ",Settlement = '" + I.Settlement +
                         "',PoliceReportNumber = '" + I.PoliceReportNumber +
                         "',PCAReceivedClaimDate = '" + I.PCAReceivedClaimDate +
+                        "',ClaimantName = '" + I.ClaimantName +
+                        "',WCIncidentDate = '" + I.WCIncidentDate +
                         "',PCARepID = " + I.PCARepID +
+                        ",LocationID = " + I.LocationID +
                         ",Closed = " + I.Closed +
-                        " WHERE WCClaimID = " + I.WCClaimID;
+                        " WHERE WCInvestigationID = " + I.WCInvestigationID;
 
                 thisADO.updateOrInsert(strSQL, false);
-                return "Success";
+                return I.WCClaimID.ToString();
             }
             catch (Exception ex)
             {

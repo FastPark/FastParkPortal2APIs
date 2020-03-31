@@ -41,11 +41,12 @@ namespace Portal2APIs.Controllers
                             "Case When wcc.Closed is null Then Case When c.Closed = 0 Then 'No' Else 'Yes' End Else Case When wcc.Closed = 0 Then 'No' Else 'Yes' End End as Closed, " +
                             "i.StayDuration,i.IncidentInjuries,i.PoliceReportNumber,i.OfficerName,i.NumberOfVehilesInvolved,i.PhysicalDamage,istat.IncidentStatus, " +
                             "i.PhysicalDamageDesc,i.IncidentCreatedBy, lot.LotName, locState.StateAbbreviation as LocState, s.StateAbbreviation, o.OperationTypeName, " +
-                            "c.ClaimNumber, cs.ClaimStatusDesc, c.ClaimantName, c.PCAInsuranceClaimNumber, wcc.WCClaimNumber + '- 01' as WCClaimNumber, wcc.WCClaimID, c.ClaimID " +
+                            "c.ClaimNumber, cs.ClaimStatusDesc, c.ClaimantName, c.PCAInsuranceClaimNumber, wci.WCInvestigationNumber + '-01' as WCClaimNumber, wci.WCInvestigationID, c.ClaimID " +
                             "from InsurancePCA.dbo.Incident I " +
                             "Left Outer Join InsurancePCA.dbo.Claim c on i.IncidentID = c.IncidentID " +
                             "Left Outer Join InsurancePCA.dbo.ClaimStatus cs on c.ClaimStatusID = cs.ClaimStatusID " +
-                            "Left Outer Join InsurancePCA.dbo.WCClaim wcc on c.ClaimID = wcc.ClaimId " +
+                            "Left Outer Join InsurancePCA.dbo.WCInvestigation wci on c.ClaimID = wci.ClaimID " +
+                            "Left Outer Join InsurancePCA.dbo.WCClaim wcc on wci.WCInvestigationID = wcc.WCInvestigationID " +
                             "Left Outer Join InsurancePCA.dbo.Location l on I.LocationId = l.LocationID " +
                             "Left Outer Join InsurancePCA.dbo.State LocState on l.LocationStateID = LocState.StateId " +
                             "Left Outer Join InsurancePCA.dbo.Lot on I.LotID = Lot.LotId " +
@@ -306,7 +307,6 @@ namespace Portal2APIs.Controllers
                             ",IncidentCustomerSignature = '" + I.IncidentCustomerSignature + "' " +
                             ",IncidentEmployeeSignature = '" + I.IncidentEmployeeSignature + "' " +
                             ",IncidentManagerSignature = '" + I.IncidentManagerSignature + "' " +
-                            ",Deleted = " + I.Deleted + " " +
                             "WHERE IncidentId = " + I.IncidentID;
 
                 thisADO.updateOrInsert(strSQL, false);
@@ -360,12 +360,17 @@ namespace Portal2APIs.Controllers
 
                 if (I.Injuries == 1)
                 {
-                    strSQL = "Select Max(WCClaimNumber) + 1 from InsurancePCA.dbo.WCClaim";
+                    strSQL = "Select Max(WCInvestigationNumber) + 1 from InsurancePCA.dbo.WCInvestigation";
 
-                    string thisWCClaimNumber = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+                    string thisWCInvestigationNumber = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
 
-                    strSQL = "Insert INTO InsurancePCA.dbo.WCClaim (ClaimID, WCCLaimNumber, PoliceReportNumber, PCAReceivedClaimDate, LocationID, ClaimantName, WCIncidentDate) " +
-                            "VALUES (" + I.ClaimID + ", '" + thisWCClaimNumber + "', '" + I.PoliceReportNumber + "', '" + I.PCAReceivedClaimDate + "', " + I.LocationID + ", '" + I.DriverName + "', '" + I.WCIncidentDate + "')";
+                    strSQL = "Insert INTO InsurancePCA.dbo.WCInvestigation (ClaimID, WCInvestigationNumber, InjuryDateTime, InjuryLocationId, EmployeeName) " +
+                            "VALUES (" + I.ClaimID + ", '" + thisWCInvestigationNumber + "', '" + I.PCAReceivedClaimDate + "', " + I.LocationID + ", '" + I.DriverName + "')";
+
+                    string thisWCInvestigationID = thisADO.updateOrInsertWithId(strSQL, false).ToString();
+
+                    strSQL = "Insert INTO InsurancePCA.dbo.WCClaim (WCInvestigationID, PoliceReportNumber, PCAReceivedClaimDate, LocationID, ClaimantName, WCIncidentDate) " +
+                            "VALUES (" + thisWCInvestigationID + ", '" + I.PoliceReportNumber + "', '" + I.PCAReceivedClaimDate + "', " + I.LocationID + ", '" + I.DriverName + "', '" + I.WCIncidentDate + "')";
 
                     thisADO.updateOrInsert(strSQL, false);
                 }
@@ -444,7 +449,11 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select ManagerInvestigationID from InsurancePCA.dbo.ManagerInvestigation where IncidentID = " + Id;
 
-                string thisManagerInvestigationID = thisADO.returnSingleValueForInternalAPIUse(strSQL, false).ToString();
+                string thisManagerInvestigationID = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                var thisCheckNull = new clsCommon();
+
+                thisManagerInvestigationID = thisCheckNull.checknull(thisManagerInvestigationID, false).ToString();
 
                 strSQL = "SELECT WitnessID " +
                         ",ManagerInvestigationID " +
@@ -558,7 +567,11 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select ManagerInvestigationID from InsurancePCA.dbo.ManagerInvestigation where IncidentID = " + Id;
 
-                string thisManagerInvestigationID = thisADO.returnSingleValueForInternalAPIUse(strSQL, false).ToString();
+                string thisManagerInvestigationID = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                var thisCheckNull = new clsCommon();
+
+                thisManagerInvestigationID = thisCheckNull.checknull(thisManagerInvestigationID, false).ToString();
 
                 strSQL = "SELECT IncidentOtherInvolvedID " +
                         ",ManagerInvestigationID " +

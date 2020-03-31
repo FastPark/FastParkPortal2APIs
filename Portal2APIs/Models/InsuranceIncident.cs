@@ -53,7 +53,7 @@ namespace Portal2APIs.Models
         private string _IncidentCustomerSignature;
         private string _IncidentEmployeeSignature;
         private string _IncidentManagerSignature;
-        private int _WCClaimID;
+        private int _WCInvestigationID;
         private int _ClaimID;
         private int _Deleted;
         private string _FacilityManagerName;
@@ -259,10 +259,10 @@ namespace Portal2APIs.Models
             set { _IncidentManagerSignature = value; }
         }
 
-        public int WCClaimID
+        public int WCInvestigationID
         {
-            get { return _WCClaimID; }
-            set { _WCClaimID = value; }
+            get { return _WCInvestigationID; }
+            set { _WCInvestigationID = value; }
         }
         public int ClaimID
         {

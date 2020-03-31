@@ -191,6 +191,7 @@
     <Compile Include="Models\InsuranceClaimNote.cs" />
     <Compile Include="Models\InsuranceClaimPayable.cs" />
     <Compile Include="Models\InsuranceManagerInvestigation.cs" />
+    <Compile Include="Models\InsuranceWCInvestigation.cs" />
     <Compile Include="Models\InsuranceWitness.cs" />
     <Compile Include="Models\InuranceClaimReceivable.cs" />
     <Compile Include="Models\InsuranceClaimStatus.cs" />
