@@ -57,7 +57,7 @@ namespace Portal2APIs.Models
         private int _ClaimID;
         private int _Deleted;
         private string _FacilityManagerName;
-        private string _Closed;
+        private string _Active;
         private int _ClaimStatusID;
         private string _ViewSettings;
 
@@ -279,10 +279,10 @@ namespace Portal2APIs.Models
             get { return _FacilityManagerName; }
             set { _FacilityManagerName = value; }
         }
-        public string Closed
+        public string Active
         {
-            get { return _Closed; }
-            set { _Closed = value; }
+            get { return _Active; }
+            set { _Active = value; }
         }
 
         public int ClaimStatusID

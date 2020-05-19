@@ -30,7 +30,7 @@ namespace Portal2APIs.Controllers
                             "PCARepID ,PaidByInsurance ,PaidByThridPartyInsurance ,PCADeductible ,PCAOutOfPocket, Reserve, MonthlyAllocation ," +
                             "EmployeePaid ,PendingStatusID, v.VehicleNumber, i.IncidentNumber + '-' + c.ClaimNumber as ClaimNumber, ipv.DriverName , " +
                             "itpv.CustomerName, i.IncidentDate, i.LocationID, Case When Convert(nvarchar, c.RepFollowUpDate, 101) = '01/01/1900' Then NULL Else c.RepFollowUpDate End as RepFollowUpDate, " +
-                            "c.PaidByInsurance, c.PaidByThridPartyInsurance, c.Closed, " +
+                            "c.PaidByInsurance, c.PaidByThridPartyInsurance, c.Active, " +
                             "c.PCADeductible,c.PCAOutOfPocket, c.EmployeePaid, i.PoliceReportNumber, l.LocationName + '-' + l.LocationGLCode as IncidentLocationName " +
                             "FROM InsurancePCA.dbo.Claim c " +
                             "Inner Join InsurancePCA.dbo.Incident i on c.IncidentID = i.IncidentID " +
@@ -153,7 +153,7 @@ namespace Portal2APIs.Controllers
                         " ,EmployeeInvolvedName = '" +I.EmployeeInvolvedName +
                         "' ,ClaimantNameClaimID = " + I.ClaimantNameClaimID +
                         " ,ClaimantName = '" + I.ClaimantName +
-                        "' ,Closed = " + I.Closed +
+                        "' ,Active = " + I.Active +
                         " WHERE ClaimID = " + I.ClaimID;
 
                 thisADO.updateOrInsert(strSQL, false);

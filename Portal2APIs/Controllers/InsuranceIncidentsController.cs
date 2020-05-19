@@ -38,7 +38,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select i.IncidentID,i.IncidentNumber,i.PCAReceiveDate,i.LocationId,l.LocationName + '-' + l.LocationGLCode as LocationName,i.LotID,i.IncidentStreetAddress,i.IncidentCity, " +
                             "i.IncidentStateID,i.IncidentZip,i.IncidentPhone,i.IncidentLotRowSpace,i.OperationTypeID,i.IncidentDate, i.IncidentTime, " +
-                            "Case When wcc.Closed is null Then Case When c.Closed = 0 Then 'No' Else 'Yes' End Else Case When wcc.Closed = 0 Then 'No' Else 'Yes' End End as Closed, " +
+                            "Case When wcc.Active is null Then Case When c.Active = 0 Then 'No' Else 'Yes' End Else Case When wcc.Active = 0 Then 'No' Else 'Yes' End End as Active, " +
                             "i.StayDuration,i.IncidentInjuries,i.PoliceReportNumber,i.OfficerName,i.NumberOfVehilesInvolved,i.PhysicalDamage,istat.IncidentStatus, " +
                             "i.PhysicalDamageDesc,i.IncidentCreatedBy, lot.LotName, locState.StateAbbreviation as LocState, s.StateAbbreviation, o.OperationTypeName, " +
                             "c.ClaimNumber, cs.ClaimStatusDesc, c.ClaimantName, c.PCAInsuranceClaimNumber, wci.WCInvestigationNumber + '-01' as WCClaimNumber, wci.WCInvestigationID, c.ClaimID " +
@@ -127,9 +127,9 @@ namespace Portal2APIs.Controllers
                 thisWhere = thisWhere + " and c.PCAInsuranceClaimNumber = '" + I.PCAInsuranceClaimNumber + "'";
             }
 
-            if (I.Closed != null)
+            if (I.Active != null)
             {
-                thisWhere = thisWhere + " and c.Closed = " + I.Closed;
+                thisWhere = thisWhere + " and c.Active = " + I.Active;
             }
 
             string[] results = I.ViewSettings.Split(',');
@@ -153,7 +153,7 @@ namespace Portal2APIs.Controllers
 
                 strSQL = "Select i.IncidentID,i.IncidentNumber,i.PCAReceiveDate,i.LocationId,l.LocationName + '-' + l.LocationGLCode as LocationName,i.LotID,i.IncidentStreetAddress,i.IncidentCity, " +
                             "i.IncidentStateID,i.IncidentZip,i.IncidentPhone,i.IncidentLotRowSpace,i.OperationTypeID,i.IncidentDate, i.IncidentTime, " +
-                            "Case When c.Closed = 0 Then 'No' Else 'Yes' End as Closed, " +
+                            "Case When c.Active = 0 Then 'No' Else 'Yes' End as Active, " +
                             "i.StayDuration,i.IncidentInjuries,i.PoliceReportNumber,i.OfficerName,i.NumberOfVehilesInvolved,i.PhysicalDamage,istat.IncidentStatus, " +
                             "i.PhysicalDamageDesc,i.IncidentCreatedBy, lot.LotName, locState.StateAbbreviation as LocState, s.StateAbbreviation, o.OperationTypeName, " +
                             "c.ClaimNumber, cs.ClaimStatusDesc, c.ClaimantName, c.PCAInsuranceClaimNumber, wcc.WCClaimNumber + '- 01' as WCClaimNumber, wcc.WCClaimID, c.ClaimID " +
@@ -358,6 +358,13 @@ namespace Portal2APIs.Controllers
                 
                 thisADO.updateOrInsert(strSQL, false);
 
+                strSQL = "INSERT INTO InsurancePCA.dbo.EmployeeStatement " +
+                        "(EmpClaimID) " +
+                        "VALUES " +
+                        "(" + I.ClaimID + ")";
+
+                thisADO.updateOrInsert(strSQL, false);
+
                 if (I.Injuries == 1)
                 {
                     strSQL = "Select Max(WCInvestigationNumber) + 1 from InsurancePCA.dbo.WCInvestigation";
@@ -392,6 +399,27 @@ namespace Portal2APIs.Controllers
 
             try
             {
+                strSQL = "Select Injuries from InsurancePCA.dbo.IncidentPCAVehicle Where ClaimID = " + I.ClaimID;
+
+                string injury = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                if (injury == "0" && I.Injuries == 1)
+                {
+                    strSQL = "Select Max(WCInvestigationNumber) + 1 from InsurancePCA.dbo.WCInvestigation";
+
+                    string thisWCInvestigationNumber = thisADO.returnSingleValueForInternalAPIUse(strSQL, false);
+
+                    strSQL = "Insert INTO InsurancePCA.dbo.WCInvestigation (ClaimID, WCInvestigationNumber, InjuryDateTime, InjuryLocationId, EmployeeName) " +
+                            "VALUES (" + I.ClaimID + ", '" + thisWCInvestigationNumber + "', '" + I.PCAReceivedClaimDate + "', " + I.LocationID + ", '" + I.DriverName + "')";
+
+                    string thisWCInvestigationID = thisADO.updateOrInsertWithId(strSQL, false).ToString();
+
+                    strSQL = "Insert INTO InsurancePCA.dbo.WCClaim (WCInvestigationID, PoliceReportNumber, PCAReceivedClaimDate, LocationID, ClaimantName, WCIncidentDate) " +
+                            "VALUES (" + thisWCInvestigationID + ", '" + I.PoliceReportNumber + "', '" + I.PCAReceivedClaimDate + "', " + I.LocationID + ", '" + I.DriverName + "', '" + I.WCIncidentDate + "')";
+
+                    thisADO.updateOrInsert(strSQL, false);
+                }
+
                 strSQL = "UPDATE InsurancePCA.dbo.IncidentPCAVehicle " +
                             "SET VehicleID = " + I.VehicleID + " " +
                             ",DriverName = '" + I.DriverName + "' " +
@@ -438,8 +466,8 @@ namespace Portal2APIs.Controllers
         //+++++++++++++++++++++++++++++++++++++++++++++++ Start Incident Witness +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         [HttpGet]
-        [Route("api/InsuranceIncidents/GetIncidentWitnessByManagerInvestigationID/{Id}")]
-        public List<InsuranceIncidentWitness> GetIncidentWitnessByManagerInvestigationID(string Id)
+        [Route("api/InsuranceIncidents/GetIncidentWitnessByIncidentID/{Id}")]
+        public List<InsuranceIncidentWitness> GetIncidentWitnessByIncidentID(string Id)
         {
 
             try
@@ -454,6 +482,12 @@ namespace Portal2APIs.Controllers
                 var thisCheckNull = new clsCommon();
 
                 thisManagerInvestigationID = thisCheckNull.checknull(thisManagerInvestigationID, false).ToString();
+
+                if (thisManagerInvestigationID == "0")
+                {
+                    List<InsuranceIncidentWitness> nullReturn = new List<InsuranceIncidentWitness>();
+                    return nullReturn;
+                }
 
                 strSQL = "SELECT WitnessID " +
                         ",ManagerInvestigationID " +
@@ -556,8 +590,8 @@ namespace Portal2APIs.Controllers
         //+++++++++++++++++++++++++++++++++++++++++++++++ Start Incident Other Involved +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
         [HttpGet]
-        [Route("api/InsuranceIncidents/GetIncidentOtherInvolvedByManagerInvestigationID/{Id}")]
-        public List<IncidentOtherInvolved> GetIncidentOtherInvolvedByManagerInvestigationID(string Id)
+        [Route("api/InsuranceIncidents/GetIncidentOtherInvolvedByManagerIncidentID/{Id}")]
+        public List<IncidentOtherInvolved> GetIncidentOtherInvolvedByManagerIncidentID(string Id)
         {
 
             try
@@ -572,6 +606,12 @@ namespace Portal2APIs.Controllers
                 var thisCheckNull = new clsCommon();
 
                 thisManagerInvestigationID = thisCheckNull.checknull(thisManagerInvestigationID, false).ToString();
+
+                if (thisManagerInvestigationID == "0")
+                {
+                    List<IncidentOtherInvolved> nullReturn = new List<IncidentOtherInvolved>();
+                    return nullReturn;
+                }
 
                 strSQL = "SELECT IncidentOtherInvolvedID " +
                         ",ManagerInvestigationID " +
@@ -1369,13 +1409,14 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select ipa.DriverName, ipa.DriverLicenseNumber, v.VehicleNumber,v.Year, ipa.TagNumber, s.StateAbbreviation, vma.MakeName, v.VINNumber, vm.ModelName, ipa.Injuries, c.ClaimNumber, v.VehicleID, ipa.TagStateID, c.ClaimID, ipa.DrugTest, ipa.DateOfHire " +
+                strSQL = "Select ipa.DriverName, ipa.DriverLicenseNumber, v.VehicleNumber,v.Year, ipa.TagNumber, s.StateAbbreviation, vma.MakeName, v.VINNumber, vm.ModelName, ipa.Injuries, c.ClaimNumber, v.VehicleID, ipa.TagStateID, c.ClaimID, ipa.DrugTest, ipa.DateOfHire, es.EmpClaimID " +
                             "from InsurancePCA.dbo.IncidentPCAVehicle ipa " +
                             "Left Outer Join InsurancePCA.dbo.Claim c on ipa.ClaimID = c.ClaimID " +
                             "Left Outer Join Vehicles.dbo.Vehicles v on ipa.VehicleID = v.VehicleID " +
                             "Left Outer Join Vehicles.dbo.VehicleModels vm on v.ModelId = vm.ModelId " +
                             "Left Outer Join Vehicles.dbo.VehicleMakes vma on vm.MakeId = vma.MakeId " +
                             "Left Outer Join InsurancePCA.dbo.State s on ipa.TagStateID = s.StateId " +
+                            "Left Outer Join InsurancePCA.dbo.EmployeeStatement es on c.ClaimID = es.EmpClaimID " +
                             "Where c.IncidentID = " + Id +  " " +
                             "Order by c.ClaimID";
 

@@ -16,6 +16,7 @@ namespace Portal2APIs.Models
         #region Private Fields
         private int _IncidentPCAVehicleID;
         private int _ClaimID;
+        private int _EmpClaimID;
         private string _VehicleNumber;
         private int _VehicleID;
         private string _DriverName;
@@ -47,6 +48,11 @@ namespace Portal2APIs.Models
         {
             get { return _ClaimID; }
             set { _ClaimID = value; }
+        }
+        public int EmpClaimID
+        {
+            get { return _EmpClaimID; }
+            set { _EmpClaimID = value; }
         }
         public string VehicleNumber
         {

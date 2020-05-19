@@ -51,7 +51,7 @@ namespace Portal2APIs.Models
         private string _IncidentNumber;
         private string _ClaimantName;
         private int _LocationID;
-        private int _Closed;
+        private int _Active;
         private string _LocationName;
         private string _ViewSettings;
         private string _CompanionIncident;
@@ -244,10 +244,10 @@ namespace Portal2APIs.Models
             get { return _LocationID; }
             set { _LocationID = value; }
         }
-        public int Closed
+        public int Active
         {
-            get { return _Closed; }
-            set { _Closed = value; }
+            get { return _Active; }
+            set { _Active = value; }
         }
         public string LocationName
         {

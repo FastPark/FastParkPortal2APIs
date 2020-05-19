@@ -46,7 +46,7 @@ namespace Portal2APIs.Models
         private string _EmployeeInvolvedName;
         private int _ClaimantNameClaimID;
         private string _ClaimantName;
-        private int _Closed;
+        private int _Active;
 
         #endregion
         #region Public Properties
@@ -210,10 +210,10 @@ namespace Portal2APIs.Models
             get { return _EmployeeInvolvedName; }
             set { _EmployeeInvolvedName = value; }
         }
-        public int Closed
+        public int Active
         {
-            get { return _Closed; }
-            set { _Closed = value; }
+            get { return _Active; }
+            set { _Active = value; }
         }
         #endregion
     }

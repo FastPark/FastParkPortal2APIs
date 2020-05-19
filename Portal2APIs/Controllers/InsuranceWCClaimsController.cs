@@ -35,9 +35,9 @@ namespace Portal2APIs.Controllers
                 thisWhere = thisWhere + " and wcc.WCIncidentDate = '" + I.WCIncidentDate + "'";
             }
 
-            if (I.Closed != 0)
+            if (I.Active != 0)
             {
-                thisWhere = thisWhere + " and wcc.Closed = " + I.Closed;
+                thisWhere = thisWhere + " and wcc.Active = " + I.Active;
             }
 
             if (I.WCClaimStatusID != 0)
@@ -77,7 +77,7 @@ namespace Portal2APIs.Controllers
                         "i.IncidentNumber + '-' + c.ClaimNumber as CompanionIncident, " +
                         "i.IncidentNumber, " +
                         "wcc.WCIncidentDate, " +
-                        "wcc.Closed, " +
+                        "wcc.Active, " +
                         "wcc.PCAInsuranceNumber, " +
                         "wcs.WCStatus, " +
                         "l.LocationName + '-' + l.LocationGLCode as LocationName, " +
@@ -125,7 +125,7 @@ namespace Portal2APIs.Controllers
                             "wcc.FollowUpApptDate ,wcc.ImpairmentRating ,wcc.Subro ,wcc.JobClass ,wcc.RepFollowUpDate ,wcc.ModifiedDutyRequired , " +
                             "wcc.IndemnityCompPaid ,wcc.IndemnityCompReserve ,wcc.MedicalPaid ,wcc.MedicalReserve ,wcc.WCClaimExpensePaid , " +
                             "wcc.WCExpenseReserve ,wcc.SubroAmount ,wcc.Settlement ,wcc.PoliceReportNumber ,wcc.PCAReceivedClaimDate , " +
-                            "wcc.PCARepID , i.IncidentNumber, wcc.ClaimantName, wcc.LocationID, wcc.Closed  " +
+                            "wcc.PCARepID , i.IncidentNumber, wcc.ClaimantName, wcc.LocationID, wcc.Active  " +
                             "FROM InsurancePCA.dbo.WCClaim wcc  " +
                             "Left Outer Join InsurancePCA.dbo.WCInvestigation wci on wcc.WCInvestigationID = wci.WCInvestigationID " +
                             "Left Outer Join InsurancePCA.dbo.Claim c on wci.ClaimId = c.ClaimID  " +
@@ -224,7 +224,7 @@ namespace Portal2APIs.Controllers
                         "',WCIncidentDate = '" + I.WCIncidentDate +
                         "',PCARepID = " + I.PCARepID +
                         ",LocationID = " + I.LocationID +
-                        ",Closed = " + I.Closed +
+                        ",Active = " + I.Active +
                         " WHERE WCInvestigationID = " + I.WCInvestigationID;
 
                 thisADO.updateOrInsert(strSQL, false);
