@@ -18,7 +18,8 @@ namespace Portal2APIs.Controllers
             string strSQL = "";
             clsADO thisADO = new clsADO();
 
-            var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)";
+            //var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)";
+            var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0 or mc.IsPrimary is null)";
 
             if (thisMember.FPNumber != null)
             {
@@ -68,13 +69,15 @@ namespace Portal2APIs.Controllers
 
             try
             {
-                if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)" || thisMember.HomePhone != null)
+                //if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)" || thisMember.HomePhone != null)
+                if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary or mc.IsPrimary is null)" || thisMember.HomePhone != null)
                 {
                     if (thisMember.HomePhone != null)
                     {
                         strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home, mi.UserName, mi.CompanyId, mi.CityName as City, mi.StreetAddress " +
                              "from dbo.MemberInformationMain mi " +
-                             "Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
+                             //"Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
+                             "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
                              "Inner Join MemberHasLocation mhl on mi.MemberId = mhl.MemberId " +
                              "Inner Join LocationDetails l on mhl.LocationId = l.LocationId " +
                              "Inner Join MemberPhone mp on mi.MemberId = mp.MemberId and Replace(mp.Number, '-', '') like '%" + thisMember.HomePhone + "%' " +
@@ -88,7 +91,8 @@ namespace Portal2APIs.Controllers
                     {
                         strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home, mi.UserName, mi.CompanyId, mi.CityName as City, mi.StreetAddress " +
                              "from dbo.MemberInformationMain mi " +
-                             "Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
+                             //"Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
+                             "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
                              "Inner Join MemberHasLocation mhl on mi.MemberId = mhl.MemberId " +
                              "Inner Join LocationDetails l on mhl.LocationId = l.LocationId " +
                              "left outer join marketingflyer.dbo.companies c on mi.companyId = c.id " +

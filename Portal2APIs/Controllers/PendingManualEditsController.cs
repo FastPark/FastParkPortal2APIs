@@ -21,7 +21,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select mi.FirstName + ' ' + mi.LastName as FullName, met.Explanation, " +
+                strSQL = "Select mi.FirstName + ' ' + mi.LastName as FullName, met.Explanation, pme.UpdateExternalUserData, " +
                          "pme.Points, pme.LocationId, pme.MemberID, pme.DateOfRequest, pme.CertificateNumber, pme.ManualEditID, " + 
                          "pme.ExplanationID, pme.Delivery, pme.Notes, pme.AddedByUserId, pme.CompanyId, mc.FPNumber " +
                          "from dbo.ManualEditHoldingArea pme " +

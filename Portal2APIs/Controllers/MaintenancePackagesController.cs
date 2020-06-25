@@ -25,6 +25,7 @@ namespace Portal2APIs.Controllers
                          "Inner Join Vehicles.dbo.Location l on v.CurrentLocationId = l.LocationId " +
                          "inner Join Vehicles.dbo.MaintenancePackages mp on l.AirportId = mp.AirportId and v.ModelId = mp.ModelId and v.FuelTypeId = mp.FuelTypeId " +
                          "Where v.VehicleId = " + Id + " " +
+                         "and mp.IsActive = 1 " +
                          "Order by mp.PackageName";
 
                 List<VehicleMaintenancePackages> list = new List<VehicleMaintenancePackages>();

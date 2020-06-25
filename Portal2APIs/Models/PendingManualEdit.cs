@@ -99,6 +99,13 @@ namespace Portal2APIs.Models
             set { m_Notes = value; }
         }
         private string m_Notes;
-        
+
+        public string UpdateExternalUserData
+        {
+            get { return m_UpdateExternalUserData; }
+            set { m_UpdateExternalUserData = value; }
+        }
+        private string m_UpdateExternalUserData;
+
     }
 }

@@ -109,7 +109,7 @@ namespace Portal2APIs.Controllers
                 //        "and r.CanceledDate is null " +
                 //        "order by r.StartDatetime";
 
-                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, case when IsNull(rf.ReservationId, 0) = 0 then 0 else 1 end as Options, rs.ReservationStatusName, r.UpdateExternalUserData " +
+                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, case when IsNull(rf.ReservationId, 0) = 0 then 0 else 1 end as Options, rs.ReservationStatusName, r.UpdateExternalUserData, mi.EmailAddress " +
                         "from Reservations r " +
                         "Left Outer Join ReservationFeatures rf on r.ReservationId = rf.ReservationId " +
                         "Left Outer Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
@@ -153,7 +153,7 @@ namespace Portal2APIs.Controllers
             try
             {
 
-                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, rs.ReservationStatusName, r.UpdateExternalUserData " +
+                strSQL = "select r.ReservationId, r.ReservationNumber, r.StartDatetime, r.EndDatetime, mi.FirstName, mi.LastName, mi.MemberId, mc.FPNumber, mi.IsGuest, rs.ReservationStatusName, r.UpdateExternalUserData, mi.EmailAddress " +
                         "from Reservations r " +
                         "Left Outer Join MemberInformationMain mi on r.MemberId = mi.MemberId " +
                         "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
