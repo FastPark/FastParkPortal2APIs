@@ -14,7 +14,7 @@ namespace Portal2APIs.Controllers
     {
         [HttpPost]
         [Route("api/InsuranceWCClaims/SearchWCClaimsList/")]
-        public List<InsuranceWCClaim> SearchIncidentList(InsuranceWCClaim I)
+        public List<InsuranceWCClaim> SearchWCClaimsList(InsuranceWCClaim I)
         {
             var thisWhere = " where (1 = 1)";
 
@@ -72,7 +72,7 @@ namespace Portal2APIs.Controllers
                 clsADO thisADO = new clsADO();
 
 
-                strSQL = "Select WCClaimID, WCClaimNumber, " +
+                strSQL = "Select WCClaimID, '0' + WCClaimNumber as WCClaimNumber, " +
                         "'01' as Number, " +
                         "i.IncidentNumber + '-' + c.ClaimNumber as CompanionIncident, " +
                         "i.IncidentNumber, " +
@@ -81,9 +81,10 @@ namespace Portal2APIs.Controllers
                         "wcc.PCAInsuranceNumber, " +
                         "wcs.WCStatus, " +
                         "l.LocationName + '-' + l.LocationGLCode as LocationName, " +
-                        "wcc.ClaimantName " +
+                        "wcc.ClaimantName, " +
+                        "wci.WCInvestigationNumber " +
                         "from InsurancePCA.dbo.WCClaim wcc " +
-                        "Left Outer Join InsurancePCA.dbo.WCInvestigation wci on wcc.WCInvestigtionID = wci.WCInvestigationID " +
+                        "Left Outer Join InsurancePCA.dbo.WCInvestigation wci on wcc.WCInvestigationID = wci.WCInvestigationID " +
                         "Left Outer Join InsurancePCA.dbo.Claim c on wci.ClaimID = c.ClaimID " +
                         "Left Outer Join InsurancePCA.dbo.Incident i on c.IncidentID = i.IncidentID " +
                         "Left Outer Join InsurancePCA.dbo.WCStatus wcs on wcc.WCClaimStatusID = wcs.WCStatusid " +

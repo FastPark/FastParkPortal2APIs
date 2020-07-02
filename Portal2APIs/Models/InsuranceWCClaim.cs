@@ -57,6 +57,7 @@ namespace Portal2APIs.Models
         private string _CompanionIncident;
         private string _Number;
         private string _WCStatus;
+        private string _WCInvestigationNumber;
         #endregion
         #region Public Properties
         public int WCClaimID
@@ -273,6 +274,11 @@ namespace Portal2APIs.Models
         {
             get { return _WCStatus; }
             set { _WCStatus = value; }
+        }
+        public string WCInvestigationNumber
+        {
+            get { return _WCInvestigationNumber; }
+            set { _WCInvestigationNumber = value; }
         }
         #endregion
     }
