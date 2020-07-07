@@ -151,6 +151,47 @@ namespace Portal2APIs.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/InsuranceWCClaims/GetWCInvestigationByWCClaimID/{Id}")]
+        public List<WCInvestigation> GetWCInvestigationByWCClaimID(string Id)
+        {
+
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+                strSQL = "SELECT WCInvestigationID ,ClaimID ,WCInvestigationNumber ,EmployeeName ,EmployeeAddress ,EmployeeCity " +
+                            ",EmployeeStateID ,EmployeeSS ,EmployeeHomePhone ,EmployeeSex ,EmployeeMaritalStatus ,EmployeeDOB ,EmployeeAge " +
+                            ",EmployeeNumberOfDependents ,RegularEmploymentLocationID ,RegularEmpoymentLotID ,EmployeeDateOfHire " +
+                            ",MissedWorkReturnDate ,RequiredToMissWork ,PaidForDayOfInjury ,EmployeeWageRate ,IncidentLocationWorkLength " +
+                            ",AveHoursWorkedPerDay ,AveDaysWorkedPerWeek ,NormalDaysOff ,InjuryLocationId ,InjuryDateTime ,InjuryOnPremises " +
+                            ",InjuryLocation ,TimeShiftBegain ,EmployerNotifiedDate ,NotiefierName ,InjuryBodyPart ,InjuryNature ,InjuryCause " +
+                            ",ActioinBeforInjury ,AnyPriorHandicap ,HandicapDescription ,PropertyDamage ,PropertyDamageDescription " +
+                            ",SaftyEquipmentInvolved ,SaftyEquipmentUsed ,MedicalFacilityID ,FirstAidAdministered ,NameOfMedicalFacility " +
+                            ",NameOfTreatingPhysician ,PhoneOfTreatingPhysician ,DrugTest ,DrugTestFacility ,NoticesExplained " +
+                            ",CauseOfIllnessIncident ,CausePolicyInAffect ,PolicyInAffectDescription ,PolicyInAffectEmployeeAware " +
+                            ",PolicyInAffectHowNotified ,EmpoyeeComments " +
+                            "FROM dbo.WCInvestigation " +
+                            "Where WCClaimID = " + Id;
+
+                List<WCInvestigation> list = new List<WCInvestigation>();
+
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
         [HttpPost]
         [Route("api/InsuranceWCClaims/PostWCClaim")]
         public string PostWCClaim(InsuranceWCClaim I)
