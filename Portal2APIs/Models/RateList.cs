@@ -19,5 +19,11 @@ namespace Portal2APIs.Models
             set { m_LocationId = value; }
         }
         private int m_LocationId;
+        public Int64 MemberId
+        {
+            get { return m_MemberId; }
+            set { m_MemberId = value; }
+        }
+        private Int64 m_MemberId;
     }
 }

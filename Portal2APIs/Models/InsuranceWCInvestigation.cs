@@ -45,7 +45,7 @@ namespace Portal2APIs.Models
 		private string _InjuryLocation;
 		private string _TimeShiftBegain;
 		private object _EmployerNotifiedDate;
-		private string _NotiefierName;
+		private string _NotiefiedName;
 		private string _InjuryBodyPart;
 		private string _InjuryNature;
 		private string _InjuryCause;
@@ -70,6 +70,17 @@ namespace Portal2APIs.Models
 		private int _PolicyInAffectEmployeeAware;
 		private string _PolicyInAffectHowNotified;
 		private string _EmpoyeeComments;
+		private string _SupervisorComments;
+		private string _WCClaimNumber;
+		private string _IncidentNumber;
+		private string _ClaimNumber;
+		private string _ClaimName;
+		private string _ClaimantName;
+		private string _EmployeeZip;
+		private string _EmployeeSignature;
+		private DateTime _EmployeeSignatureDate;
+		private string _SupervisorSignature;
+		private DateTime _SupervisorSignatureDate;
 		#endregion
 		#region Public Properties
 		public int WCInvestigationID
@@ -227,10 +238,10 @@ namespace Portal2APIs.Models
 			get { return _EmployerNotifiedDate; }
 			set { _EmployerNotifiedDate = value; }
 		}
-		public string NotiefierName
+		public string NotiefiedName
 		{
-			get { return _NotiefierName; }
-			set { _NotiefierName = value; }
+			get { return _NotiefiedName; }
+			set { _NotiefiedName = value; }
 		}
 		public string InjuryBodyPart
 		{
@@ -353,5 +364,60 @@ namespace Portal2APIs.Models
 			set { _EmpoyeeComments = value; }
 		}
 		#endregion
+		public string WCClaimNumber
+		{
+			get { return _WCClaimNumber; }
+			set { _WCClaimNumber = value; }
+		}
+		public string IncidentNumber
+		{
+			get { return _IncidentNumber; }
+			set { _IncidentNumber = value; }
+		}
+		public string ClaimNumber
+		{
+			get { return _ClaimNumber; }
+			set { _ClaimNumber = value; }
+		}
+		public string ClaimName
+		{
+			get { return _ClaimName; }
+			set { _ClaimName = value; }
+		}
+		public string ClaimantName
+		{
+			get { return _ClaimantName; }
+			set { _ClaimantName = value; }
+		}
+		public string EmployeeZip
+		{
+			get { return _EmployeeZip; }
+			set { _EmployeeZip = value; }
+		}
+		public string SupervisorComments
+		{
+			get { return _SupervisorComments; }
+			set { _SupervisorComments = value; }
+		}
+		public string EmployeeSignature
+		{
+			get { return _EmployeeSignature; }
+			set { _EmployeeSignature = value; }
+		}
+		public DateTime EmployeeSignatureDate
+		{
+			get { return _EmployeeSignatureDate; }
+			set { _EmployeeSignatureDate = value; }
+		}
+		public string SupervisorSignature
+		{
+			get { return _SupervisorSignature; }
+			set { _SupervisorSignature = value; }
+		}
+		public DateTime SupervisorSignatureDate
+		{
+			get { return _SupervisorSignatureDate; }
+			set { _SupervisorSignatureDate = value; }
+		}
 	}
 }

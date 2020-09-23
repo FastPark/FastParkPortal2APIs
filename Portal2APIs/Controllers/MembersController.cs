@@ -19,7 +19,7 @@ namespace Portal2APIs.Controllers
             clsADO thisADO = new clsADO();
 
             //var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)";
-            var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0 or mc.IsPrimary is null)";
+            var thisWhere = " where mc.IsDeleted = 0 and (mc.IsPrimary = 1 or mc.IsPrimary = 0 or mc.IsPrimary is null)";
 
             if (thisMember.FPNumber != null)
             {
@@ -28,13 +28,13 @@ namespace Portal2APIs.Controllers
 
             if (thisMember.FirstName != null) {
 
-                thisWhere = thisWhere + " and mi.FirstName like '%" + thisMember.FirstName + "%'";
+                thisWhere = thisWhere + " and mi.FirstName like '" + thisMember.FirstName + "%'";
             }
 
             if (thisMember.LastName != null)
             {
                 
-                thisWhere = thisWhere + " and mi.LastName like '%" + thisMember.LastName + "%'";
+                thisWhere = thisWhere + " and mi.LastName like '" + thisMember.LastName + "%'";
             }
 
             if (thisMember.EmailAddress != null)
@@ -74,7 +74,7 @@ namespace Portal2APIs.Controllers
                 {
                     if (thisMember.HomePhone != null)
                     {
-                        strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home, mi.UserName, mi.CompanyId, mi.CityName as City, mi.StreetAddress " +
+                        strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.ShortLocationName as Home, mi.UserName, mi.CompanyId, mi.CityName as City, mi.StreetAddress " +
                              "from dbo.MemberInformationMain mi " +
                              //"Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
                              "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
@@ -84,12 +84,13 @@ namespace Portal2APIs.Controllers
                              "left outer join marketingflyer.dbo.companies c on mi.companyId = c.id " +
                              thisWhere +
                              " and mhl.UpdateDatetime is null " +
-                             " order by mi.LastName, mi.FirstName, mc.IsPrimary desc, mi.memberid ";
-                        
+                             //" order by mi.LastName, mi.FirstName, mc.IsPrimary desc, mi.memberid ";
+                             " order by l.ShortLocationName, mi.LastName, mi.FirstName ";
+
                     }
                     else
                     {
-                        strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.NameOfLocation as Home, mi.UserName, mi.CompanyId, mi.CityName as City, mi.StreetAddress " +
+                        strSQL = "Select mi.MemberId, mc.FPNumber, mi.FirstName, mi.LastName, mi.EmailAddress, mi.HomePhone, mi.Company, mi.CompanyId, mi.MarketingCode, mi.UserName, l.ShortLocationName as Home, mi.UserName, mi.CompanyId, mi.CityName as City, mi.StreetAddress " +
                              "from dbo.MemberInformationMain mi " +
                              //"Inner Join MemberCard mc on mi.MemberId = mc.MemberId " +
                              "Left Outer Join MemberCard mc on mi.MemberId = mc.MemberId " +
@@ -97,8 +98,9 @@ namespace Portal2APIs.Controllers
                              "Inner Join LocationDetails l on mhl.LocationId = l.LocationId " +
                              "left outer join marketingflyer.dbo.companies c on mi.companyId = c.id " +
                              thisWhere +
-                             " order by mi.LastName, mi.FirstName, mc.IsPrimary desc, mi.memberid ";
-              
+                             //" order by mi.LastName, mi.FirstName, mc.IsPrimary desc, mi.memberid ";
+                             " order by l.ShortLocationName, mi.LastName, mi.FirstName ";
+
                     }
 
                     List<Member> list = new List<Member>();

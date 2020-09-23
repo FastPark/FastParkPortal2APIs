@@ -161,19 +161,23 @@ namespace Portal2APIs.Controllers
                 string strSQL = "";
                 clsADO thisADO = new clsADO();
 
-                strSQL = "SELECT WCInvestigationID ,ClaimID ,WCInvestigationNumber ,EmployeeName ,EmployeeAddress ,EmployeeCity " +
-                            ",EmployeeStateID ,EmployeeSS ,EmployeeHomePhone ,EmployeeSex ,EmployeeMaritalStatus ,EmployeeDOB ,EmployeeAge " +
-                            ",EmployeeNumberOfDependents ,RegularEmploymentLocationID ,RegularEmpoymentLotID ,EmployeeDateOfHire " +
-                            ",MissedWorkReturnDate ,RequiredToMissWork ,PaidForDayOfInjury ,EmployeeWageRate ,IncidentLocationWorkLength " +
-                            ",AveHoursWorkedPerDay ,AveDaysWorkedPerWeek ,NormalDaysOff ,InjuryLocationId ,InjuryDateTime ,InjuryOnPremises " +
-                            ",InjuryLocation ,TimeShiftBegain ,EmployerNotifiedDate ,NotiefierName ,InjuryBodyPart ,InjuryNature ,InjuryCause " +
-                            ",ActioinBeforInjury ,AnyPriorHandicap ,HandicapDescription ,PropertyDamage ,PropertyDamageDescription " +
-                            ",SaftyEquipmentInvolved ,SaftyEquipmentUsed ,MedicalFacilityID ,FirstAidAdministered ,NameOfMedicalFacility " +
-                            ",NameOfTreatingPhysician ,PhoneOfTreatingPhysician ,DrugTest ,DrugTestFacility ,NoticesExplained " +
-                            ",CauseOfIllnessIncident ,CausePolicyInAffect ,PolicyInAffectDescription ,PolicyInAffectEmployeeAware " +
-                            ",PolicyInAffectHowNotified ,EmpoyeeComments " +
-                            "FROM dbo.WCInvestigation " +
-                            "Where WCClaimID = " + Id;
+                strSQL = "SELECT '0' + wcc.WCClaimNumber as WCClaimNumber, i.IncidentNumber, c.ClaimNumber, c.ClaimantName " +
+                        ",wci.WCInvestigationID ,wci.ClaimID ,wci.WCInvestigationNumber ,wci.EmployeeName ,wci.EmployeeAddress ,wci.EmployeeCity " +
+                        ",wci.EmployeeStateID ,wci.EmployeeSS ,wci.EmployeeHomePhone ,wci.EmployeeSex ,wci.EmployeeMaritalStatus ,wci.EmployeeDOB ,wci.EmployeeAge " +
+                        ",wci.EmployeeNumberOfDependents ,wci.RegularEmploymentLocationID ,wci.RegularEmpoymentLotID ,wci.EmployeeDateOfHire " +
+                        ",wci.MissedWorkReturnDate ,wci.RequiredToMissWork ,wci.PaidForDayOfInjury ,wci.EmployeeWageRate ,wci.IncidentLocationWorkLength " +
+                        ",wci.AveHoursWorkedPerDay ,wci.AveDaysWorkedPerWeek ,wci.NormalDaysOff ,wci.InjuryLocationId ,wci.InjuryDateTime ,wci.InjuryOnPremises " +
+                        ",wci.InjuryLocation ,wci.TimeShiftBegain ,wci.EmployerNotifiedDate ,wci.NotiefiedName ,wci.InjuryBodyPart ,wci.InjuryNature ,wci.InjuryCause " +
+                        ",wci.ActioinBeforInjury ,wci.AnyPriorHandicap ,wci.HandicapDescription ,wci.PropertyDamage ,wci.PropertyDamageDescription " +
+                        ",wci.SaftyEquipmentInvolved ,wci.SaftyEquipmentUsed ,wci.MedicalFacilityID ,wci.FirstAidAdministered ,wci.NameOfMedicalFacility " +
+                        ",wci.NameOfTreatingPhysician ,wci.DrugTest ,wci.DrugTestFacility ,wci.NoticesExplained " +
+                        ",wci.CauseOfIllnessIncident ,wci.CausePolicyInAffect ,wci.PolicyInAffectDescription ,wci.PolicyInAffectEmployeeAware " +
+                        ",wci.PolicyInAffectHowNotified ,wci.EmpoyeeComments ,wci.SupervisorComments ,wci.EmployeeSignature ,wci.EmployeeSignatureDate ,wci.SupervisorSignature , wci.SupervisorSignatureDate " +
+                        "FROM InsurancePCA.dbo.WCInvestigation wci " +
+                        "Inner Join InsurancePCA.dbo.WCClaim wcc on wci.WCInvestigationID = wcc.WCInvestigationID " +
+                        "Left Outer Join InsurancePCA.dbo.Claim c on wci.ClaimID = c.ClaimID " +
+                        "Left Outer Join InsurancePCA.dbo.Incident i on c.IncidentID = i.IncidentID " +
+                        "Where WCClaimID = " + Id;
 
                 List<WCInvestigation> list = new List<WCInvestigation>();
 
@@ -189,6 +193,154 @@ namespace Portal2APIs.Controllers
                     StatusCode = HttpStatusCode.BadRequest
                 };
                 throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPut]
+        [Route("api/InsuranceWCClaims/PutWCInvestigation")]
+        public string PutWCClaim(WCInvestigation WCI)
+        {
+            clsADO thisADO = new clsADO();
+            string strSQL = null;
+
+            try
+            {
+                strSQL = "UPDATE InsurancePCA.dbo.WCInvestigation " +
+                        "SET EmployeeName = '" + WCI.EmployeeName + "' " +
+                        ",EmployeeAddress = '" + WCI.EmployeeAddress + "' " +
+                        ",EmployeeCity = '" + WCI.EmployeeCity + "' " +
+                        ",EmployeeStateID = " + WCI.EmployeeStateID + " " +
+                        ",EmployeeSS = '" + WCI.EmployeeSS + "' " +
+                        ",EmployeeHomePhone = '" + WCI.EmployeeHomePhone + "' " +
+                        ",EmployeeSex = '" + WCI.EmployeeSex + "' " +
+                        ",EmployeeMaritalStatus = '" + WCI.EmployeeMaritalStatus + "' " +
+                        ",EmployeeDOB = '" + WCI.EmployeeDOB + "' " +
+                        ",EmployeeAge = '" + WCI.EmployeeAge + "' " +
+                        ",EmployeeNumberOfDependents = " + WCI.EmployeeNumberOfDependents + " " +
+                        ",RegularEmploymentLocationID = " + WCI.RegularEmploymentLocationID + " " +
+                        ",RegularEmpoymentLotID = " + WCI.RegularEmpoymentLotID + " " +
+                        ",EmployeeDateOfHire = '" + WCI.EmployeeDateOfHire + "' " +
+                        ",MissedWorkReturnDate = '" + WCI.MissedWorkReturnDate + "' " +
+                        ",RequiredToMissWork = " + WCI.RequiredToMissWork + " " +
+                        ",PaidForDayOfInjury = '" + WCI.PaidForDayOfInjury + "' " +
+                        ",EmployeeWageRate = " + WCI.EmployeeWageRate + " " +
+                        ",IncidentLocationWorkLength = " + WCI.IncidentLocationWorkLength + " " +
+                        ",AveHoursWorkedPerDay = " + WCI.AveHoursWorkedPerDay + " " +
+                        ",AveDaysWorkedPerWeek = " + WCI.AveDaysWorkedPerWeek + " " +
+                        ",NormalDaysOff = " + WCI.NormalDaysOff + " " +
+                        ",InjuryLocationId = " + WCI.InjuryLocationId + " " +
+                        ",InjuryDateTime = '" + WCI.InjuryDateTime + "' " +
+                        ",InjuryOnPremises = " + WCI.InjuryOnPremises + " " +
+                        ",InjuryLocation = '" + WCI.InjuryLocation + "' " +
+                        ",TimeShiftBegain = '" + WCI.TimeShiftBegain + "' " +
+                        ",EmployerNotifiedDate = '" + WCI.EmployerNotifiedDate + "' " +
+                        ",NotifiedName = '" + WCI.NotiefiedName + "' " +
+                        ",InjuryBodyPart = '" + WCI.InjuryBodyPart + "' " +
+                        ",InjuryNature = '" + WCI.InjuryNature + "' " +
+                        ",InjuryCause = '" + WCI.InjuryCause + "' " +
+                        ",ActioinBeforInjury = '" + WCI.ActioinBeforInjury + "' " +
+                        ",AnyPriorHandicap = " + WCI.AnyPriorHandicap + " " +
+                        ",HandicapDescription = '" + WCI.HandicapDescription + "' " +
+                        ",PropertyDamage = " + WCI.PropertyDamage + " " +
+                        ",PropertyDamageDescription = '" + WCI.PropertyDamageDescription + "' " +
+                        ",SaftyEquipmentInvolved = " + WCI.SaftyEquipmentInvolved + " " +
+                        ",SaftyEquipmentUsed = " + WCI.SaftyEquipmentUsed + " " +
+                        ",MedicalFacilityID = " + WCI.MedicalFacilityID + " " +
+                        ",FirstAidAdministered = '" + WCI.FirstAidAdministered + "' " +
+                        ",NameOfMedicalFacility = '" + WCI.NameOfMedicalFacility + "' " +
+                        ",NameOfTreatingPhysician = '" + WCI.NameOfTreatingPhysician + "' " +
+                        ",DrugTest = " + WCI.DrugTest + " " +
+                        ",DrugTestFacility = '" + WCI.DrugTestFacility + "' " +
+                        ",NoticesExplained = " + WCI.NoticesExplained + " " +
+                        ",CauseOfIllnessIncident = '" + WCI.CauseOfIllnessIncident + "' " +
+                        ",CausePolicyInAffect = " + WCI.CausePolicyInAffect + " " +
+                        ",PolicyInAffectDescription = '" + WCI.PolicyInAffectDescription + "' " +
+                        ",PolicyInAffectEmployeeAware = " + WCI.PolicyInAffectEmployeeAware + " " +
+                        ",PolicyInAffectHowNotified = '" + WCI.PolicyInAffectHowNotified + "' " +
+                        ",EmpoyeeComments = '" + WCI.EmpoyeeComments + "' " +
+                        ",Supervisoromments = '" + WCI.SupervisorComments + "' " +
+                        ",EmployeeSignature = '" + WCI.EmployeeSignature + "' " +
+                        ",SupervisorSignature = '" + WCI.SupervisorSignature + "' " +
+                        ",EmployeeSignatureDate = '" + WCI.EmployeeSignatureDate + "' " +
+                        ",SupervisorSignatureDate = '" + WCI.SupervisorSignatureDate + "' " +
+                        " WHERE WCInvestigationID = " + WCI.WCInvestigationID;
+
+                thisADO.updateOrInsert(strSQL, false);
+                return WCI.WCInvestigationID.ToString();
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        [HttpGet]
+        [Route("api/InsuranceWCClaims/GetWCInvestigationWitnessByWCInvestigaionID/{Id}")]
+        public List<WCInvestigationWitness> GetWCInvestigationWitnessByWCInvestigaionID(string Id)
+        {
+
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+                strSQL = "SELECT WCInvestigationWitnessID,WCInvestigationID,WCIWitnessName,WCIWitnessAddress,WCIWitnessCity " +
+                        ",WCIWitnessStateID,WCIWitnessZip,WCIWitnessHomePhone,WCIWitnessBusinessPhone, s.StateAbbreviation " +
+                        "FROM InsurancePCA.dbo.WCInvestigationWitness wciw " +
+                        "INNER JOIN InsurancePCA.dbo.State s on wciw.WCIWitnessStateID = s.StateId " +
+                        "Where WCInvestigationID = " + Id;
+
+                List<WCInvestigationWitness> list = new List<WCInvestigationWitness>();
+
+                thisADO.returnSingleValue(strSQL, false, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        [HttpPost]
+        [Route("api/InsuranceWCClaims/PostWCInvestigationWitness")]
+        public string PostWCInvestigationWitness(WCInvestigationWitness WCIW)
+        {
+            clsADO thisADO = new clsADO();
+            string strSQL;
+
+            try
+            {
+                strSQL = "INSERT INTO InsurancePCA.dbo.WCInvestigationWitness" +
+                        "(WCInvestigationID " +
+                        ",WCIWitnessName " +
+                        ",WCIWitnessAddress " +
+                        ",WCIWitnessCity " +
+                        ",WCIWitnessStateID " +
+                        ",WCIWitnessZip " +
+                        ",WCIWitnessHomePhone " +
+                        ",WCIWitnessBusinessPhone)" +
+                        "VALUES " +
+                        "(" + WCIW.WCInvestigationID +
+                        ",'" + WCIW.WCIWitnessName + "'" +
+                        ",'" + WCIW.WCIWitnessAddress + "'" +
+                        ",'" + WCIW.WCIWitnessCity + "'" +
+                        ",'" + WCIW.WCIWitnessStateID + "'" +
+                        ",'" + WCIW.WCIWitnessZip + "'" +
+                        ",'" + WCIW.WCIWitnessHomePhone + "'" +
+                        ",'" + WCIW.WCIWitnessBusinessPhone + "')";
+
+                thisADO.updateOrInsert(strSQL, false);
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
             }
         }
 
@@ -334,5 +486,7 @@ namespace Portal2APIs.Controllers
                 throw new HttpResponseException(response);
             }
         }
+
+
     }
 }

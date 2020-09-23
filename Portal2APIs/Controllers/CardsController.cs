@@ -88,6 +88,7 @@ namespace Portal2APIs.Controllers
             }
             catch (Exception ex)
             {
+                Console.Write(ex.ToString());
                 return -1;
             }
         }

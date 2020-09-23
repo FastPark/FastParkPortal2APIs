@@ -49,5 +49,44 @@ namespace Portal2APIs.Controllers
                 throw new HttpResponseException(response);
             }
         }
+
+        [HttpGet]
+        [Route("api/Audits/GetDOAudits/{id}")]
+        public List<Audit> GetDOAudits(int id)
+        {
+            try
+            {
+                string strSQL = "";
+                clsADO thisADO = new clsADO();
+
+
+                strSQL = "Select MemberId, FirstName, LastName, DataChanged, OldValue, NewValue, ChangeType, changeUser, changeDate from (" +
+                        "select mi.MemberId as MemberId, mi.FirstName, mi.LastName, DataChanged as DataChanged, OldValue, NewValue, Case When al.CreateUserId = al.MemberId then 'USER' Else 'AWS' End as ChangeType, Cast(al.CreateUserId as  nvarchar(25)) as changeUser,  dateAdd(Hour,-5,al.CreateDatetime) as  changeDate, dateAdd(Hour,-5,al.CreateDatetime) as orderColumn " +
+                        "from AuditLog al " +
+                        "Inner Join MemberInformationMain mi on al.MemberId = mi.MemberId " +
+                        "where al.MemberId = " + id + " and al.DataChanged like '%Discount%' " +
+                        "Union All " +
+                        "select cl.changeID as MemberId, mi.FirstName, mi.LastName, ChangeNote as DataChanged, ChangeValOld as OldValue, changeValNew as NewValue, 'Portal' as ChangeType, changeUser, changeDate, changeDate as orderColumn " +
+                        "from changelog cl " +
+                        "Left Outer Join MemberInformationMain mi on cl.ChangeId = mi.memberId " +
+                        "where cl.ChangeId = " + id + " and cl.ChangeNote <> 'Set Reservation Complete' and cl.ChangeNote like '%Discount%') audits " +
+                        "order by orderColumn desc";
+
+                List<Audit> list = new List<Audit>();
+
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
     }
 }

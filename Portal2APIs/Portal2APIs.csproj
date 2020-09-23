@@ -25,6 +25,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -124,6 +125,7 @@
     <Compile Include="Controllers\CompanyDropDownsController.cs" />
     <Compile Include="Controllers\DashboardSettingsController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
+    <Compile Include="Controllers\DiscountOrganizationsController.cs" />
     <Compile Include="Controllers\EmailsController.cs" />
     <Compile Include="Controllers\FleetStatussController.cs" />
     <Compile Include="Controllers\InsuranceClaimsController.cs" />
@@ -186,12 +188,14 @@
     <Compile Include="Models\CardLocation.cs" />
     <Compile Include="Models\CardOrder.cs" />
     <Compile Include="Models\CardShip.cs" />
+    <Compile Include="Models\DiscountOrganization.cs" />
     <Compile Include="Models\EmployeeStatement.cs" />
     <Compile Include="Models\IncidentOtherInvolved.cs" />
     <Compile Include="Models\InsuranceClaimNote.cs" />
     <Compile Include="Models\InsuranceClaimPayable.cs" />
     <Compile Include="Models\InsuranceManagerInvestigation.cs" />
     <Compile Include="Models\InsuranceWCInvestigation.cs" />
+    <Compile Include="Models\InsuranceWCInvestigationWitness.cs" />
     <Compile Include="Models\InsuranceWitness.cs" />
     <Compile Include="Models\InuranceClaimReceivable.cs" />
     <Compile Include="Models\InsuranceClaimStatus.cs" />
