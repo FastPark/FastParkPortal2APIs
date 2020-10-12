@@ -12,8 +12,8 @@ namespace Portal2APIs.Controllers
     public class DiscountOrganizationsController : ApiController
     {
         [HttpGet]
-        [Route("api/DiscountOrganizations/GetDiscountOrganizations/")]
-        public List<DiscountOrganization> GetDiscountOrganizations()
+        [Route("api/DiscountOrganizations/GetDiscountOrganizations/{id}")]
+        public List<DiscountOrganization> GetDiscountOrganizations(string id)
         {
             string strSQL = "";
             clsADO thisADO = new clsADO();
@@ -21,7 +21,8 @@ namespace Portal2APIs.Controllers
             try
             {
                 strSQL = "Select  do.DiscountOrganizationId, do.DiscountOrganizationName " +
-                         "from DiscountOrganization do Inner Join DiscountOrganizationHasLocation dohl on do.DiscountOrganizationId = dohl.DiscountOrganizationId  ";
+                         "from DiscountOrganization do Inner Join DiscountOrganizationHasLocation dohl on do.DiscountOrganizationId = dohl.DiscountOrganizationId  " +
+                         "Where dohl.LocationId = " + id;
 
                 List<DiscountOrganization> list = new List<DiscountOrganization>();
                 thisADO.returnSingleValue(strSQL, true, ref list);

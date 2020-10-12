@@ -25,6 +25,7 @@ namespace Portal2APIs.Models
         private object _OOSDate;
         private object _EstReturn;
         private string _Notes;
+        private object _CreateDatetime;
         #endregion
         #region Public Properties
         public int FleetStatusID
@@ -81,6 +82,11 @@ namespace Portal2APIs.Models
         {
             get { return _Notes; }
             set { _Notes = value; }
+        }
+        public object CreateDatetime
+        {
+            get { return _CreateDatetime; }
+            set { _CreateDatetime = value; }
         }
         #endregion
     }

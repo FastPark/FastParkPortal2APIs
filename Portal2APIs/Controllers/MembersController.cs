@@ -39,7 +39,7 @@ namespace Portal2APIs.Controllers
 
             if (thisMember.EmailAddress != null)
             {
-                thisWhere = thisWhere + " and mi.EmailAddress Like '%" + thisMember.EmailAddress + "%'";
+                thisWhere = thisWhere + " and mi.EmailAddress Like '" + thisMember.EmailAddress + "%'";
             }
 
             //if (thisMember.HomePhone != null)
@@ -49,7 +49,7 @@ namespace Portal2APIs.Controllers
 
             if (thisMember.Company != null)
             {
-                thisWhere = thisWhere + " and mi.Company like '%" + thisMember.Company + "%'";
+                thisWhere = thisWhere + " and mi.Company like '" + thisMember.Company + "%'";
             }
 
             if (thisMember.MailerCompany != null)
@@ -64,7 +64,7 @@ namespace Portal2APIs.Controllers
 
             if (thisMember.UserName != null)
             {
-                thisWhere = thisWhere + " and mi.UserName like '%" + thisMember.UserName + "%'";
+                thisWhere = thisWhere + " and mi.UserName like '" + thisMember.UserName + "%'";
             }
 
             try
