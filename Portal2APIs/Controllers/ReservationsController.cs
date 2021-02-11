@@ -207,5 +207,54 @@ namespace Portal2APIs.Controllers
                 return ex.ToString();
             }
         }
+
+        [HttpGet]
+        [Route("api/Reservations/GetReservationReminderEmail/{id}")]
+        public string GetReservationReminderEmail(string id)
+        {
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+
+                var strSQL = "Select EmailTemplateBody " +
+                            "from EmailTemplates " +
+                            "Where EmailTemplateName = 'ReservationReminder-V2' " +
+                            "And LocationId = " + id;
+
+                var thisEmailHtml = thisADO.returnSingleValueForInternalAPIUse(strSQL, true);
+
+                return thisEmailHtml;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Reservations/GetReservationReminderAlert/{id}")]
+        public string GetReservationReminderAlert(string id)
+        {
+            clsADO thisADO = new clsADO();
+
+            try
+            {
+
+                var strSQL = "Select Alert " +
+                            "from LocationDetails " +
+                            "Where LocationId = " + id;
+
+                var thisEmailAlert = thisADO.returnSingleValueForInternalAPIUse(strSQL, true);
+
+                return thisEmailAlert;
+
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
     }
 }

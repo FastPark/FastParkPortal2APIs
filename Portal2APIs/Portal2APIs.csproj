@@ -169,6 +169,7 @@
     <Compile Include="Controllers\VehiclesController.cs" />
     <Compile Include="Controllers\VehicleStatesController.cs" />
     <Compile Include="Controllers\VehicleTrackingsController.cs" />
+    <Compile Include="Controllers\WPFPSController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -228,6 +229,7 @@
     <Compile Include="Models\PCAVehicleClaim.cs" />
     <Compile Include="Models\PendingClaimStatus.cs" />
     <Compile Include="Models\PolicyType.cs" />
+    <Compile Include="Models\SignUpNoMatch.cs" />
     <Compile Include="Models\ThirdPartyStatement.cs" />
     <Compile Include="Models\ThirdPartyVehicleClaim.cs" />
     <Compile Include="Models\VehicleMaintenance.cs" />
@@ -266,6 +268,8 @@
     <Compile Include="Models\VehicleTracking.cs" />
     <Compile Include="Models\InsuranceWCClaimNote.cs" />
     <Compile Include="Models\WitnessStatement.cs" />
+    <Compile Include="Models\WPFP.cs" />
+    <Compile Include="Models\WPOL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
