@@ -23,6 +23,7 @@ namespace Portal2APIs.Models
 		private string _FirstName;
 		private string _LastName;
 		private string _FPNumber;
+		private int _EmailSent;
 		#endregion
 		#region Public Properties
 		public int SignUpNoMatchID
@@ -69,6 +70,11 @@ namespace Portal2APIs.Models
 		{
 			get { return _FPNumber; }
 			set { _FPNumber = value; }
+		}
+		public int EmailSent
+		{
+			get { return _EmailSent; }
+			set { _EmailSent = value; }
 		}
 		#endregion
 	}

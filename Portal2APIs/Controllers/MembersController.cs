@@ -19,7 +19,7 @@ namespace Portal2APIs.Controllers
             clsADO thisADO = new clsADO();
 
             //var thisWhere = " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)";
-            var thisWhere = " where mc.IsDeleted = 0 and (mc.IsPrimary = 1 or mc.IsPrimary = 0 or mc.IsPrimary is null)";
+            var thisWhere = " where (mc.IsDeleted = 0 or mc.IsPrimary = 1 or mc.IsPrimary = 0 or mc.IsPrimary is null)";
 
             if (thisMember.FPNumber != null)
             {
@@ -70,7 +70,7 @@ namespace Portal2APIs.Controllers
             try
             {
                 //if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary = 0)" || thisMember.HomePhone != null)
-                if (thisWhere != " where (mc.IsPrimary = 1 or mc.IsPrimary = 0 or mc.IsPrimary is null)" || thisMember.HomePhone != null)
+                if (thisWhere != " where (mc.IsDeleted = 0 or mc.IsPrimary = 1 or mc.IsPrimary = 0 or mc.IsPrimary is null)" || thisMember.HomePhone != null)
                 {
                     if (thisMember.HomePhone != null)
                     {
@@ -85,8 +85,9 @@ namespace Portal2APIs.Controllers
                              "left outer join marketingflyer.dbo.companies c on mi.companyId = c.id " +
                              thisWhere +
                              " and mhl.UpdateDatetime is null " +
+                             " and mi.IsDeleted = 0 " +
                              //" order by mi.LastName, mi.FirstName, mc.IsPrimary desc, mi.memberid ";
-                             " order by l.ShortLocationName, mi.LastName, mi.FirstName ";
+                             " order by l.ShortLocationName, mi.LastName, mi.FirstName, mcPrimary.FPNumber ";
 
                     }
                     else
@@ -100,8 +101,10 @@ namespace Portal2APIs.Controllers
                              "Inner Join LocationDetails l on mhl.LocationId = l.LocationId " +
                              "left outer join marketingflyer.dbo.companies c on mi.companyId = c.id " +
                              thisWhere +
+                             " and mhl.UpdateDatetime is null " +
+                             " and mi.IsDeleted = 0 " +
                              //" order by mi.LastName, mi.FirstName, mc.IsPrimary desc, mi.memberid ";
-                             " order by l.ShortLocationName, mi.LastName, mi.FirstName ";
+                             " order by l.ShortLocationName, mi.LastName, mi.FirstName, mcPrimary.FPNumber ";
 
                     }
 

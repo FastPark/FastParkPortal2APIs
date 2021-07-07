@@ -148,6 +148,8 @@
     <Compile Include="Controllers\MembersController.cs" />
     <Compile Include="Controllers\MemberThankYousController.cs" />
     <Compile Include="Controllers\OldPortalGuidsController.cs" />
+    <Compile Include="Controllers\PCACreditTransactionsController.cs" />
+    <Compile Include="Controllers\PCASearchPermitsController.cs" />
     <Compile Include="Controllers\VehicleMaintenancePartsController.cs" />
     <Compile Include="Controllers\VehicleMaintenancesController.cs" />
     <Compile Include="Controllers\VehiclePartsController.cs" />
@@ -225,7 +227,9 @@
     <Compile Include="Models\MailerCodeSend.cs" />
     <Compile Include="Models\MaintenancePackagePart.cs" />
     <Compile Include="Models\ManagerRecomendation.cs" />
+    <Compile Include="Models\PCACreditTransaction.cs" />
     <Compile Include="Models\PCARep.cs" />
+    <Compile Include="Models\PCASearchPermits.cs" />
     <Compile Include="Models\PCAVehicleClaim.cs" />
     <Compile Include="Models\PendingClaimStatus.cs" />
     <Compile Include="Models\PolicyType.cs" />

@@ -451,5 +451,46 @@ namespace Portal2APIs.Common
 
         }
 
+        public List<string[]> returnAllValues(string strSQL, bool Max)
+        {
+            var thisReturn = new List<string[]>();
+            string conn = "";
+
+
+            if (Max == true)
+            {
+                conn = getRemoteConnectionString();
+            }
+            else
+            {
+                conn = getLocalConnectionString();
+            }
+
+            using (SqlConnection con = new SqlConnection(conn))
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandText = strSQL;
+                    cmd.Connection = con;
+                    con.Open();
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            string[] thisLine = new string[sdr.FieldCount];
+                            for (int i = 0; i < sdr.FieldCount; i++)
+                            {
+                                thisLine[i] = sdr[i].ToString();
+                            }
+                            thisReturn.Add(thisLine);
+                            thisLine = null;
+                        }
+                    }
+                    con.Close();
+                }
+            }
+            return thisReturn;
+        }
+
     }
 }

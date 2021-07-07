@@ -24,6 +24,7 @@ namespace Portal2APIs.Models
         private string _Status;
         private object _OOSDate;
         private object _EstReturn;
+        private object _ReturnToService;
         private string _Notes;
         private object _CreateDatetime;
         #endregion
@@ -77,6 +78,11 @@ namespace Portal2APIs.Models
         {
             get { return _EstReturn; }
             set { _EstReturn = value; }
+        }
+        public object ReturnToService
+        {
+            get { return _ReturnToService; }
+            set { _ReturnToService = value; }
         }
         public string Notes
         {

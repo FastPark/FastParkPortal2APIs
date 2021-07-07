@@ -117,38 +117,46 @@ namespace Portal2APIs.Controllers
                 if (fs.Status == "In Service") { thisStatus = "1"; } else { thisStatus = "0"; };
 
                 strSQL = "INSERT INTO Vehicles.dbo.FleetStatus " +
-                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes) " +
+                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes, CreateDatetime) " +
                          "VALUES (" + fs.VehicleId + ", " + FAC + ", " + RAC + ", '" + fs.LastExWash + "', '" + fs.LastInExWash +
-                         "', " + thisStatus + ", '" + fs.OOSDate + "', '" + fs.EstReturn + "', '" + fs.Notes + "')";
+                         "', " + thisStatus + ", '" + fs.OOSDate + "', '" + fs.EstReturn + "', '" + fs.Notes + "', GetDate())";
 
                 if (fs.OOSDate.ToString() == "NULL")
                 {
                     strSQL = "INSERT INTO Vehicles.dbo.FleetStatus " +
-                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes) " +
+                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes, CreateDatetime) " +
                          "VALUES (" + fs.VehicleId + ", " + FAC + ", " + RAC + ", '" + fs.LastExWash + "', '" + fs.LastInExWash +
-                         "', " + thisStatus + ", " + fs.OOSDate + ", '" + fs.EstReturn + "', '" + fs.Notes + "')";
+                         "', " + thisStatus + ", " + fs.OOSDate + ", '" + fs.EstReturn + "', '" + fs.Notes + "', GetDate())";
                 }
 
                 if (fs.EstReturn.ToString() == "NULL")
                 {
                     strSQL = "INSERT INTO Vehicles.dbo.FleetStatus " +
-                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes) " +
+                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes, CreateDatetime) " +
                          "VALUES (" + fs.VehicleId + ", " + FAC + ", " + RAC + ", '" + fs.LastExWash + "', '" + fs.LastInExWash +
-                         "', " + thisStatus + ", '" + fs.OOSDate + "', " + fs.EstReturn + ", '" + fs.Notes + "')";
+                         "', " + thisStatus + ", '" + fs.OOSDate + "', " + fs.EstReturn + ", '" + fs.Notes + "', GetDate())";
                 }
 
                 if (fs.OOSDate.ToString() == "NULL" && fs.EstReturn.ToString() == "NULL")
                 {
                     strSQL = "INSERT INTO Vehicles.dbo.FleetStatus " +
-                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes) " +
+                         "(VehicleId, FrontACStatus, RearACStatus, LastExWash, LastInExWash, Status, OOSDate, EstReturn, Notes, CreateDatetime) " +
                          "VALUES (" + fs.VehicleId + ", " + FAC + ", " + RAC + ", '" + fs.LastExWash + "', '" + fs.LastInExWash +
-                         "', " + thisStatus + ", " + fs.OOSDate + ", " + fs.EstReturn + ", '" + fs.Notes + "')";
+                         "', " + thisStatus + ", " + fs.OOSDate + ", " + fs.EstReturn + ", '" + fs.Notes + "', GetDate())";
                 }
 
 
                 thisADO.updateOrInsert(strSQL, false);
 
-                strSQL = "Update Vehicles.dbo.FleetStatus set UpdatedDate = GetDate() Where FleetStatusID = " + fs.FleetStatusID;
+                if (fs.ReturnToService.ToString() == "NULL")
+                {
+                    strSQL = "Update Vehicles.dbo.FleetStatus set UpdatedDate = GetDate() Where FleetStatusID = " + fs.FleetStatusID;
+                } 
+                else
+                {
+                    strSQL = "Update Vehicles.dbo.FleetStatus set UpdatedDate = GetDate(), ReturnToService = GetDate() Where FleetStatusID = " + fs.FleetStatusID;
+                }
+                
 
                 thisADO.updateOrInsert(strSQL, false);
 

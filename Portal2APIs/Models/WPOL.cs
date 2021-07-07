@@ -22,6 +22,8 @@ namespace Portal2APIs.Models
 		private int _RFRPoints;
 		private int _RFRMemberId;
 		private DateTime _RFRTransferDate;
+		private string _FPNumber;
+		private DateTime _ManualEditDate;
 		#endregion
 		#region Public Properties
 		public int OLID
@@ -68,6 +70,16 @@ namespace Portal2APIs.Models
 		{
 			get { return _RFRTransferDate; }
 			set { _RFRTransferDate = value; }
+		}
+		public DateTime ManualEditDate
+		{
+			get { return _ManualEditDate; }
+			set { _ManualEditDate = value; }
+		}
+		public string FPNumber
+		{
+			get { return _FPNumber; }
+			set { _FPNumber = value; }
 		}
 		#endregion
 	}
