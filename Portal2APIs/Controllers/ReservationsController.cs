@@ -196,7 +196,7 @@ namespace Portal2APIs.Controllers
             {
 
                 strSQL = "Update Reservations set ReservationStatusId = 3, UpdateExternalUserData = '" + Ids[1] + "' where ReservationId = " + Ids[0];
-                
+
                 thisADO.updateOrInsert(strSQL, true);
 
                 return "Success";
@@ -254,6 +254,69 @@ namespace Portal2APIs.Controllers
             catch (Exception ex)
             {
                 return ex.ToString();
+            }
+        }
+
+        [HttpGet]
+        [Route("api/Reservations/GetReservationEmailTemplate/{id}")]
+        public List<EmailTemplate> GetReservationEmailTemplate(string id)
+        {
+            clsADO thisADO = new clsADO();
+
+            string[] values = id.Split('_');
+            string strSQL = "";
+            string thisLocationId = values[0];
+            string thisGuest = values[1];
+
+            try
+            {
+                if (thisGuest == "true")
+                {
+                    strSQL = "Select EmailTemplateSubject, EmailTemplateBody " +
+                            "from EmailTemplates " +
+                            "Where IsDeleted = 0 " +
+                            "And EmailTemplateName = 'ReservationReminder-Guest-V2' " +
+                            "And LocationId = " + thisLocationId;
+                }
+                else
+                {
+                    strSQL = "Select EmailTemplateSubject, EmailTemplateBody " +
+                            "from EmailTemplates " +
+                            "Where IsDeleted = 0 " +
+                            "And EmailTemplateName = 'ReservationReminder-V2' " +
+                            "And LocationId = " + thisLocationId;
+                }
+
+                List<EmailTemplate> list = new List<EmailTemplate>();
+                thisADO.returnSingleValue(strSQL, true, ref list);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                var response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent(ex.Message, System.Text.Encoding.UTF8, "text/plain"),
+                    StatusCode = HttpStatusCode.BadRequest
+                };
+                throw new HttpResponseException(response);
+            }
+        }
+
+        public class EmailTemplate
+        {
+            private string _EmailTemplateSubject;
+            private string _EmailTemplateBody;
+
+            public string EmailTemplateSubject
+            {
+                get { return _EmailTemplateSubject; }
+                set { _EmailTemplateSubject = value; }
+            }
+            public string EmailTemplateBody
+            {
+                get { return _EmailTemplateBody; }
+                set { _EmailTemplateBody = value; }
             }
         }
     }

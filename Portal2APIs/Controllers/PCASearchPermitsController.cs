@@ -99,9 +99,18 @@ namespace Portal2APIs.Controllers
         public async System.Threading.Tasks.Task<string> PostPCASearchPermitsAsync(PCASearchPermit per)
         {
             string contents = "";
-            //Get Credentials for BallParc API for columbus
             var thisADO = new clsADO();
-            var strSQL = "Select AccessToken, ApplicationKey From ParkPlaceParking.dbo.VendorAPICred Where VendorId = 1 and CityId = 4";
+
+            //Get City Id from permit lot
+            var strSQL = "Select l.CityId " +
+                            "From ParkPlaceParking.dbo.Lot l " +
+                            "Inner Join ParkPlaceParking.dbo.Permit p on l.LotId = p.LotId " +
+                            "Where p.PermitId = " + per.PermitId;
+
+            var thisCityId = thisADO.returnSingleValueForInternalAPIUse(strSQL, true);
+
+            //Get Credentials for BallParc API 
+            strSQL = "Select AccessToken, ApplicationKey From ParkPlaceParking.dbo.VendorAPICred Where VendorId = 1 and CityId = " + thisCityId;
 
             List<string[]> cred = thisADO.returnAllValues(strSQL, true);
 
@@ -116,7 +125,8 @@ namespace Portal2APIs.Controllers
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 
-            DateTime startTime = DateTime.Parse(per.EffectiveDatetime.ToString());
+            //DateTime startTime = DateTime.Parse(per.EffectiveDatetime.ToString());
+            DateTime startTime = DateTime.Today.AddDays(-1);
             string formatedStartTime = startTime.ToString("yyyy-MM-dd HH:mm:ss");
 
             DateTime endTime = DateTime.Parse(per.ExpiresDatetime.ToString());
@@ -155,10 +165,9 @@ namespace Portal2APIs.Controllers
             }
             else
             {
-                DateTime ie = DateTime.Parse(InitialEffectiveDate);
-                string startDate = ie.ToString("yyyy-MM-dd HH:mm:ss");
-
-                paidVehicle.start_time = startDate;
+                //DateTime ie = DateTime.Parse(InitialEffectiveDate);
+                //string startDate = ie.ToString("yyyy-MM-dd HH:mm:ss");
+                //paidVehicle.start_time = startDate;
 
                 json = JsonConvert.SerializeObject(paidVehicle);
                 data = new StringContent(json, Encoding.UTF8, "application/json");
@@ -179,7 +188,7 @@ namespace Portal2APIs.Controllers
             {
                 //Get Credentials for BallParc API for columbus
                 var thisADO = new clsADO();
-                var strSQL = "Select AccessToken, ApplicationKey From ParkPlaceParking.dbo.VendorAPICred Where VendorId = 1 and CityId = 4";
+                var strSQL = "Select AccessToken, ApplicationKey From ParkPlaceParking.dbo.VendorAPICred Where VendorId = 1 and CityId = " + dateRange.CityId;
 
                 List<string[]> cred = thisADO.returnAllValues(strSQL, true);
 
@@ -226,9 +235,18 @@ namespace Portal2APIs.Controllers
         {
             try
             {
-                //Get Credentials for BallParc API for columbus
                 var thisADO = new clsADO();
-                var strSQL = "Select AccessToken, ApplicationKey From ParkPlaceParking.dbo.VendorAPICred Where VendorId = 1 and CityId = 4";
+                //Get City Id from permit lot
+                var strSQL = "Select l.CityId " +
+                                "From ParkPlaceParking.dbo.Lot l " +
+                                "Inner Join ParkPlaceParking.dbo.Permit p on l.LotId = p.LotId " +
+                                "Where p.PermitId = " + id;
+
+                var thisCityId = thisADO.returnSingleValueForInternalAPIUse(strSQL, true);
+
+                
+                //Get Credentials for BallParc API 
+                strSQL = "Select AccessToken, ApplicationKey From ParkPlaceParking.dbo.VendorAPICred Where VendorId = 1 and CityId = " + thisCityId;
 
                 List<string[]> cred = thisADO.returnAllValues(strSQL, true);
 
@@ -411,6 +429,7 @@ namespace Portal2APIs.Controllers
             public string _StartDate;
             public string _EndDate;
             public string _LocationId;
+            public string _CityId;
 
             public string StartDate
             {
@@ -428,6 +447,12 @@ namespace Portal2APIs.Controllers
             {
                 get { return _LocationId; }
                 set { _LocationId = value; }
+            }
+
+            public string CityId
+            {
+                get { return _CityId; }
+                set { _CityId = value; }
             }
         }
     }

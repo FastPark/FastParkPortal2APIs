@@ -221,8 +221,30 @@ namespace Portal2APIs.Controllers
                 //Call stored procedure to run the visit tracking on this target members ID on remote it gets synced
                 thisADO.UpdateMemberVisitTracking(targetMemberId, false);
 
-                //add note for backout++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                //Uncommented MemberNote combine 08/26/2021 request Betsi email and Spiceworks ticket 5728. 
+                //Commented out to leave note with original 6/26/2019
+                //Back Out for MemberNotes gets original state of MemberNotes+++++++++++++++++++++++
                 var noteBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberNotes set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where NotesId = ' + Convert(nvarchar(max), NotesId), " + backoutBatch + " " +
+                                    "from MemberNotes " +
+                                    "where memberid = " + originMemberId;
+                thisADO.updateOrInsert(noteBackOutSQL, false);
+                thisADO.updateOrInsert(noteBackOutSQL, true);
+
+                noteBackOutSQL = "Insert into CardCombineBackOut " +
+                                    "Select 'Update MemberNotes set MemberId = ' + Convert(nvarchar(max), MemberId) + ' where NotesId = ' + Convert(nvarchar(max), NotesId), " + backoutBatch + " " +
+                                    "from MemberNotes " +
+                                    "where memberid = " + targetMemberId;
+                thisADO.updateOrInsert(noteBackOutSQL, false);
+                thisADO.updateOrInsert(noteBackOutSQL, true);
+                //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                //Set memberId of origin MemberNotes to target MemberId this will get synced from remote
+                thisADO.updateOrInsert("Update MemberNotes set MemberId = " + targetMemberId + " where MemberId = " + originMemberId, true);
+
+                //add note for backout++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                noteBackOutSQL = "Insert into CardCombineBackOut " +
                                         "Select 'Insert into MemberNotes (MemberId, Note, Date, SubmittedBy, CreateDateTime, CreateUserId) values (" + originMemberId + ",''Member Card " + cardsToCombine.OriginCard + " was uncombined from " + cardsToCombine.TargetCard + " on '' + Convert(nvarchar,GetDate(), 101) + '' by check change log'', Convert(nvarchar,GetDate(), 101), -1, Convert(nvarchar,GetDate(), 101), -1)', " + backoutBatch;
                 thisADO.updateOrInsert(noteBackOutSQL, false);
                 thisADO.updateOrInsert(noteBackOutSQL, true);
